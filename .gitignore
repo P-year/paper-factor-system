@@ -1,0 +1,27 @@
+.env
+.env.local
+.env.*.local
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+
+# Agent 运行产物
+memory/sessions/*.json
+memory/runs/*/
+!memory/runs/.gitkeep
+memory/audit/*.jsonl
+!memory/audit/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

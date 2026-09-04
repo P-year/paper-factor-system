@@ -1,0 +1,42 @@
+{
+  "phase": "0",
+  "verified_at": "2026-08-26T18:30:14.167749",
+  "nodes": [
+    "plan",
+    "collect",
+    "analyze",
+    "persist_factors",
+    "quality_check",
+    "backtest",
+    "decide",
+    "respond"
+  ],
+  "tools": [
+    "search_arxiv",
+    "read_paper",
+    "extract_factor_tool",
+    "check_data_feasibility",
+    "llm_check_data_feasibility",
+    "run_backtest",
+    "list_factors",
+    "update_factor_status",
+    "generate_report"
+  ],
+  "graph_node_count": 10,
+  "plan_node_fallback_first_decision": "collect",
+  "shims_verified": [
+    "agent.paths",
+    "agent.observability",
+    "agent.checkpoints",
+    "agent.nodes._llm"
+  ],
+  "harness_modules": [
+    "harness.paths",
+    "harness.observability",
+    "harness.checkpoints",
+    "harness.llm_client",
+    "harness.state_base",
+    "harness.pipeline",
+    "harness.registry"
+  ]
+}

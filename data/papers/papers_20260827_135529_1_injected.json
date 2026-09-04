@@ -1,0 +1,14 @@
+{
+  "papers": [
+    {
+      "arxiv_id": "test://paper_momentum",
+      "title": "Short-term Reversal in Chinese A-shares",
+      "summary": "本文发现 A 股市场存在显著的 1 个月短期反转效应，月度 IC 约 -0.04。1 个月动量因子在 A 股实际上是反转因子。",
+      "link": "test://paper_momentum"
+    }
+  ],
+  "stats": {
+    "total": 1,
+    "source": "injected"
+  }
+}

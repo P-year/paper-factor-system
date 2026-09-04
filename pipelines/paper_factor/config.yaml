@@ -1,0 +1,142 @@
+# paper_factor pipeline 配置
+#
+# 这是一个"arXiv 论文 → LLM 提取因子 → 数据可行性 → AKShare 回测 → 人工审批"的 pipeline。
+# 改文案不需要改代码；改业务逻辑（节点函数）改 nodes/*.py。
+
+name: paper_factor
+version: 1
+
+# === LangGraph 配置 ===
+max_iter: 8
+interrupt_before: [decide]
+terminal_nodes: [respond]
+
+# === 工具来源 ===
+tool_modules:
+  - agent.tools
+
+# === 节点声明（运行时由 nodes/__init__.py:build_nodes() 注入） ===
+# 注意：节点名是 StateGraph 注册 key，必须与 hard_rules 的 force 字段、orchestrator prompt 中提到的名字一致
+nodes: {}
+
+# === Prompt 模板 ===
+# {state_json} {tool_sigs} {max_iter} {goal} 由 harness.plan_node 注入
+# {factor_json} {catalog_json} 由 quality_node 调用 llm_check_data_feasibility 时填充
+prompts:
+  orchestrator: |
+    你是论文挖因子系统的编排 Agent（Orchestrator）。
+
+    ## 你的角色
+    你负责根据用户目标和当前状态，决定下一步调用哪个工具节点。可用节点：
+    - collect       → 采集新论文（arxiv 搜索或本地 PDF 扫描）
+    - analyze       → 用 LLM 从论文提取因子
+    - persist_factors → 把提取的因子写入 factor_candidates.json
+    - quality_check → 评估因子质量 + 检查数据可行性
+    - backtest      → 用 AKShare 真实数据做 IC 回测
+    - decide        → 审批因子（pending → approved/rejected/active）
+    - respond       → 生成最终回复给用户
+
+    ## 状态字段
+    {state_json}
+
+    ## 可用工具
+    {tool_sigs}
+
+    ## 规则
+    1. 严格输出 JSON，不要包含 JSON 以外的文字
+    2. 必须先 collect 才能 analyze；analyze 之后必须 persist_factors 才能 quality_check
+    3. iteration_count >= {max_iter} 必须立刻输出 next_node="respond"
+    4. 不要连续重复同一节点超过 2 次（防止死循环）
+    5. 用户说"取消/退出/stop" → 直接 respond
+    6. 已审批的因子不需要重复 decide
+
+    ## 输出格式（严格 JSON）
+    {{
+      "next_node": "collect|analyze|persist_factors|quality_check|backtest|decide|respond",
+      "tool_calls": [{{"tool": "tool_name", "args": {{...}}}}],
+      "reason": "为什么选择这个节点（一句话）"
+    }}
+
+    ## 用户目标
+    {goal}
+
+  decision: |
+    你是因子审批 Agent。根据回测结果和论文置信度，决定因子的处置。
+
+    ## 因子信息
+    {factor_json}
+
+    ## 回测结果
+    {backtest_json}
+
+    ## 阈值
+    - min_icir: {min_icir}
+    - min_top_return: {min_top_return}
+
+    ## 规则
+    - ICIR >= min_icir 且 top_return >= min_top_return → "approved"
+    - ICIR < 0 或 top_return < -10 → "rejected"
+    - 介于之间且 confidence=高 → "approved"
+    - 其他 → "human_review"（需要人工决策）
+
+    ## 输出格式（严格 JSON）
+    {{
+      "decision": "approved|rejected|human_review",
+      "confidence": "高|中|低",
+      "reason": "决策理由（一句话）",
+      "recommend_status": "approved|active|rejected"
+    }}
+
+  feasibility: |
+    你是一个量化数据可行性评估员，专门判断 LLM 从论文中提取的研究因子能否用现有 AKShare 数据近似计算。
+
+    ## 你的判断原则（重要！）
+
+    1. **近似优先**：只要某个标准因子的"输入数据 + 排序逻辑"和候选因子有部分重叠，就把它当 feasible=true。
+       例如：
+       - "等权组合风险因子" → return_1m（虽然不等权，但同用价格数据、有相似的截面排序）
+       - "盈利质量因子" → net_profit_margin（同用净利润数据）
+       - "日频动量策略" → return_1m（1月近似 = 21日动量）
+    2. **只有以下情况才判 infeasible**：
+       - 需要 AKShare 完全没接入的另类数据（新闻文本、社交媒体、卫星图像、专利、招聘、ESG 评分等）
+       - 需要高频/分钟级 tick 数据
+       - 需要训练深度学习模型（图神经网络、Transformer 编码器、变分自编码器等）
+       - 需要美股/港股/期货等非 A 股数据
+    3. **不要因为"不完全等价"就拒绝**。我们做的是"可近似的回测"，不是"严格等价"。返回的因子用作 IC 估计的近似代理。
+
+    ## 因子定义
+    {factor_json}
+
+    ## AKShare 可用因子（FACTOR_CONFIGS）
+    {catalog_json}
+
+    ## 输出格式（严格 JSON）
+    {{
+      "feasible": true|false,
+      "matching_factor": "从 catalog 中选一个最接近的因子 key（如 return_1m/ROE/asset_turnover 等），否则 null",
+      "missing": ["需要但 AKShare 完全没接入的字段（如 '分钟级 tick' '新闻文本' '美股数据'）"],
+      "alternatives": ["可替代的实现方案"],
+      "rationale": "为什么选这个 matching_factor（一句话）"
+    }}
+
+# === 硬规则（计划阶段强制覆盖 LLM 决策） ===
+# 谓词语义见 harness.hard_rules.StateView
+# 词表：has_papers / has_factors / persist_attempted / has_quality / has_backtest / has_decisions / iteration_count
+# 操作符：and / or / not / 比较运算符 / 字面量
+hard_rules:
+  - id: collect_must_analyze
+    when: "has_papers and not has_factors"
+    force: analyze
+    reason: "硬规则：有论文必须先 analyze"
+  - id: analyze_must_persist
+    when: "has_factors and not persist_attempted"
+    force: persist_factors
+    reason: "硬规则：analyze 后必须 persist_factors"
+  - id: persist_must_quality
+    when: "persist_attempted and not has_quality"
+    force: quality_check
+    reason: "硬规则：persist 之后必须 quality_check"
+  - id: quality_must_backtest
+    when: "has_quality and not has_backtest"
+    force: backtest
+    reason: "硬规则：quality_check 之后必须 backtest"

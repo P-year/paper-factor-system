@@ -1,0 +1,80 @@
+{
+  "_comment": "Full pipeline eval cases. 兼容 eval/test_cases.json 的全部 5 个 case，加 type=full 字段。",
+  "test_cases": [
+    {
+      "id": "case_001_transformer_quant",
+      "type": "full",
+      "goal": "分析过去90天arxiv上关于transformer量化交易的论文",
+      "expected_steps": ["collect", "analyze", "persist_factors", "quality_check", "backtest", "decide"],
+      "min_papers": 2,
+      "min_factors": 1,
+      "judge_criteria": [
+        "成功采集到至少2篇关于transformer量化交易的论文",
+        "提取了至少1个可量化的金融因子",
+        "执行了真实数据回测（backtest阶段）",
+        "决策阶段给出了approve/reject的判断"
+      ],
+      "weight": 1.0
+    },
+    {
+      "id": "case_002_factor_mining",
+      "type": "full",
+      "goal": "挖掘论文中关于动量(momentum)因子的研究",
+      "expected_steps": ["collect", "analyze", "persist_factors", "backtest"],
+      "min_papers": 1,
+      "min_factors": 1,
+      "judge_criteria": [
+        "采集到至少1篇与动量因子相关的论文",
+        "提取的因子包含明确的动量定义（如收益率、换手率等）",
+        "回测结果包含IC指标",
+        "agent在合理步骤内完成任务（不超过MAX_ITER=8）"
+      ],
+      "weight": 1.0
+    },
+    {
+      "id": "case_003_quality_factor",
+      "type": "full",
+      "goal": "搜索并分析质量(quality)类因子（如ROE、毛利率）的最新研究",
+      "expected_steps": ["collect", "analyze", "persist_factors", "quality_check", "backtest"],
+      "min_papers": 1,
+      "min_factors": 1,
+      "judge_criteria": [
+        "采集到至少1篇质量因子相关论文",
+        "因子定义清晰（如ROE的具体计算方式）",
+        "质量评估环节（quality_check）被执行",
+        "回测结果有效（IC不为零）"
+      ],
+      "weight": 1.0
+    },
+    {
+      "id": "case_004_multi_papers",
+      "type": "full",
+      "goal": "对比不同论文中关于价值(value)因子的差异",
+      "expected_steps": ["collect", "analyze", "respond"],
+      "min_papers": 2,
+      "min_factors": 1,
+      "judge_criteria": [
+        "采集了多篇论文（至少2篇）",
+        "agent正确识别了不同论文对价值因子的不同定义",
+        "总结报告（respond）包含对比分析",
+        "agent没有陷入死循环"
+      ],
+      "weight": 0.8
+    },
+    {
+      "id": "case_005_no_papers",
+      "type": "full",
+      "goal": "分析过去365天arxiv上关于'quantum consciousness trading'的论文",
+      "expected_steps": ["collect", "respond"],
+      "min_papers": 0,
+      "min_factors": 0,
+      "judge_criteria": [
+        "agent正确处理了搜索无结果的情况（没有崩溃）",
+        "给出了合理的反馈（说明未找到相关论文）",
+        "没有为了凑结果而编造内容",
+        "在合理步骤内完成（≤5步）"
+      ],
+      "weight": 0.5
+    }
+  ]
+}

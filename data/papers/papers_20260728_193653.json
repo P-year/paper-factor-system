@@ -1,0 +1,2093 @@
+{
+  "meta": {
+    "collected_at": "2026-07-28 19:36:53",
+    "total_count": 123,
+    "stats": {
+      "total_found": 202,
+      "after_filter": 123,
+      "duplicates_removed": 87,
+      "errors": 3
+    }
+  },
+  "papers": [
+    {
+      "title": "Construct sparse portfolio with mutual fund's favourite stocks in China A share market",
+      "summary": "Unlike developed market, some emerging markets are dominated by retail and unprofessional trading. China A share market is a good and fitting example in last 20 years. Meanwhile, lots of research show professional investor in China A share market continuously generate excess return compare with total market index. Specifically, this excess return mostly come from stock selectivity ability instead of market timing. However for some reason such as fund capacity limit, fund manager change or market regional switch, it is very hard to find a fund could continuously beat market. Therefore, in order to get excess return from mutual fund industry, we use quantitative way to build the sparse portfolio that take advantage of favorite stocks by mutual fund in China A market. Firstly we do the analysis about favourite stocks by mutual fund and compare the different method to construct our portfolio. Then we build a sparse stock portfolio with constraint on both individual stock and industry exposure using portfolio optimizer to closely track the partial equity funds index 930950.CSI with median 0.985 correlation. This problem is much more difficult than tracking full information index or traditional ETF as higher turnover of mutual fund, just first 10 holding of mutual fund available and fund report updated quarterly with 15 days delay. Finally we build another low risk and balanced sparse portfolio that consistently outperform benchmark 930950.CSI.",
+      "link": "http://arxiv.org/abs/2305.01642v1",
+      "published": "2023-04-24",
+      "authors": [
+        "Ke Zhang"
+      ],
+      "categories": [
+        "q-fin.PM"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2305.01642v1",
+      "arxiv_id": "2305.01642v1"
+    },
+    {
+      "title": "Dynamic Inclusion and Bounded Multi-Factor Tilts for Robust Portfolio Construction",
+      "summary": "This paper proposes a portfolio construction framework designed to remain robust under estimation error, non-stationarity, and realistic trading constraints. The methodology combines dynamic asset eligibility, deterministic rebalancing, and bounded multi-factor tilts applied to an equal-weight baseline. Asset eligibility is formalized as a state-dependent constraint on portfolio construction, allowing factor exposure to adjust endogenously in response to observable market conditions such as liquidity, volatility, and cross-sectional breadth. Rather than estimating expected returns or covariances, the framework relies on cross-sectional rankings and hard structural bounds to control concentration, turnover, and fragility. The resulting approach is fully algorithmic, transparent, and directly implementable. It provides a robustness-oriented alternative to parametric optimization and unconstrained multi-factor models, particularly suited for long-horizon allocations where stability and operational feasibility are primary objectives.",
+      "link": "http://arxiv.org/abs/2601.05428v1",
+      "published": "2026-01-08",
+      "authors": [
+        "Roberto Garrone"
+      ],
+      "categories": [
+        "math.OC",
+        "cs.LG"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2601.05428v1",
+      "arxiv_id": "2601.05428v1"
+    },
+    {
+      "title": "Adjust factor with volatility model using MAXFLAT low-pass filter and construct portfolio in China A share market",
+      "summary": "In the field of quantitative finance, volatility models, such as ARCH, GARCH, FIGARCH, SV, EWMA, play the key role in risk and portfolio management. Meanwhile, factor investing is more and more famous since mid of 20 century. CAPM, Fama French three factor model, Fama French five-factor model, MSCI Barra factor model are mentioned and developed during this period. In this paper, we will show why we need adjust group of factors by our MAXFLAT low-pass volatility model. All of our experiments are under China's CSI 300 and CSI 500 universe which represent China's large cap stocks and mid-small cap stocks. Our result shows adjust factors by MAXFLAT volatility model have better performance in both large cap and small cap universe than original factors or other risk adjust factors in China A share. Also the portfolio constructed by MAXFLAT risk adjust factors have continuous excess return and lower beta compare with benchmark index.",
+      "link": "http://arxiv.org/abs/2304.04676v2",
+      "published": "2023-03-29",
+      "authors": [
+        "Ke Zhang"
+      ],
+      "categories": [
+        "q-fin.RM",
+        "q-fin.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2304.04676v2",
+      "arxiv_id": "2304.04676v2"
+    },
+    {
+      "title": "Optimal portfolio under ratio-type periodic evaluation in stochastic factor models under convex trading constraints",
+      "summary": "This paper studies a type of periodic utility maximization problem for portfolio management in incomplete stochastic factor models with convex trading constraints. The portfolio performance is periodically evaluated on the relative ratio of two adjacent wealth levels over an infinite horizon, featuring the dynamic adjustments in portfolio decision according to past achievements. Under power utility, we transform the original infinite horizon optimal control problem into an auxiliary terminal wealth optimization problem under a modified utility function. To cope with the convex trading constraints, we further introduce an auxiliary unconstrained optimization problem in a modified market model and develop the martingale duality approach to establish the existence of the dual minimizer such that the optimal unconstrained wealth process can be obtained using the dual representation. With the help of the duality results in the auxiliary problems, the relationship between the constrained and unconstrained models as well as some fixed point arguments, we derive and verify the optimal constrained portfolio process for the original problem over an infinite horizon.",
+      "link": "http://arxiv.org/abs/2411.13579v2",
+      "published": "2024-11-15",
+      "authors": [
+        "Wenyuan Wang",
+        "Kaixin Yan",
+        "Xiang Yu"
+      ],
+      "categories": [
+        "q-fin.MF",
+        "math.OC",
+        "q-fin.PM"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2411.13579v2",
+      "arxiv_id": "2411.13579v2"
+    },
+    {
+      "title": "Optimal Portfolio with Power Utility of Absolute and Relative Wealth",
+      "summary": "Portfolio managers often evaluate performance relative to benchmark, usually taken to be the Standard & Poor 500 stock index fund. This relative portfolio wealth is defined as the absolute portfolio wealth divided by wealth from investing in the benchmark (including reinvested dividends). The classic Merton problem for portfolio optimization considers absolute portfolio wealth. We combine absolute and relative wealth in our new utility function. We also consider the case of multiple benchmarks. To both absolute and relative wealth, we apply power utility functions, possibly with different exponents. We obtain an explicit solution and compare it to the classic Merton solution. We apply our results to the Capital Asset Pricing Model setting.",
+      "link": "http://arxiv.org/abs/2105.08139v2",
+      "published": "2021-05-17",
+      "authors": [
+        "Andrey Sarantsev"
+      ],
+      "categories": [
+        "q-fin.PM",
+        "math.PR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2105.08139v2",
+      "arxiv_id": "2105.08139v2"
+    },
+    {
+      "title": "Portfolio Optimization",
+      "summary": "In this paper Portfolio Optimization techniques were used to determine the most favorable investment portfolio. In particular, stock indices of three companies, namely Microsoft Corporation, Christian Dior Fashion House and Shevron Corporation were evaluated. Using this data the amounts invested in each asset when a portfolio is chosen on the efficient frontier were calculated. In addition, the Portfolio with minimum variance, tangency portfolio and optimal Markowitz portfolio are presented.",
+      "link": "http://arxiv.org/abs/1505.05491v2",
+      "published": "2015-05-19",
+      "authors": [
+        "Aizhan Issagali",
+        "Damira Alshimbayeva",
+        "Aidana Zhalgas"
+      ],
+      "categories": [
+        "q-fin.PM",
+        "q-fin.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1505.05491v2",
+      "arxiv_id": "1505.05491v2"
+    },
+    {
+      "title": "Cross-validated covariance estimators for high-dimensional minimum-variance portfolios",
+      "summary": "The global minimum-variance portfolio is a typical choice for investors because of its simplicity and broad applicability. Although it requires only one input, namely the covariance matrix of asset returns, estimating the optimal solution remains a challenge. In the presence of high-dimensionality in the data, the sample covariance estimator becomes ill-conditioned and leads to suboptimal portfolios out-of-sample. To address this issue, we review recently proposed efficient estimation methods for the covariance matrix and extend the literature by suggesting a multi-fold cross-validation technique for selecting the necessary tuning parameters within each method. Conducting an extensive empirical analysis with four datasets based on the S&P 500, we show that the data-driven choice of specific tuning parameters with the proposed cross-validation improves the out-of-sample performance of the global minimum-variance portfolio. In addition, we identify estimators that are strongly influenced by the choice of the tuning parameter and detect a clear relationship between the selection criterion within the cross-validation and the evaluated performance measure.",
+      "link": "http://arxiv.org/abs/1910.13960v5",
+      "published": "2019-10-30",
+      "authors": [
+        "Sven Husmann",
+        "Antoniya Shivarova",
+        "Rick Steinert"
+      ],
+      "categories": [
+        "q-fin.PM",
+        "stat.ME"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1910.13960v5",
+      "arxiv_id": "1910.13960v5"
+    },
+    {
+      "title": "Portfolio Selection with Mandatory Bequest",
+      "summary": "In this paper, optimal consumption and investment decisions are studied for an investor who can invest in a fixed interest rate bank account and a stock whose price is a log normal diffusion. We present the method of the HJB equation in order to explicitly solve problems of this type with modifications such as a fixed percentage transaction cost and a mandatory bequest function. It is shown that the investor treats the mandatory bequest as an expense that she factors into her personal wealth when making consumption and transaction decisions. Furthermore, the investor keeps her portfolio proportions inside a fixed boundary relating to Merton's optimal proportion and the transaction costs.",
+      "link": "http://arxiv.org/abs/1409.3969v1",
+      "published": "2014-09-13",
+      "authors": [
+        "Jiacheng Feng"
+      ],
+      "categories": [
+        "q-fin.PM",
+        "math.OC"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1409.3969v1",
+      "arxiv_id": "1409.3969v1"
+    },
+    {
+      "title": "Sparsity and Stability for Minimum-Variance Portfolios",
+      "summary": "The popularity of modern portfolio theory has decreased among practitioners because of its unfavorable out-of-sample performance. Estimation errors tend to affect the optimal weight calculation noticeably, especially when a large number of assets is considered. To overcome these issues, many methods have been proposed in recent years, although most only address a small set of practically relevant questions related to portfolio allocation. This study therefore sheds light on different covariance estimation techniques, combines them with sparse model approaches, and includes a turnover constraint that induces stability. We use two datasets - comprising 319 and 100 companies of the S&P 500, respectively - to create a realistic and reproducible data foundation for our empirical study. To the best of our knowledge, this study is the first to show that it is possible to maintain the low-risk profile of efficient estimation methods while automatically selecting only a subset of assets and further inducing low portfolio turnover. Moreover, we provide evidence that using the LASSO as the sparsity-generating model is insufficient to lower turnover when the involved tuning parameter can change over time.",
+      "link": "http://arxiv.org/abs/1910.11840v1",
+      "published": "2019-10-25",
+      "authors": [
+        "Sven Husmann",
+        "Antoniya Shivarova",
+        "Rick Steinert"
+      ],
+      "categories": [
+        "q-fin.PM"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1910.11840v1",
+      "arxiv_id": "1910.11840v1"
+    },
+    {
+      "title": "Tukey's transformational ladder for portfolio management",
+      "summary": "Over the past half-century, the empirical finance community has produced vast literature on the advantages of the equally weighted S\\&P 500 portfolio as well as the often overlooked disadvantages of the market capitalization weighted Standard and Poor's (S\\&P 500) portfolio (see \\cite{Bloom}, \\cite{Uppal}, \\cite{Jacobs}, \\cite{Treynor}). However, portfolio allocation based on Tukey's transformational ladde have, rather surprisingly, remained absent from the literature. In this work, we consider the S\\&P 500 portfolio over the 1958-2015 time horizon weighted by Tukey's transformational ladder (\\cite{Tukey2}): $1/x^2,\\,\\, 1/x,\\,\\, 1/\\sqrt{x},\\,\\, \\text{log}(x),\\,\\, \\sqrt{x},\\,\\, x,\\,\\, \\text{and} \\,\\, x^2$, where $x$ is defined as the market capitalization weighted S\\&P 500 portfolio. Accounting for dividends and transaction fees, we find that the 1/$x^2$ weighting strategy produces cumulative returns that significantly dominates all other portfolios, achieving a compound annual growth rate of 18\\% over the 1958-2015 horizon. Our story is furthered by a startling phenomenon: both the cumulative and annual returns of the $1/x^2$ weighting strategy are superior to those of the $1/x$ weighting strategy, which are in turn superior to those of the 1/$\\sqrt{x}$ weighted portfolio, and so forth, ending with the $x^2$ transformation, whose cumulative returns are the lowest of the seven transformations of Tukey's transformational ladder. The order of cumulative returns precisely follows that of Tukey's transformational ladder. To the best of our knowledge, we are the first to discover this phenomenon.",
+      "link": "http://arxiv.org/abs/1603.06050v5",
+      "published": "2016-03-19",
+      "authors": [
+        "Philip Ernst",
+        "James Thompson",
+        "Yinsen Miao"
+      ],
+      "categories": [
+        "q-fin.PM"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1603.06050v5",
+      "arxiv_id": "1603.06050v5"
+    },
+    {
+      "title": "Portfolio Construction using Black-Litterman Model and Factors",
+      "summary": "This paper presents a portfolio construction process, including mainly two parts, Factors Selection and Weight Allocations. For the factors selection part, We have chosen 20 factors by considering three aspects, the global market, different assets class, and stock idiosyncratic characteristics. Each factor is proxied by a corresponding ETF. Then, we would apply several weight allocation methods to those factors, including two fixed weight allocation methods, three optimisation methods, and a Black-Litterman model. In addition, we would also fit a Deep Learning model for generating views periodically and incorporating views with the prior to achieve dynamically updated weights by using the Black-Litterman model. In the end, the robustness checking shows how weights change with respect to time evolving and variance increasing. Results using shrinkage variance are provided to alleviate the impacts of representativeness of historical data, but there sadly has little impact. Overall, the model by using the Deep Learning plus Black-Litterman model results outperform the portfolio by other weight allocation schemes, even though further improvement and robustness checking should be performed.",
+      "link": "http://arxiv.org/abs/2311.04475v1",
+      "published": "2023-11-08",
+      "authors": [
+        "Fanyu Zhao"
+      ],
+      "categories": [
+        "q-fin.PM"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2311.04475v1",
+      "arxiv_id": "2311.04475v1"
+    },
+    {
+      "title": "Dynamic CVaR Portfolio Construction with Attention-Powered Generative Factor Learning",
+      "summary": "The dynamic portfolio construction problem requires dynamic modeling of the joint distribution of multivariate stock returns. To achieve this, we propose a dynamic generative factor model which uses random variable transformation as an implicit way of distribution modeling and relies on the Attention-GRU network for dynamic learning and forecasting. The proposed model captures the dynamic dependence among multivariate stock returns, especially focusing on the tail-side properties. We also propose a two-step iterative algorithm to train the model and then predict the time-varying model parameters, including the time-invariant tail parameters. At each investment date, we can easily simulate new samples from the learned generative model, and we further perform CVaR portfolio optimization with the simulated samples to form a dynamic portfolio strategy. The numerical experiment on stock data shows that our model leads to wiser investments that promise higher reward-risk ratios and present lower tail risks.",
+      "link": "http://arxiv.org/abs/2301.07318v6",
+      "published": "2023-01-18",
+      "authors": [
+        "Chuting Sun",
+        "Qi Wu",
+        "Xing Yan"
+      ],
+      "categories": [
+        "q-fin.PM"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2301.07318v6",
+      "arxiv_id": "2301.07318v6"
+    },
+    {
+      "title": "Look-Ahead Benchmark Bias in Portfolio Performance Evaluation",
+      "summary": "Performance of investment managers are evaluated in comparison with benchmarks, such as financial indices. Due to the operational constraint that most professional databases do not track the change of constitution of benchmark portfolios, standard tests of performance suffer from the \"look-ahead benchmark bias,\" when they use the assets constituting the benchmarks of reference at the end of the testing period, rather than at the beginning of the period. Here, we report that the \"look-ahead benchmark bias\" can exhibit a surprisingly large amplitude for portfolios of common stocks (up to 8% annum for the S&P500 taken as the benchmark) -- while most studies have emphasized related survival biases in performance of mutual and hedge funds for which the biases can be expected to be even larger. We use the CRSP database from 1926 to 2006 and analyze the running top 500 US capitalizations to demonstrate that this bias can account for a gross overestimation of performance metrics such as the Sharpe ratio as well as an underestimation of risk, as measured for instance by peak-to-valley drawdowns. We demonstrate the presence of a significant bias in the estimation of the survival and look-ahead biases studied in the literature. A general methodology to test the properties of investment strategies is advanced in terms of random strategies with similar investment constraints.",
+      "link": "http://arxiv.org/abs/0810.1922v1",
+      "published": "2008-10-10",
+      "authors": [
+        "Gilles Daniel",
+        "Didier Sornette",
+        "Peter Wohrmann"
+      ],
+      "categories": [
+        "q-fin.PM",
+        "physics.soc-ph"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/0810.1922v1",
+      "arxiv_id": "0810.1922v1"
+    },
+    {
+      "title": "Online Universal Dirichlet Factor Portfolios",
+      "summary": "We revisit the online portfolio allocation problem and propose universal portfolios that use factor weighing to produce portfolios that out-perform uniform dirichlet allocation schemes. We show a few analytical results on the lower bounds of portfolio growth when the returns are known to follow a factor model. We also show analytically that factor weighted dirichlet sampled portfolios dominate the wealth generated by uniformly sampled dirichlet portfolios. We corroborate our analytical results with empirical studies on equity markets that are known to be driven by factors.",
+      "link": "http://arxiv.org/abs/2308.07763v2",
+      "published": "2023-08-15",
+      "authors": [
+        "Purushottam Parthasarathy",
+        "Avinash Bhardwaj",
+        "Manjesh K. Hanawal"
+      ],
+      "categories": [
+        "q-fin.PM",
+        "cs.CE",
+        "q-fin.MF"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2308.07763v2",
+      "arxiv_id": "2308.07763v2"
+    },
+    {
+      "title": "Portfolio Construction Matters",
+      "summary": "The role of portfolio construction in the implementation of equity market neutral factors is often underestimated. Taking the classical momentum strategy as an example, we show that one can significantly improve the main strategy's features by properly taking care of this key step. More precisely, an optimized portfolio construction algorithm allows one to significantly improve the Sharpe Ratio, reduce sector exposures and volatility fluctuations, and mitigate the strategy's skewness and tail correlation with the market. These results are supported by long-term, world-wide simulations and will be shown to be universal. Our findings are quite general and hold true for a number of other \"equity factors\". Finally, we discuss the details of a more realistic set-up where we also deal with transaction costs.",
+      "link": "http://arxiv.org/abs/1810.08384v1",
+      "published": "2018-10-19",
+      "authors": [
+        "Stefano Ciliberti",
+        "Stanislao Gualdi"
+      ],
+      "categories": [
+        "q-fin.PM"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1810.08384v1",
+      "arxiv_id": "1810.08384v1"
+    },
+    {
+      "title": "Cardinality constrained portfolio selection via factor models",
+      "summary": "In this paper we propose and discuss different 0-1 linear models in order to solve the cardinality constrained portfolio problem by using factor models. Factor models are used to build portfolios to track indexes, together with other objectives, also need a smaller number of parameters to estimate than the classical Markowitz model. The addition of the cardinality constraints limits the number of securities in the portfolio. Restricting the number of securities in the portfolio allows us to obtain a concentrated portfolio, reduce the risk and limit transaction costs. To solve this problem, a pure 0-1 model is presented in this work, the 0-1 model is constructed by means of a piecewise linear approximation. We also present a new quadratic combinatorial problem, called a minimum edge-weighted clique problem, to obtain an equality weighted cardinality constrained portfolio. A piecewise linear approximation for this problem is presented in the context of a multi factor model. For a single factor model, we present a fast heuristic, based on some theoretical results to obtain an equality weighted cardinality constraint portfolio. The consideration of a piecewise linear approximation allow us to reduce significantly the computation time required for the equivalent quadratic problem. Computational results from the 0-1 models are compared to those using a state-of-the-art Quadratic MIP solver.",
+      "link": "http://arxiv.org/abs/1708.02424v1",
+      "published": "2017-08-08",
+      "authors": [
+        "Juan Francisco Monge"
+      ],
+      "categories": [
+        "q-fin.PM"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1708.02424v1",
+      "arxiv_id": "1708.02424v1"
+    },
+    {
+      "title": "A stochastic reachability approach to portfolio construction in finance industry",
+      "summary": "In finance industry portfolio construction deals with how to divide the investors' wealth across an asset-classes' menu in order to maximize the investors' gain. Main approaches in use at the present are based on variations of the classical Markowitz model. However, recent evolutions of the world market showed limitations of this method and motivated many researchers and practitioners to study alternative methodologies to portfolio construction. In this paper we propose one approach to optimal portfolio construction based on recent results on stochastic reachability, which overcome some of the limits of current approaches. Given a sequence of target sets that the investors would like their portfolio to stay within, the optimal portfolio allocation is synthesized in order to maximize the joint probability for the portfolio value to fulfill the target sets requirements. A case study in the US market is given which shows benefits from the proposed methodology in portfolio construction. A comparison with traditional approaches is included.",
+      "link": "http://arxiv.org/abs/0907.3301v1",
+      "published": "2009-07-19",
+      "authors": [
+        "Giordano Pola",
+        "Gianni Pola"
+      ],
+      "categories": [
+        "q-fin.PM",
+        "q-fin.CP"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/0907.3301v1",
+      "arxiv_id": "0907.3301v1"
+    },
+    {
+      "title": "Markowitz Portfolio Construction at Seventy",
+      "summary": "More than seventy years ago Harry Markowitz formulated portfolio construction as an optimization problem that trades off expected return and risk, defined as the standard deviation of the portfolio returns. Since then the method has been extended to include many practical constraints and objective terms, such as transaction cost or leverage limits. Despite several criticisms of Markowitz's method, for example its sensitivity to poor forecasts of the return statistics, it has become the dominant quantitative method for portfolio construction in practice. In this article we describe an extension of Markowitz's method that addresses many practical effects and gracefully handles the uncertainty inherent in return statistics forecasting. Like Markowitz's original formulation, the extension is also a convex optimization problem, which can be solved with high reliability and speed.",
+      "link": "http://arxiv.org/abs/2401.05080v1",
+      "published": "2024-01-10",
+      "authors": [
+        "Stephen Boyd",
+        "Kasper Johansson",
+        "Ronald Kahn",
+        "Philipp Schiele",
+        "Thomas Schmelzer"
+      ],
+      "categories": [
+        "q-fin.PM",
+        "math.OC"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2401.05080v1",
+      "arxiv_id": "2401.05080v1"
+    },
+    {
+      "title": "TPLVM: Portfolio Construction by Student's $t$-process Latent Variable Model",
+      "summary": "Optimal asset allocation is a key topic in modern finance theory. To realize the optimal asset allocation on investor's risk aversion, various portfolio construction methods have been proposed. Recently, the applications of machine learning are rapidly growing in the area of finance. In this article, we propose the Student's $t$-process latent variable model (TPLVM) to describe non-Gaussian fluctuations of financial timeseries by lower dimensional latent variables. Subsequently, we apply the TPLVM to minimum-variance portfolio as an alternative of existing nonlinear factor models. To test the performance of the proposed portfolio, we construct minimum-variance portfolios of global stock market indices based on the TPLVM or Gaussian process latent variable model. By comparing these portfolios, we confirm the proposed portfolio outperforms that of the existing Gaussian process latent variable model.",
+      "link": "http://arxiv.org/abs/2002.06243v1",
+      "published": "2020-01-29",
+      "authors": [
+        "Yusuke Uchiyama",
+        "Kei Nakagawa"
+      ],
+      "categories": [
+        "q-fin.PM",
+        "cs.LG",
+        "math.ST",
+        "q-fin.ST",
+        "stat.ML"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2002.06243v1",
+      "arxiv_id": "2002.06243v1"
+    },
+    {
+      "title": "Risk budget portfolios with convex Non-negative Matrix Factorization",
+      "summary": "We propose a portfolio allocation method based on risk factor budgeting using convex Nonnegative Matrix Factorization (NMF). Unlike classical factor analysis, PCA, or ICA, NMF ensures positive factor loadings to obtain interpretable long-only portfolios. As the NMF factors represent separate sources of risk, they have a quasi-diagonal correlation matrix, promoting diversified portfolio allocations. We evaluate our method in the context of volatility targeting on two long-only global portfolios of cryptocurrencies and traditional assets. Our method outperforms classical portfolio allocations regarding diversification and presents a better risk profile than hierarchical risk parity (HRP). We assess the robustness of our findings using Monte Carlo simulation.",
+      "link": "http://arxiv.org/abs/2204.02757v2",
+      "published": "2022-04-06",
+      "authors": [
+        "Bruno Spilak",
+        "Wolfgang Karl Härdle"
+      ],
+      "categories": [
+        "q-fin.PM",
+        "econ.EM",
+        "stat.AP",
+        "stat.ML"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2204.02757v2",
+      "arxiv_id": "2204.02757v2"
+    },
+    {
+      "title": "The new methods for equity fund selection and optimal portfolio construction",
+      "summary": "We relook at the classic equity fund selection and portfolio construction problems from a new perspective and propose an easy-to-implement framework to tackle the problem in practical investment. Rather than the conventional way by constructing a long only portfolio from a big universe of stocks or macro factors, we show how to produce a long-short portfolio from a smaller pool of stocks from mutual fund top holdings and generate impressive results. As these methods are based on statistical evidence, we need closely monitoring the model validity, and prepare repair strategies.",
+      "link": "http://arxiv.org/abs/2004.10631v1",
+      "published": "2020-04-20",
+      "authors": [
+        "Yi Cao"
+      ],
+      "categories": [
+        "q-fin.PM",
+        "cs.LG",
+        "q-fin.MF"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2004.10631v1",
+      "arxiv_id": "2004.10631v1"
+    },
+    {
+      "title": "Dynamic Factor Model-Based Multiperiod Mean-Variance Portfolio Selection with Portfolio Constraints",
+      "summary": "Motivated by practical applications, we explore the constrained multi-period mean-variance portfolio selection problem within a market characterized by a dynamic factor model. This model captures predictability in asset returns driven by state variables and incorporates cone-type portfolio constraints that are crucial in practice. The model is broad enough to encompass various dynamic factor frameworks, including practical considerations such as no-short-selling and cardinality constraints. We derive a semi-analytical optimal solution using dynamic programming, revealing it as a piecewise linear feedback policy to wealth, with all factors embedded within the allocation vectors. Additionally, we demonstrate that the portfolio policies are determined by two specific stochastic processes resulting from the stochastic optimizations, for which we provide detailed algorithms. These processes reflect the investor's assessment of future investment opportunities and play a crucial role in characterizing the time consistency and efficiency of the optimal policy through the variance-optimal signed supermartingale measure of the market. We present numerical examples that illustrate the model's application in various settings. Using real market data, we investigate how the factors influence portfolio policies and demonstrate that incorporating the factor structure may enhance out-of-sample performance.",
+      "link": "http://arxiv.org/abs/2502.17915v1",
+      "published": "2025-02-25",
+      "authors": [
+        "Jianjun Gao",
+        "Chengneng Jin",
+        "Yun Shi",
+        "Xiangyu Cui"
+      ],
+      "categories": [
+        "q-fin.PM"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2502.17915v1",
+      "arxiv_id": "2502.17915v1"
+    },
+    {
+      "title": "A Novel approach to portfolio construction",
+      "summary": "This paper proposes a machine learning-based framework for asset selection and portfolio construction, termed the Best-Path Algorithm Sparse Graphical Model (BPASGM). The method extends the Best-Path Algorithm (BPA) by mapping linear and non-linear dependencies among a large set of financial assets into a sparse graphical model satisfying a structural Markov property. Based on this representation, BPASGM performs a dependence-driven screening that removes positively or redundantly connected assets, isolating subsets that are conditionally independent or negatively correlated. This step is designed to enhance diversification and reduce estimation error in high-dimensional portfolio settings. Portfolio optimization is then conducted on the selected subset using standard mean-variance techniques. BPASGM does not aim to improve the theoretical mean-variance optimum under known population parameters, but rather to enhance realized performance in finite samples, where sample-based Markowitz portfolios are highly sensitive to estimation error. Monte Carlo simulations show that BPASGM-based portfolios achieve more stable risk-return profiles, lower realized volatility, and superior risk-adjusted performance compared to standard mean-variance portfolios. Empirical results for U.S. equities, global stock indices, and foreign exchange rates over 1990-2025 confirm these findings and demonstrate a substantial reduction in portfolio cardinality. Overall, BPASGM offers a statistically grounded and computationally efficient framework that integrates sparse graphical modeling with portfolio theory for dependence-aware asset selection.",
+      "link": "http://arxiv.org/abs/2602.03325v1",
+      "published": "2026-02-03",
+      "authors": [
+        "T. Di Matteo",
+        "L. Riso",
+        "M. G. Zoia"
+      ],
+      "categories": [
+        "q-fin.PM",
+        "cs.LG",
+        "q-fin.CP",
+        "q-fin.RM",
+        "stat.ML"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2602.03325v1",
+      "arxiv_id": "2602.03325v1"
+    },
+    {
+      "title": "Optimal Portfolio Using Factor Graphical Lasso",
+      "summary": "Graphical models are a powerful tool to estimate a high-dimensional inverse covariance (precision) matrix, which has been applied for a portfolio allocation problem. The assumption made by these models is a sparsity of the precision matrix. However, when stock returns are driven by common factors, such assumption does not hold. We address this limitation and develop a framework, Factor Graphical Lasso (FGL), which integrates graphical models with the factor structure in the context of portfolio allocation by decomposing a precision matrix into low-rank and sparse components. Our theoretical results and simulations show that FGL consistently estimates the portfolio weights and risk exposure and also that FGL is robust to heavy-tailed distributions which makes our method suitable for financial applications. FGL-based portfolios are shown to exhibit superior performance over several prominent competitors including equal-weighted and Index portfolios in the empirical application for the S&P500 constituents.",
+      "link": "http://arxiv.org/abs/2011.00435v5",
+      "published": "2020-11-01",
+      "authors": [
+        "Tae-Hwy Lee",
+        "Ekaterina Seregina"
+      ],
+      "categories": [
+        "econ.EM",
+        "q-fin.PM"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2011.00435v5",
+      "arxiv_id": "2011.00435v5"
+    },
+    {
+      "title": "P vs NP Problem in Portfolio Optimization: Integrating the Markowitz-CAPM Framework with Cardinality Constraints and Black-Scholes Derivative Pricing",
+      "summary": "This paper makes the Millennium Prize problem P vs NP operational in quantitative finance by studying cardinality-constrained portfolio selection. Starting from the convex Markowitz mean-variance program with CAPM-based expected returns (Rf plus beta times ERP), we impose a hard sparsity rule that limits the portfolio to K assets out of approximately 94 industry portfolios (Damodaran). The constraint couples discrete subset selection with continuous weight optimization, yielding a mixed-integer quadratic program and an NP-hard search space that grows combinatorially with n and K. We therefore evaluate scalable approximation schemes (greedy screening, Monte Carlo sampling, and genetic algorithms) under a replication-oriented protocol with random-seed control, distributional performance summaries (median and quantiles), runtime profiling, and convergence diagnostics. Dependence structure is documented via correlation and covariance diagnostics and positive-semidefinite checks to link algorithm behavior to the geometry implied by the risk matrix. To support the title's derivatives component, we add a European call option priced by the Black-Scholes model and map it into CAPM-consistent moments using delta-based linearization, validated with a bump test and moneyness/maturity sensitivity. Results highlight how the cardinality constraint reshapes the attainable efficient frontier, why stability and computational-cost trade-offs matter more than single-best runs, and how common-factor dependence can limit diversification in K-sparse solutions. The study provides a reproducible template for NP-hard portfolio optimization with transparent inputs and extensible derivative overlays.",
+      "link": "http://arxiv.org/abs/2603.15652v1",
+      "published": "2026-03-06",
+      "authors": [
+        "Davit Gondauri"
+      ],
+      "categories": [
+        "econ.EM",
+        "q-fin.PM"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2603.15652v1",
+      "arxiv_id": "2603.15652v1"
+    },
+    {
+      "title": "Enhancing CVaR portfolio optimisation performance with GAM factor models",
+      "summary": "We propose a discrete-time econometric model that combines autoregressive filters with factor regressions to predict stock returns for portfolio optimisation purposes. In particular, we test both robust linear regressions and general additive models on two different investment universes composed of the Dow Jones Industrial Average and the Standard & Poor's 500 indexes, and we compare the out-of-sample performances of mean-CVaR optimal portfolios over a horizon of six years. The results show a substantial improvement in portfolio performances when the factor model is estimated with general additive models.",
+      "link": "http://arxiv.org/abs/2401.00188v1",
+      "published": "2023-12-30",
+      "authors": [
+        "Davide Lauria",
+        "W. Brent Lindquist",
+        "Svetlozar T. Rachev"
+      ],
+      "categories": [
+        "q-fin.PM"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2401.00188v1",
+      "arxiv_id": "2401.00188v1"
+    },
+    {
+      "title": "Venture Capital Portfolio Construction and the Main Factors Impacting the Optimal Strategy",
+      "summary": "The optimal portfolio size for a venture capital (VC) fund is a topic often debated, but there is no consensus on the best strategy. This is because it is a function of many factors. It is not easy to find a general formula that can be applied to all situations, and it largely depends on the goal of the fund. In this report, we will go through the different factors step by step, studying how they affect fund returns and the optimal portfolio size, starting with some basic assumptions and then increasing the complexity of the model.",
+      "link": "http://arxiv.org/abs/2303.11013v1",
+      "published": "2023-03-20",
+      "authors": [
+        "Francesco Farina",
+        "Mike Arpaia",
+        "Harpal Khing",
+        "Jonas Vetterle"
+      ],
+      "categories": [
+        "q-fin.PM"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2303.11013v1",
+      "arxiv_id": "2303.11013v1"
+    },
+    {
+      "title": "Machine Learning and Factor-Based Portfolio Optimization",
+      "summary": "We examine machine learning and factor-based portfolio optimization. We find that factors based on autoencoder neural networks exhibit a weaker relationship with commonly used characteristic-sorted portfolios than popular dimensionality reduction techniques. Machine learning methods also lead to covariance and portfolio weight structures that diverge from simpler estimators. Minimum-variance portfolios using latent factors derived from autoencoders and sparse methods outperform simpler benchmarks in terms of risk minimization. These effects are amplified for investors with an increased sensitivity to risk-adjusted returns, during high volatility periods or when accounting for tail risk.",
+      "link": "http://arxiv.org/abs/2107.13866v1",
+      "published": "2021-07-29",
+      "authors": [
+        "Thomas Conlon",
+        "John Cotter",
+        "Iason Kynigakis"
+      ],
+      "categories": [
+        "q-fin.PM",
+        "econ.EM"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2107.13866v1",
+      "arxiv_id": "2107.13866v1"
+    },
+    {
+      "title": "Deep Generative Models for Synthetic Financial Data: Applications to Portfolio and Risk Modeling",
+      "summary": "Synthetic financial data provides a practical solution to the privacy, accessibility, and reproducibility challenges that often constrain empirical research in quantitative finance. This paper investigates the use of deep generative models, specifically Time-series Generative Adversarial Networks (TimeGAN) and Variational Autoencoders (VAEs) to generate realistic synthetic financial return series for portfolio construction and risk modeling applications. Using historical daily returns from the S and P 500 as a benchmark, we generate synthetic datasets under comparable market conditions and evaluate them using statistical similarity metrics, temporal structure tests, and downstream financial tasks. The study shows that TimeGAN produces synthetic data with distributional shapes, volatility patterns, and autocorrelation behaviour that are close to those observed in real returns. When applied to mean--variance portfolio optimization, the resulting synthetic datasets lead to portfolio weights, Sharpe ratios, and risk levels that remain close to those obtained from real data. The VAE provides more stable training but tends to smooth extreme market movements, which affects risk estimation. Finally, the analysis supports the use of synthetic datasets as substitutes for real financial data in portfolio analysis and risk simulation, particularly when models are able to capture temporal dynamics. Synthetic data therefore provides a privacy-preserving, cost-effective, and reproducible tool for financial experimentation and model development.",
+      "link": "http://arxiv.org/abs/2512.21798v2",
+      "published": "2025-12-25",
+      "authors": [
+        "Christophe D. Hounwanou",
+        "Yae Ulrich Gaba"
+      ],
+      "categories": [
+        "q-fin.ST",
+        "cs.AI"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2512.21798v2",
+      "arxiv_id": "2512.21798v2"
+    },
+    {
+      "title": "Cross-response in correlated financial markets: individual stocks",
+      "summary": "Previous studies of the stock price response to trades focused on the dynamics of single stocks, i.e. they addressed the self-response. We empirically investigate the price response of one stock to the trades of other stocks in a correlated market, i.e. the cross-responses. How large is the impact of one stock on others and vice versa? -- This impact of trades on the price change across stocks appears to be transient instead of permanent as we discuss from the viewpoint of market efficiency. Furthermore, we compare the self-responses on different scales and the self- and cross-responses on the same scale. We also find that the cross-correlation of the trade signs turns out to be a short-memory process.",
+      "link": "http://arxiv.org/abs/1603.01580v2",
+      "published": "2016-03-04",
+      "authors": [
+        "Shanshan Wang",
+        "Rudi Schäfer",
+        "Thomas Guhr"
+      ],
+      "categories": [
+        "q-fin.ST",
+        "q-fin.TR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1603.01580v2",
+      "arxiv_id": "1603.01580v2"
+    },
+    {
+      "title": "Bayes Factor Asymptotics for Variable Selection in the Gaussian Process Framework",
+      "summary": "Although variable selection is one of the most popular areas of modern statistical research, much of its development has taken place in the classical paradigm compared to the Bayesian counterpart. Somewhat surprisingly, both the paradigms have focussed almost completely on linear models, in spite of the vast scope offered by the model liberation movement brought about by modern advancements in studying real, complex phenomena.   In this article, we investigate general Bayesian variable selection in models driven by Gaussian processes, which allows us to treat linear, non-linear and nonparametric models, in conjunction with even dependent setups, in the same vein. We consider the Bayes factor route to variable selection, and develop a general asymptotic theory for the Gaussian process framework in the \"large p, large n\" settings even with p>>n, establishing almost sure exponential convergence of the Bayes factor under appropriately mild conditions. The fixed p setup is included as a special case.   To illustrate, we apply our general result to variable selection in linear regression, Gaussian process model with squared exponential covariance function accommodating the covariates, and a first order autoregressive process with time-varying covariates. We also follow up our theoretical investigations with ample simulation experiments in the above regression contexts and variable selection in a real, riboflavin data consisting of 71 observations but 4088 covariates. For implementation of variable selection using Bayes factors, we develop a novel and effective general-purpose transdimensional, transformation based Markov chain Monte Carlo algorithm, which has played a crucial role in our simulated and real data applications.",
+      "link": "http://arxiv.org/abs/1810.09909v3",
+      "published": "2018-10-23",
+      "authors": [
+        "Minerva Mukhopadhyay",
+        "Sourabh Bhattacharya"
+      ],
+      "categories": [
+        "math.ST",
+        "stat.ME"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1810.09909v3",
+      "arxiv_id": "1810.09909v3"
+    },
+    {
+      "title": "Tales of Emotion and Stock in China: Volatility, Causality and Prediction",
+      "summary": "How the online social media, like Twitter or its variant Weibo, interacts with the stock market and whether it can be a convincing proxy to predict the stock market have been debated for years, especially for China. As the traditional theory in behavioral finance states, the individual emotions can influence decision-makings of investors, it is reasonable to further explore these controversial topics systematically from the perspective of online emotions, which are richly carried by massive tweets in social media. Through thorough studies on over 10 million stock-relevant tweets and 3 million investors from Weibo, it is revealed that inexperienced investors with high emotional volatility are more sensible to the market fluctuations than the experienced or institutional ones, and their dominant occupation also indicates that the Chinese market might be more emotional as compared to its western counterparts. Then both correlation analysis and causality test demonstrate that five attributes of the stock market in China can be competently predicted by various online emotions, like disgust, joy, sadness and fear. Specifically, the presented prediction model significantly outperforms the baseline model, including the one taking purely financial time series as input features, on predicting five attributes of the stock market under the $K$-means discretization. We also employ this prediction model in the scenario of realistic online application and its performance is further testified.",
+      "link": "http://arxiv.org/abs/1705.00294v1",
+      "published": "2017-04-30",
+      "authors": [
+        "Zhenkun Zhou",
+        "Ke Xu",
+        "Jichang Zhao"
+      ],
+      "categories": [
+        "cs.CY",
+        "cs.SI"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1705.00294v1",
+      "arxiv_id": "1705.00294v1"
+    },
+    {
+      "title": "An Outlook on Correlations in Stock Prices",
+      "summary": "We present an outlook of the studies on correlations in the price timeseries of stocks, discussing the construction and applications of \"asset tree\". The topic discussed here should illustrate how the complex economic system (financial market) enrichens the list of existing dynamical systems that physicists have been studying for long.",
+      "link": "http://arxiv.org/abs/physics/0605246v1",
+      "published": "2006-05-29",
+      "authors": [
+        "Anirban Chakraborti"
+      ],
+      "categories": [
+        "physics.soc-ph",
+        "q-fin.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/physics/0605246v1",
+      "arxiv_id": "0605246v1"
+    },
+    {
+      "title": "A Quantum Approach to Stock Price Fluctuations",
+      "summary": "A simple quantum model explains the Levy-unstable distributions for individual stock returns observed by ref.[1]. The probability density function of the returns is written as the squared modulus of an amplitude. For short time intervals this amplitude is proportional to a Cauchy-distribution and satisfies the Schroedinger equation with a non-hermitian Hamiltonian. The observed power law tails of the return fluctuations imply that the \"decay rate\", $γ(q)$ asymptotically is proportional to $|q|$, for large $|q|$. The wave number, the Fourier-conjugate variable to the return, is interpreted as a quantitative measure of \"market sentiment\". On a time scale of less than a few weeks, the distribution of returns in this quantum model is shape stable and scales. The model quantitatively reproduces the observed cumulative distribution for the short-term normalized returns over 7 orders of magnitude without adjustable parameters. The return fluctuations over large time periods ultimately become Gaussian if $γ(q\\sim 0)\\propto q^2$. The ansatz $γ(q)=b_T\\sqrt{m^2+q^2}$ is found to describe the positive part of the observed historic probability of normalized returns for time periods between T=5 min and $T\\sim 4$ years over more than 4 orders of magnitude in terms of one adjustable parameter $s_T=m b_T\\propto T$. The Sharpe ratio of a stock in this model has a finite limit as the investment horizon $T\\to 0$. Implications for short-term investments are discussed.",
+      "link": "http://arxiv.org/abs/physics/0205053v2",
+      "published": "2002-05-20",
+      "authors": [
+        "Martin Schaden"
+      ],
+      "categories": [
+        "physics.soc-ph",
+        "physics.data-an",
+        "q-fin.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/physics/0205053v2",
+      "arxiv_id": "0205053v2"
+    },
+    {
+      "title": "World stock market: more sizeable trend reversal likely in February/March 2010",
+      "summary": "Based on our \"finance-prediction-oriented\" methodology which involves such elements as log-periodic self-similarity, the universal preferred scaling factor lambda=2, and allows a phenomenon of the \"super-bubble\" we analyze the 2009 world stock market (here represented by the SP500, Hang Seng and WIG) development. We identify elements that indicate the third decade of September 2009 as a time limit for the present bull market phase which is thus to be followed by a significant correction. In this context we also interpret the Chinese stock market index SSE.   The third decade of September 2009 was accompanied with a stock market correction typically within the range of 4-5% worldwide. Taking into account the market patterns that followed the time of delivering the previous scenario we present an updated scenario whose critical time corresponds to October 28, 2009.   Assuming quite evident (as of November 12, 2009) termination of the correction due to the above critical time we extend - consistently with our methodology - the stock market forecasting scenario. The corresponding expected SP500 future trend is shown in Fig. 5 and it supports a potential average continuation of increases to as far into the future as the turn of February/March 2010. We also indicate the log-periodic patterns on the gold market and they point to the end of November 2009 as the time when the trend reversal - likely local however - is expected to begin.",
+      "link": "http://arxiv.org/abs/0909.0418v3",
+      "published": "2009-09-02",
+      "authors": [
+        "Stanislaw Drozdz",
+        "Pawel Oswiecimka"
+      ],
+      "categories": [
+        "q-fin.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/0909.0418v3",
+      "arxiv_id": "0909.0418v3"
+    },
+    {
+      "title": "Machine learning approach to stock price crash risk",
+      "summary": "In this study, we propose a novel machine-learning-based measure for stock price crash risk, utilizing the minimum covariance determinant methodology. Employing this newly introduced dependent variable, we predict stock price crash risk through cross-sectional regression analysis. The findings confirm that the proposed method effectively captures stock price crash risk, with the model demonstrating strong performance in terms of both statistical significance and economic relevance. Furthermore, leveraging a newly developed firm-specific investor sentiment index, the analysis identifies a positive correlation between stock price crash risk and firm-specific investor sentiment. Specifically, higher levels of sentiment are associated with an increased likelihood of stock price crash risk. This relationship remains robust across different firm sizes and when using the detoned version of the firm-specific investor sentiment index, further validating the reliability of the proposed approach.",
+      "link": "http://arxiv.org/abs/2505.16287v1",
+      "published": "2025-05-22",
+      "authors": [
+        "Abdullah Karasan",
+        "Ozge Sezgin Alp",
+        "Gerhard-Wilhelm Weber"
+      ],
+      "categories": [
+        "q-fin.CP"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2505.16287v1",
+      "arxiv_id": "2505.16287v1"
+    },
+    {
+      "title": "Efficiency of the Moscow Stock Exchange before 2022",
+      "summary": "This paper investigates the degree of efficiency for the Moscow Stock Exchange. A market is called efficient if prices of its assets fully reflect all available information. We show that the degree of market efficiency is significantly low for most of the months from 2012 to 2021. We calculate the degree of market efficiency by (i) filtering out regularities in financial data and (ii) computing the Shannon entropy of the filtered return time series. We have developed a simple method for estimating volatility and price staleness in empirical data, in order to filter out such regularity patterns from return time series. The resulting financial time series of stocks' returns are then clustered into different groups according to some entropy measures. In particular, we use the Kullback-Leibler distance and a novel entropy metric capturing the co-movements between pairs of stocks. By using Monte Carlo simulations, we are then able to identify the time periods of market inefficiency for a group of 18 stocks. The inefficiency of the Moscow Stock Exchange that we have detected is a signal of the possibility of devising profitable strategies, net of transaction costs. The deviation from the efficient behavior for a stock strongly depends on the industrial sector it belongs.",
+      "link": "http://arxiv.org/abs/2207.10476v2",
+      "published": "2022-07-21",
+      "authors": [
+        "Andrey Shternshis",
+        "Piero Mazzarisi",
+        "Stefano Marmi"
+      ],
+      "categories": [
+        "q-fin.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2207.10476v2",
+      "arxiv_id": "2207.10476v2"
+    },
+    {
+      "title": "Is Factor Momentum More than Stock Momentum?",
+      "summary": "Yes, but only at short lags. In this paper we investigate the relationship between factor momentum and stock momentum. Using a sample of 72 factors documented in the literature, we first replicate earlier findings that factor momentum exists and works both directionally and cross-sectionally. We then ask if factor momentum is spanned by stock momentum. A simple spanning test reveals that after controlling for stock momentum and factor exposure, statistically significant Sharpe ratios only belong to implementations which include the last month of returns. We conclude this study with a simple theoretical model that captures these forces: (1) there is stock-level mean reversion at short lags and momentum at longer lags, (2) there is stock and factor momentum at all lags and (3) there is natural comovement between the PNLs of stock and factor momentums at all horizons.",
+      "link": "http://arxiv.org/abs/2009.04824v1",
+      "published": "2020-09-10",
+      "authors": [
+        "Antoine Falck",
+        "Adam Rej",
+        "David Thesmar"
+      ],
+      "categories": [
+        "q-fin.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2009.04824v1",
+      "arxiv_id": "2009.04824v1"
+    },
+    {
+      "title": "Understanding stock market instability via graph auto-encoders",
+      "summary": "Understanding stock market instability is a key question in financial management as practitioners seek to forecast breakdowns in asset co-movements which expose portfolios to rapid and devastating collapses in value. The structure of these co-movements can be described as a graph where companies are represented by nodes and edges capture correlations between their price movements. Learning a timely indicator of co-movement breakdowns (manifested as modifications in the graph structure) is central in understanding both financial stability and volatility forecasting. We propose to use the edge reconstruction accuracy of a graph auto-encoder (GAE) as an indicator for how spatially homogeneous connections between assets are, which, based on financial network literature, we use as a proxy to infer market volatility. Our experiments on the S&P 500 over the 2015-2022 period show that higher GAE reconstruction error values are correlated with higher volatility. We also show that out-of-sample autoregressive modeling of volatility is improved by the addition of the proposed measure. Our paper contributes to the literature of machine learning in finance particularly in the context of understanding stock market instability.",
+      "link": "http://arxiv.org/abs/2212.04974v1",
+      "published": "2022-12-09",
+      "authors": [
+        "Dragos Gorduza",
+        "Xiaowen Dong",
+        "Stefan Zohren"
+      ],
+      "categories": [
+        "cs.CE",
+        "q-fin.CP"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2212.04974v1",
+      "arxiv_id": "2212.04974v1"
+    },
+    {
+      "title": "Information Coefficient as a Performance Measure of Stock Selection Models",
+      "summary": "Information coefficient (IC) is a widely used metric for measuring investment managers' skills in selecting stocks. However, its adequacy and effectiveness for evaluating stock selection models has not been clearly understood, as IC from a realistic stock selection model can hardly be materially different from zero and is often accompanies with high volatility. In this paper, we investigate the behavior of IC as a performance measure of stick selection models. Through simulation and simple statistical modeling, we examine the IC behavior both statically and dynamically. The examination helps us propose two practical procedures that one may use for IC-based ongoing performance monitoring of stock selection models.",
+      "link": "http://arxiv.org/abs/2010.08601v1",
+      "published": "2020-10-16",
+      "authors": [
+        "Feng Zhang",
+        "Ruite Guo",
+        "Honggao Cao"
+      ],
+      "categories": [
+        "q-fin.CP",
+        "q-fin.RM",
+        "stat.AP"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2010.08601v1",
+      "arxiv_id": "2010.08601v1"
+    },
+    {
+      "title": "Stockformer: A Price-Volume Factor Stock Selection Model Based on Wavelet Transform and Multi-Task Self-Attention Networks",
+      "summary": "As the Chinese stock market continues to evolve and its market structure grows increasingly complex, traditional quantitative trading methods are facing escalating challenges. Particularly, due to policy uncertainty and the frequent market fluctuations triggered by sudden economic events, existing models often struggle to accurately predict market dynamics. To address these challenges, this paper introduces Stockformer, a price-volume factor stock selection model that integrates wavelet transformation and a multitask self-attention network, aimed at enhancing responsiveness and predictive accuracy regarding market instabilities. Through discrete wavelet transform, Stockformer decomposes stock returns into high and low frequencies, meticulously capturing long-term market trends and short-term fluctuations, including abrupt events. Moreover, the model incorporates a Dual-Frequency Spatiotemporal Encoder and graph embedding techniques to effectively capture complex temporal and spatial relationships among stocks. Employing a multitask learning strategy, it simultaneously predicts stock returns and directional trends. Experimental results show that Stockformer outperforms existing advanced methods on multiple real stock market datasets. In strategy backtesting, Stockformer consistently demonstrates exceptional stability and reliability across market conditions-whether rising, falling, or fluctuating-particularly maintaining high performance during downturns or volatile periods, indicating a high adaptability to market fluctuations. To foster innovation and collaboration in the financial analysis sector, the Stockformer model's code has been open-sourced and is available on the GitHub repository: https://github.com/Eric991005/Multitask-Stockformer.",
+      "link": "http://arxiv.org/abs/2401.06139v2",
+      "published": "2023-11-23",
+      "authors": [
+        "Bohan Ma",
+        "Yushan Xue",
+        "Yuan Lu",
+        "Jing Chen"
+      ],
+      "categories": [
+        "q-fin.TR",
+        "cs.LG"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2401.06139v2",
+      "arxiv_id": "2401.06139v2"
+    },
+    {
+      "title": "The Power (Law) of Indian Markets: Analysing NSE and BSE trading statistics",
+      "summary": "The nature of fluctuations in the Indian financial market is analyzed in this paper. We have looked at the price returns of individual stocks, with tick-by-tick data from the National Stock Exchange (NSE) and daily closing price data from both NSE and the Bombay Stock Exchange (BSE), the two largest exchanges in India. We find that the price returns in Indian markets follow a fat-tailed cumulative distribution, consistent with a power law having exponent $α\\sim 3$, similar to that observed in developed markets. However, the distributions of trading volume and the number of trades have a different nature than that seen in the New York Stock Exchange (NYSE). Further, the price movement of different stocks are highly correlated in Indian markets.",
+      "link": "http://arxiv.org/abs/physics/0605247v1",
+      "published": "2006-05-29",
+      "authors": [
+        "Sitabhra Sinha",
+        "Raj Kumar Pan"
+      ],
+      "categories": [
+        "physics.soc-ph",
+        "cond-mat.other",
+        "q-fin.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/physics/0605247v1",
+      "arxiv_id": "0605247v1"
+    },
+    {
+      "title": "Microstructure-Empowered Stock Factor Extraction and Utilization",
+      "summary": "High-frequency quantitative investment is a crucial aspect of stock investment. Notably, order flow data plays a critical role as it provides the most detailed level of information among high-frequency trading data, including comprehensive data from the order book and transaction records at the tick level. The order flow data is extremely valuable for market analysis as it equips traders with essential insights for making informed decisions. However, extracting and effectively utilizing order flow data present challenges due to the large volume of data involved and the limitations of traditional factor mining techniques, which are primarily designed for coarser-level stock data. To address these challenges, we propose a novel framework that aims to effectively extract essential factors from order flow data for diverse downstream tasks across different granularities and scenarios. Our method consists of a Context Encoder and an Factor Extractor. The Context Encoder learns an embedding for the current order flow data segment's context by considering both the expected and actual market state. In addition, the Factor Extractor uses unsupervised learning methods to select such important signals that are most distinct from the majority within the given context. The extracted factors are then utilized for downstream tasks. In empirical studies, our proposed framework efficiently handles an entire year of stock order flow data across diverse scenarios, offering a broader range of applications compared to existing tick-level approaches that are limited to only a few days of stock data. We demonstrate that our method extracts superior factors from order flow data, enabling significant improvement for stock trend prediction and order execution tasks at the second and minute level.",
+      "link": "http://arxiv.org/abs/2308.08135v1",
+      "published": "2023-08-16",
+      "authors": [
+        "Xianfeng Jiao",
+        "Zizhong Li",
+        "Chang Xu",
+        "Yang Liu",
+        "Weiqing Liu",
+        "Jiang Bian"
+      ],
+      "categories": [
+        "q-fin.ST",
+        "cs.LG"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2308.08135v1",
+      "arxiv_id": "2308.08135v1"
+    },
+    {
+      "title": "Contextual Quantum Neural Networks for Stock Price Prediction",
+      "summary": "In this paper, we apply quantum machine learning (QML) to predict the stock prices of multiple assets using a contextual quantum neural network. Our approach captures recent trends to predict future stock price distributions, moving beyond traditional models that focus on entire historical data, enhancing adaptability and precision. Utilizing the principles of quantum superposition, we introduce a new training technique called the quantum batch gradient update (QBGU), which accelerates the standard stochastic gradient descent (SGD) in quantum applications and improves convergence. Consequently, we propose a quantum multi-task learning (QMTL) architecture, specifically, the share-and-specify ansatz, that integrates task-specific operators controlled by quantum labels, enabling the simultaneous and efficient training of multiple assets on the same quantum circuit as well as enabling efficient portfolio representation with logarithmic overhead in the number of qubits. This architecture represents the first of its kind in quantum finance, offering superior predictive power and computational efficiency for multi-asset stock price forecasting. Through extensive experimentation on S\\&P 500 data for Apple, Google, Microsoft, and Amazon stocks, we demonstrate that our approach not only outperforms quantum single-task learning (QSTL) models but also effectively captures inter-asset correlations, leading to enhanced prediction accuracy. Our findings highlight the transformative potential of QML in financial applications, paving the way for more advanced, resource-efficient quantum algorithms in stock price prediction and other complex financial modeling tasks.",
+      "link": "http://arxiv.org/abs/2503.01884v2",
+      "published": "2025-02-26",
+      "authors": [
+        "Sharan Mourya",
+        "Hannes Leipold",
+        "Bibhas Adhikari"
+      ],
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2503.01884v2",
+      "arxiv_id": "2503.01884v2"
+    },
+    {
+      "title": "Incorporating Interactive Facts for Stock Selection via Neural Recursive ODEs",
+      "summary": "Stock selection attempts to rank a list of stocks for optimizing investment decision making, aiming at minimizing investment risks while maximizing profit returns. Recently, researchers have developed various (recurrent) neural network-based methods to tackle this problem. Without exceptions, they primarily leverage historical market volatility to enhance the selection performance. However, these approaches greatly rely on discrete sampled market observations, which either fail to consider the uncertainty of stock fluctuations or predict continuous stock dynamics in the future. Besides, some studies have considered the explicit stock interdependence derived from multiple domains (e.g., industry and shareholder). Nevertheless, the implicit cross-dependencies among different domains are under-explored. To address such limitations, we present a novel stock selection solution -- StockODE, a latent variable model with Gaussian prior. Specifically, we devise a Movement Trend Correlation module to expose the time-varying relationships regarding stock movements. We design Neural Recursive Ordinary Differential Equation Networks (NRODEs) to capture the temporal evolution of stock volatility in a continuous dynamic manner. Moreover, we build a hierarchical hypergraph to incorporate the domain-aware dependencies among the stocks. Experiments conducted on two real-world stock market datasets demonstrate that StockODE significantly outperforms several baselines, such as up to 18.57% average improvement regarding Sharpe Ratio.",
+      "link": "http://arxiv.org/abs/2210.15925v1",
+      "published": "2022-10-28",
+      "authors": [
+        "Qiang Gao",
+        "Xinzhu Zhou",
+        "Kunpeng Zhang",
+        "Li Huang",
+        "Siyuan Liu",
+        "Fan Zhou"
+      ],
+      "categories": [
+        "q-fin.ST",
+        "cs.LG"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2210.15925v1",
+      "arxiv_id": "2210.15925v1"
+    },
+    {
+      "title": "Fuzzy Expert System for Stock Portfolio Selection: An Application to Bombay Stock Exchange",
+      "summary": "Selection of proper stocks, before allocating investment ratios, is always a crucial task for the investors. Presence of many influencing factors in stock performance have motivated researchers to adopt various Artificial Intelligence (AI) techniques to make this challenging task easier. In this paper a novel fuzzy expert system model is proposed to evaluate and rank the stocks under Bombay Stock Exchange (BSE). Dempster-Shafer (DS) evidence theory is used for the first time to automatically generate the consequents of the fuzzy rule base to reduce the effort in knowledge base development of the expert system. Later a portfolio optimization model is constructed where the objective function is considered as the ratio of the difference of fuzzy portfolio return and the risk free return to the weighted mean semi-variance of the assets that has been used. The model is solved by applying Ant Colony Optimization (ACO) algorithm by giving preference to the top ranked stocks. The performance of the model proved to be satisfactory for short-term investment period when compared with the recent performance of the stocks.",
+      "link": "http://arxiv.org/abs/2204.13385v2",
+      "published": "2022-04-28",
+      "authors": [
+        "Gour Sundar Mitra Thakur",
+        "Rupak Bhattacharyya",
+        "Seema Sarkar"
+      ],
+      "categories": [
+        "cs.AI",
+        "cs.NE",
+        "q-fin.CP"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2204.13385v2",
+      "arxiv_id": "2204.13385v2"
+    },
+    {
+      "title": "Higher-order Graph Attention Network for Stock Selection with Joint Analysis",
+      "summary": "Stock selection is important for investors to construct profitable portfolios. Graph neural networks (GNNs) are increasingly attracting researchers for stock prediction due to their strong ability of relation modelling and generalisation. However, the existing GNN methods only focus on simple pairwise stock relation and do not capture complex higher-order structures modelling relations more than two nodes. In addition, they only consider factors of technical analysis and overlook factors of fundamental analysis that can affect the stock trend significantly. Motivated by them, we propose higher-order graph attention network with joint analysis (H-GAT). H-GAT is able to capture higher-order structures and jointly incorporate factors of fundamental analysis with factors of technical analysis. Specifically, the sequential layer of H-GAT take both types of factors as the input of a long-short term memory model. The relation embedding layer of H-GAT constructs a higher-order graph and learn node embedding with GAT. We then predict the ranks of stock return. Extensive experiments demonstrate the superiority of our H-GAT method on the profitability test and Sharp ratio over both NSDAQ and NYSE datasets",
+      "link": "http://arxiv.org/abs/2306.15526v1",
+      "published": "2023-06-27",
+      "authors": [
+        "Yang Qiao",
+        "Yiping Xia",
+        "Xiang Li",
+        "Zheng Li",
+        "Yan Ge"
+      ],
+      "categories": [
+        "q-fin.ST",
+        "cs.LG"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2306.15526v1",
+      "arxiv_id": "2306.15526v1"
+    },
+    {
+      "title": "Do VLMs Truly \"Read\" Candlesticks? A Multi-Scale Benchmark for Visual Stock Price Forecasting",
+      "summary": "Vision-language models(VLMs) are increasingly applied to visual stock price forecasting, yet existing benchmarks inadequately evaluate their understanding of stock price in candlestick charts. First, prior studies fail to isolate VLMs' comprehension of visual inputs genuinely improves predictive performance and whether VLMs truly comprehend candlestick patterns. Further, most existing datasets and evaluation setups are designed around single-period or tabular inputs. However, human analysts strongly rely on multi-scale candlestick charts, where longer-term horizons capture trend direction and shorter-term horizons provide cues for inflection points, making it difficult to systematically assess VLMs' ability to integrate short-term and long-term visual market dynamics. To bridge this gap, we construct a multi-scale candlestick charts dataset and a standardized evaluation framework to assess VLMs' ability to utilize multi-scale visual market signals. Evaluation combines confusion-matrix-based diagnostics with information coefficient(IC) time series metrics and includes XGBoost as a feature-based temporal baseline. Using this dataset, we benchmark representative VLMs and analyze their ability to leverage multi-scale stock price data. Experimental results show that most VLMs perform well only under persistent uptrend or downtrend conditions, while exhibiting weak predictive capability in more common market scenarios. We also identify significant prediction biases and limited sensitivity to explicitly specified forecast horizons in prompts, indicating inherent limitations in precise temporal reasoning.",
+      "link": "http://arxiv.org/abs/2604.12659v1",
+      "published": "2026-04-14",
+      "authors": [
+        "Kaiqi Hu",
+        "Linda Xiao",
+        "Shiyue Xu",
+        "Ziyi Tang",
+        "Mingwen Liu"
+      ],
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2604.12659v1",
+      "arxiv_id": "2604.12659v1"
+    },
+    {
+      "title": "Uncovering a factor-based expected return conditioning structure with Regression Trees jointly for many stocks",
+      "summary": "Given the success and almost universal acceptance of the simple linear regression three-factor model, it is interesting to analyze the informational content of the three factors in explaining stock returns when the analysis is allowed to consider non-linear dependencies between factors and stock returns. In order to better understand factor-based conditioning information with respect to expected stock returns within a regression tree setting, the analysis of stock returns is demonstrated using daily stock return data for 5 major US corporations. The first finding is that in all cases (solo and joint) the most informative factor is always the market excess return factor. Further, three major issues are discussed: a) the balance of a depth=1 tree as it relates to properties of the stock return distribution, b) the mechanism behind depth=1 tree balance in a joint regression tree and c) the dominant stock in a joint regression tree. It is shown that high skew values alone cannot explain the imbalance of the resulting tree split as stocks with pronounced skew may produce balanced tree splits.",
+      "link": "http://arxiv.org/abs/2007.08115v1",
+      "published": "2020-07-16",
+      "authors": [
+        "Vassilis Polimenis"
+      ],
+      "categories": [
+        "q-fin.ST",
+        "q-fin.CP"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2007.08115v1",
+      "arxiv_id": "2007.08115v1"
+    },
+    {
+      "title": "Deterministic Factors of Stock Networks based on Cross-correlation in Financial Market",
+      "summary": "The stock market has been known to form homogeneous stock groups with a higher correlation among different stocks according to common economic factors that influence individual stocks. We investigate the role of common economic factors in the market in the formation of stock networks, using the arbitrage pricing model reflecting essential properties of common economic factors. We find that the degree of consistency between real and model stock networks increases as additional common economic factors are incorporated into our model. Furthermore, we find that individual stocks with a large number of links to other stocks in a network are more highly correlated with common economic factors than those with a small number of links. This suggests that common economic factors in the stock market can be understood in terms of deterministic factors.",
+      "link": "http://arxiv.org/abs/0705.0076v1",
+      "published": "2007-05-01",
+      "authors": [
+        "Cheoljun Eom",
+        "Gabjin Oh",
+        "Seunghwan Kim"
+      ],
+      "categories": [
+        "q-fin.ST",
+        "physics.data-an"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/0705.0076v1",
+      "arxiv_id": "0705.0076v1"
+    },
+    {
+      "title": "Public Policymaking for International Agricultural Trade using Association Rules and Ensemble Machine Learning",
+      "summary": "International economics has a long history of improving our understanding of factors causing trade, and the consequences of free flow of goods and services across countries. The recent shocks to the free trade regime, especially trade disputes among major economies, as well as black swan events, such as trade wars and pandemics, raise the need for improved predictions to inform policy decisions. AI methods are allowing economists to solve such prediction problems in new ways. In this manuscript, we present novel methods that predict and associate food and agricultural commodities traded internationally. Association Rules (AR) analysis has been deployed successfully for economic scenarios at the consumer or store level, such as for market basket analysis. In our work however, we present analysis of imports and exports associations and their effects on commodity trade flows. Moreover, Ensemble Machine Learning methods are developed to provide improved agricultural trade predictions, outlier events' implications, and quantitative pointers to policy makers.",
+      "link": "http://arxiv.org/abs/2111.07508v1",
+      "published": "2021-11-15",
+      "authors": [
+        "Feras A. Batarseh",
+        "Munisamy Gopinath",
+        "Anderson Monken",
+        "Zhengrong Gu"
+      ],
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "econ.GN"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2111.07508v1",
+      "arxiv_id": "2111.07508v1"
+    },
+    {
+      "title": "Isoelastic Agents and Wealth Updates in Machine Learning Markets",
+      "summary": "Recently, prediction markets have shown considerable promise for developing flexible mechanisms for machine learning. In this paper, agents with isoelastic utilities are considered. It is shown that the costs associated with homogeneous markets of agents with isoelastic utilities produce equilibrium prices corresponding to alpha-mixtures, with a particular form of mixing component relating to each agent's wealth. We also demonstrate that wealth accumulation for logarithmic and other isoelastic agents (through payoffs on prediction of training targets) can implement both Bayesian model updates and mixture weight updates by imposing different market payoff structures. An iterative algorithm is given for market equilibrium computation. We demonstrate that inhomogeneous markets of agents with isoelastic utilities outperform state of the art aggregate classifiers such as random forests, as well as single classifiers (neural networks, decision trees) on a number of machine learning benchmarks, and show that isoelastic combination methods are generally better than their logarithmic counterparts.",
+      "link": "http://arxiv.org/abs/1206.6443v2",
+      "published": "2012-06-27",
+      "authors": [
+        "Amos Storkey",
+        "Jono Millin",
+        "Krzysztof Geras"
+      ],
+      "categories": [
+        "cs.LG",
+        "cs.GT",
+        "stat.ML"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1206.6443v2",
+      "arxiv_id": "1206.6443v2"
+    },
+    {
+      "title": "Migration through Machine Learning Lens -- Predicting Sexual and Reproductive Health Vulnerability of Young Migrants",
+      "summary": "In this paper, we have discussed initial findings and results of our experiment to predict sexual and reproductive health vulnerabilities of migrants in a data-constrained environment. Notwithstanding the limited research and data about migrants and migration cities, we propose a solution that simultaneously focuses on data gathering from migrants, augmenting awareness of the migrants to reduce mishaps, and setting up a mechanism to present insights to the key stakeholders in migration to act upon. We have designed a webapp for the stakeholders involved in migration: migrants, who would participate in data gathering process and can also use the app for getting to know safety and awareness tips based on analysis of the data received; public health workers, who would have an access to the database of migrants on the app; policy makers, who would have a greater understanding of the ground reality, and of the patterns of migration through machine-learned analysis. Finally, we have experimented with different machine learning models on an artificially curated dataset. We have shown, through experiments, how machine learning can assist in predicting the migrants at risk and can also help in identifying the critical factors that make migration dangerous for migrants. The results for identifying vulnerable migrants through machine learning algorithms are statistically significant at an alpha of 0.05.",
+      "link": "http://arxiv.org/abs/1910.02390v4",
+      "published": "2019-10-06",
+      "authors": [
+        "Amber Nigam",
+        "Pragati Jaiswal",
+        "Uma Girkar",
+        "Teertha Arora",
+        "Leo A. Celi"
+      ],
+      "categories": [
+        "cs.LG",
+        "cs.CY",
+        "stat.ML"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1910.02390v4",
+      "arxiv_id": "1910.02390v4"
+    },
+    {
+      "title": "E2EAI: End-to-End Deep Learning Framework for Active Investing",
+      "summary": "Active investing aims to construct a portfolio of assets that are believed to be relatively profitable in the markets, with one popular method being to construct a portfolio via factor-based strategies. In recent years, there have been increasing efforts to apply deep learning to pursue \"deep factors'' with more active returns or promising pipelines for asset trends prediction. However, the question of how to construct an active investment portfolio via an end-to-end deep learning framework (E2E) is still open and rarely addressed in existing works. In this paper, we are the first to propose an E2E that covers almost the entire process of factor investing through factor selection, factor combination, stock selection, and portfolio construction. Extensive experiments on real stock market data demonstrate the effectiveness of our end-to-end deep leaning framework in active investing.",
+      "link": "http://arxiv.org/abs/2305.16364v1",
+      "published": "2023-05-25",
+      "authors": [
+        "Zikai Wei",
+        "Bo Dai",
+        "Dahua Lin"
+      ],
+      "categories": [
+        "q-fin.PM",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2305.16364v1",
+      "arxiv_id": "2305.16364v1"
+    },
+    {
+      "title": "Qlib: An AI-oriented Quantitative Investment Platform",
+      "summary": "Quantitative investment aims to maximize the return and minimize the risk in a sequential trading period over a set of financial instruments. Recently, inspired by rapid development and great potential of AI technologies in generating remarkable innovation in quantitative investment, there has been increasing adoption of AI-driven workflow for quantitative research and practical investment. In the meantime of enriching the quantitative investment methodology, AI technologies have raised new challenges to the quantitative investment system. Particularly, the new learning paradigms for quantitative investment call for an infrastructure upgrade to accommodate the renovated workflow; moreover, the data-driven nature of AI technologies indeed indicates a requirement of the infrastructure with more powerful performance; additionally, there exist some unique challenges for applying AI technologies to solve different tasks in the financial scenarios. To address these challenges and bridge the gap between AI technologies and quantitative investment, we design and develop Qlib that aims to realize the potential, empower the research, and create the value of AI technologies in quantitative investment.",
+      "link": "http://arxiv.org/abs/2009.11189v1",
+      "published": "2020-09-22",
+      "authors": [
+        "Xiao Yang",
+        "Weiqing Liu",
+        "Dong Zhou",
+        "Jiang Bian",
+        "Tie-Yan Liu"
+      ],
+      "categories": [
+        "q-fin.GN",
+        "cs.LG",
+        "q-fin.PM"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2009.11189v1",
+      "arxiv_id": "2009.11189v1"
+    },
+    {
+      "title": "iQUANT: Interactive Quantitative Investment Using Sparse Regression Factors",
+      "summary": "The model-based investing using financial factors is evolving as a principal method for quantitative investment. The main challenge lies in the selection of effective factors towards excess market returns. Existing approaches, either hand-picking factors or applying feature selection algorithms, do not orchestrate both human knowledge and computational power. This paper presents iQUANT, an interactive quantitative investment system that assists equity traders to quickly spot promising financial factors from initial recommendations suggested by algorithmic models, and conduct a joint refinement of factors and stocks for investment portfolio composition. We work closely with professional traders to assemble empirical characteristics of \"good\" factors and propose effective visualization designs to illustrate the collective performance of financial factors, stock portfolios, and their interactions. We evaluate iQUANT through a formal user study, two case studies, and expert interviews, using a real stock market dataset consisting of 3000 stocks times 6000 days times 56 factors.",
+      "link": "http://arxiv.org/abs/2104.11485v1",
+      "published": "2021-04-23",
+      "authors": [
+        "Xuanwu Yue",
+        "Qiao Gu",
+        "Deyun Wang",
+        "Huamin Qu",
+        "Yong Wang"
+      ],
+      "categories": [
+        "cs.HC"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2104.11485v1",
+      "arxiv_id": "2104.11485v1"
+    },
+    {
+      "title": "The Elasticity of Quantitative Investment",
+      "summary": "What is the demand elasticity of statistical arbitrageurs that invest according to the advice of modern cross-sectional asset pricing models? Thirteen models from the literature exhibit strikingly inelastic demand, in contrast to classical models that rely on statistical arbitrageurs to create elastic market demand for assets. This inelasticity arises from the difficulty of trading against price changes. A quantitative equilibrium model shows that aggregate demand remains inelastic even with these statistical arbitrageurs in the market.",
+      "link": "http://arxiv.org/abs/2303.14533v3",
+      "published": "2023-03-25",
+      "authors": [
+        "Carter Davis"
+      ],
+      "categories": [
+        "q-fin.PM",
+        "q-fin.MF",
+        "q-fin.RM",
+        "q-fin.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2303.14533v3",
+      "arxiv_id": "2303.14533v3"
+    },
+    {
+      "title": "AutoAlpha: an Efficient Hierarchical Evolutionary Algorithm for Mining Alpha Factors in Quantitative Investment",
+      "summary": "The multi-factor model is a widely used model in quantitative investment. The success of a multi-factor model is largely determined by the effectiveness of the alpha factors used in the model. This paper proposes a new evolutionary algorithm called AutoAlpha to automatically generate effective formulaic alphas from massive stock datasets. Specifically, first we discover an inherent pattern of the formulaic alphas and propose a hierarchical structure to quickly locate the promising part of space for search. Then we propose a new Quality Diversity search based on the Principal Component Analysis (PCA-QD) to guide the search away from the well-explored space for more desirable results. Next, we utilize the warm start method and the replacement method to prevent the premature convergence problem. Based on the formulaic alphas we discover, we propose an ensemble learning-to-rank model for generating the portfolio. The backtests in the Chinese stock market and the comparisons with several baselines further demonstrate the effectiveness of AutoAlpha in mining formulaic alphas for quantitative trading.",
+      "link": "http://arxiv.org/abs/2002.08245v2",
+      "published": "2020-02-09",
+      "authors": [
+        "Tianping Zhang",
+        "Yuanqi Li",
+        "Yifei Jin",
+        "Jian Li"
+      ],
+      "categories": [
+        "q-fin.CP"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2002.08245v2",
+      "arxiv_id": "2002.08245v2"
+    },
+    {
+      "title": "From Deep Learning to LLMs: A survey of AI in Quantitative Investment",
+      "summary": "Quantitative investment (quant) is an emerging, technology-driven approach in asset management, increasingy shaped by advancements in artificial intelligence. Recent advances in deep learning and large language models (LLMs) for quant finance have improved predictive modeling and enabled agent-based automation, suggesting a potential paradigm shift in this field. In this survey, taking alpha strategy as a representative example, we explore how AI contributes to the quantitative investment pipeline. We first examine the early stage of quant research, centered on human-crafted features and traditional statistical models with an established alpha pipeline. We then discuss the rise of deep learning, which enabled scalable modeling across the entire pipeline from data processing to order execution. Building on this, we highlight the emerging role of LLMs in extending AI beyond prediction, empowering autonomous agents to process unstructured data, generate alphas, and support self-iterative workflows.",
+      "link": "http://arxiv.org/abs/2503.21422v1",
+      "published": "2025-03-27",
+      "authors": [
+        "Bokai Cao",
+        "Saizhuo Wang",
+        "Xinyi Lin",
+        "Xiaojun Wu",
+        "Haohan Zhang",
+        "Lionel M. Ni",
+        "Jian Guo"
+      ],
+      "categories": [
+        "q-fin.CP",
+        "cs.AI",
+        "cs.LG",
+        "q-fin.ST",
+        "q-fin.TR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2503.21422v1",
+      "arxiv_id": "2503.21422v1"
+    },
+    {
+      "title": "Alpha-GPT 2.0: Human-in-the-Loop AI for Quantitative Investment",
+      "summary": "Recently, we introduced a new paradigm for alpha mining in the realm of quantitative investment, developing a new interactive alpha mining system framework, Alpha-GPT. This system is centered on iterative Human-AI interaction based on large language models, introducing a Human-in-the-Loop approach to alpha discovery. In this paper, we present the next-generation Alpha-GPT 2.0 \\footnote{Draft. Work in progress}, a quantitative investment framework that further encompasses crucial modeling and analysis phases in quantitative investment. This framework emphasizes the iterative, interactive research between humans and AI, embodying a Human-in-the-Loop strategy throughout the entire quantitative investment pipeline. By assimilating the insights of human researchers into the systematic alpha research process, we effectively leverage the Human-in-the-Loop approach, enhancing the efficiency and precision of quantitative investment research.",
+      "link": "http://arxiv.org/abs/2402.09746v1",
+      "published": "2024-02-15",
+      "authors": [
+        "Hang Yuan",
+        "Saizhuo Wang",
+        "Jian Guo"
+      ],
+      "categories": [
+        "q-fin.CP",
+        "cs.AI"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2402.09746v1",
+      "arxiv_id": "2402.09746v1"
+    },
+    {
+      "title": "Factor Investing with a Deep Multi-Factor Model",
+      "summary": "Modeling and characterizing multiple factors is perhaps the most important step in achieving excess returns over market benchmarks. Both academia and industry are striving to find new factors that have good explanatory power for future stock returns and good stability of their predictive power. In practice, factor investing is still largely based on linear multi-factor models, although many deep learning methods show promising results compared to traditional methods in stock trend prediction and portfolio risk management. However, the existing non-linear methods have two drawbacks: 1) there is a lack of interpretation of the newly discovered factors, 2) the financial insights behind the mining process are unclear, making practitioners reluctant to apply the existing methods to factor investing. To address these two shortcomings, we develop a novel deep multi-factor model that adopts industry neutralization and market neutralization modules with clear financial insights, which help us easily build a dynamic and multi-relational stock graph in a hierarchical structure to learn the graph representation of stock relationships at different levels, e.g., industry level and universal level. Subsequently, graph attention modules are adopted to estimate a series of deep factors that maximize the cumulative factor returns. And a factor-attention module is developed to approximately compose the estimated deep factors from the input factors, as a way to interpret the deep factors explicitly. Extensive experiments on real-world stock market data demonstrate the effectiveness of our deep multi-factor model in the task of factor investing.",
+      "link": "http://arxiv.org/abs/2210.12462v1",
+      "published": "2022-10-22",
+      "authors": [
+        "Zikai Wei",
+        "Bo Dai",
+        "Dahua Lin"
+      ],
+      "categories": [
+        "q-fin.CP",
+        "cs.LG"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2210.12462v1",
+      "arxiv_id": "2210.12462v1"
+    },
+    {
+      "title": "Uncertainty-Aware Lookahead Factor Models for Quantitative Investing",
+      "summary": "On a periodic basis, publicly traded companies report fundamentals, financial data including revenue, earnings, debt, among others. Quantitative finance research has identified several factors, functions of the reported data that historically correlate with stock market performance. In this paper, we first show through simulation that if we could select stocks via factors calculated on future fundamentals (via oracle), that our portfolios would far outperform standard factor models. Motivated by this insight, we train deep nets to forecast future fundamentals from a trailing 5-year history. We propose lookahead factor models which plug these predicted future fundamentals into traditional factors. Finally, we incorporate uncertainty estimates from both neural heteroscedastic regression and a dropout-based heuristic, improving performance by adjusting our portfolios to avert risk. In retrospective analysis, we leverage an industry-grade portfolio simulator (backtester) to show simultaneous improvement in annualized return and Sharpe ratio. Specifically, the simulated annualized return for the uncertainty-aware model is 17.7% (vs 14.0% for a standard factor model) and the Sharpe ratio is 0.84 (vs 0.52).",
+      "link": "http://arxiv.org/abs/2007.04082v2",
+      "published": "2020-07-07",
+      "authors": [
+        "Lakshay Chauhan",
+        "John Alberg",
+        "Zachary C. Lipton"
+      ],
+      "categories": [
+        "q-fin.ST",
+        "cs.LG",
+        "cs.NE"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2007.04082v2",
+      "arxiv_id": "2007.04082v2"
+    },
+    {
+      "title": "Alpha-GPT: Human-AI Interactive Alpha Mining for Quantitative Investment",
+      "summary": "One of the most important tasks in quantitative investment research is mining new alphas (effective trading signals or factors). Traditional alpha mining methods, either hand-crafted factor synthesizing or algorithmic factor mining (e.g., search with genetic programming), have inherent limitations, especially in implementing the ideas of quants. In this work, we propose a new alpha mining paradigm by introducing human-AI interaction, and a novel prompt engineering algorithmic framework to implement this paradigm by leveraging the power of large language models. Moreover, we develop Alpha-GPT, a new interactive alpha mining system framework that provides a heuristic way to ``understand'' the ideas of quant researchers and outputs creative, insightful, and effective alphas. We demonstrate the effectiveness and advantage of Alpha-GPT via a number of alpha mining experiments.",
+      "link": "http://arxiv.org/abs/2308.00016v2",
+      "published": "2023-07-31",
+      "authors": [
+        "Saizhuo Wang",
+        "Hang Yuan",
+        "Leon Zhou",
+        "Lionel M. Ni",
+        "Heung-Yeung Shum",
+        "Jian Guo"
+      ],
+      "categories": [
+        "q-fin.CP",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2308.00016v2",
+      "arxiv_id": "2308.00016v2"
+    },
+    {
+      "title": "Quantitative Stock Investment by Routing Uncertainty-Aware Trading Experts: A Multi-Task Learning Approach",
+      "summary": "Quantitative investment is a fundamental financial task that highly relies on accurate stock prediction and profitable investment decision making. Despite recent advances in deep learning (DL) have shown stellar performance on capturing trading opportunities in the stochastic stock market, we observe that the performance of existing DL methods is sensitive to random seeds and network initialization. To design more profitable DL methods, we analyze this phenomenon and find two major limitations of existing works. First, there is a noticeable gap between accurate financial predictions and profitable investment strategies. Second, investment decisions are made based on only one individual predictor without consideration of model uncertainty, which is inconsistent with the workflow in real-world trading firms. To tackle these two limitations, we first reformulate quantitative investment as a multi-task learning problem. Later on, we propose AlphaMix, a novel two-stage mixture-of-experts (MoE) framework for quantitative investment to mimic the efficient bottom-up trading strategy design workflow of successful trading firms. In Stage one, multiple independent trading experts are jointly optimized with an individual uncertainty-aware loss function. In Stage two, we train neural routers (corresponding to the role of a portfolio manager) to dynamically deploy these experts on an as-needed basis. AlphaMix is also a universal framework that is applicable to various backbone network architectures with consistent performance gains. Through extensive experiments on long-term real-world data spanning over five years on two of the most influential financial markets (US and China), we demonstrate that AlphaMix significantly outperforms many state-of-the-art baselines in terms of four financial criteria.",
+      "link": "http://arxiv.org/abs/2207.07578v1",
+      "published": "2022-06-07",
+      "authors": [
+        "Shuo Sun",
+        "Rundong Wang",
+        "Bo An"
+      ],
+      "categories": [
+        "q-fin.TR",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2207.07578v1",
+      "arxiv_id": "2207.07578v1"
+    },
+    {
+      "title": "Quantitative analysis of the value of investment in research facilities, with examples from cyberinfrastructure",
+      "summary": "Purpose: How much to invest in research facilities has long been a question in higher education and research policy. We present established and recently developed techniques for assessing the quantitative value created or received as a result of investments in research facilities. This discussion is timely. Financial challenges in higher education may soon force difficult decisions regarding investment in research facilities at some institutions. Clear quantitative analysis will be necessary for such strategic decision-making. Further, institutions of higher education in the USA are currently being called on to justify their value to society. The analyses presented here are extendable to research enterprises as a whole. Results: We present methods developed primarily for analyses of cyberinfrastructure. Most analyses comparing investment in university-based cyberinfrastructure facilities with purchasing services from commercial sources demonstrate positive results for economic and scientific research. A recent assessment, based on a comprehensive accounting approach, has shown that for one large publicly funded cyberinfrastructure project the value delivered to the USA economy and society exceeded the cost to USA taxpayers. Conclusions: Quantitative analyses of the benefits of investment in research and research facilities create a fact-based foundation for discussing the value of research and higher education. These methods enable a quantitative assessment of the relationship between investment in specific research facilities or research projects and economic, societal, and educational outcomes. These methods are of value in quantifying the economic benefit of higher education and in managing investments within such institutions.",
+      "link": "http://arxiv.org/abs/2502.07833v3",
+      "published": "2025-02-11",
+      "authors": [
+        "Winona G. Snapp-Childs",
+        "David Y. Hancock",
+        "Preston M. Smith",
+        "John Towns",
+        "Craig A. Stewart"
+      ],
+      "categories": [
+        "econ.GN",
+        "cs.CY"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2502.07833v3",
+      "arxiv_id": "2502.07833v3"
+    },
+    {
+      "title": "Quantitative relations between corruption and economic factors",
+      "summary": "We report quantitative relations between corruption level and economic factors, such as country wealth and foreign investment per capita, which are characterized by a power law spanning multiple scales of wealth and investments per capita. These relations hold for diverse countries, and also remain stable over different time periods. We also observe a negative correlation between level of corruption and long-term economic growth. We find similar results for two independent indices of corruption, suggesting that the relation between corruption and wealth does not depend on the specific measure of corruption. The functional relations we report have implications when assessing the relative level of corruption for two countries with comparable wealth, and for quantifying the impact of corruption on economic growth and foreign investments.",
+      "link": "http://arxiv.org/abs/0705.0161v1",
+      "published": "2007-05-01",
+      "authors": [
+        "Jia Shao",
+        "Plamen Ch. Ivanov",
+        "Boris Podobnik",
+        "H. Eugene Stanley"
+      ],
+      "categories": [
+        "q-fin.GN",
+        "physics.data-an",
+        "physics.soc-ph"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/0705.0161v1",
+      "arxiv_id": "0705.0161v1"
+    },
+    {
+      "title": "Exploring the Synergy of Quantitative Factors and Newsflow Representations from Large Language Models for Stock Return Prediction",
+      "summary": "In quantitative investing, return prediction supports various tasks, including stock selection, portfolio optimization, and risk management. Quantitative factors, such as valuation, quality, and growth, capture various characteristics of stocks. Unstructured data, like news and transcripts, has attracted growing attention, driven by recent advances in large language models (LLMs). This paper examines effective methods for leveraging multimodal factors and newsflow in return prediction and stock selection. First, we introduce a fusion learning framework to learn a unified representation from factors and newsflow representations generated by an LLM. Within this framework, we compare three methods of different architectural complexities: representation combination, representation summation, and attentive representations. Next, building on the limitation of fusion learning observed in empirical comparison, we explore the mixture model that adaptively combines predictions made by single modalities and their fusion. To mitigate the training instability of the mixture model, we introduce a decoupled training approach with theoretical insights. Finally, our experiments on real investment universes yield several insights into effective multimodal modeling of factors and news for stock return prediction and selection.",
+      "link": "http://arxiv.org/abs/2510.15691v3",
+      "published": "2025-10-17",
+      "authors": [
+        "Tian Guo",
+        "Emmanuel Hauptmann"
+      ],
+      "categories": [
+        "q-fin.CP",
+        "cs.AI",
+        "cs.CL",
+        "cs.LG"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2510.15691v3",
+      "arxiv_id": "2510.15691v3"
+    },
+    {
+      "title": "Copula-Based Factor Model for Credit Risk Analysis",
+      "summary": "A standard quantitative method to access credit risk employs a factor model based on joint multivariate normal distribution properties. By extending a one-factor Gaussian copula model to make a more accurate default forecast, this paper proposes to incorporate a state-dependent recovery rate into the conditional factor loading, and model them by sharing a unique common factor. The common factor governs the default rate and recovery rate simultaneously and creates their association implicitly. In accordance with Basel III, this paper shows that the tendency of default is more governed by systematic risk rather than idiosyncratic risk during a hectic period. Among the models considered, the one with random factor loading and a state-dependent recovery rate turns out to be the most superior on the default prediction.",
+      "link": "http://arxiv.org/abs/2009.12092v2",
+      "published": "2020-09-25",
+      "authors": [
+        "Meng-Jou Lu",
+        "Cathy Yi-Hsuan Chen",
+        "Wolfgang Karl Härdle"
+      ],
+      "categories": [
+        "q-fin.RM",
+        "q-fin.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2009.12092v2",
+      "arxiv_id": "2009.12092v2"
+    },
+    {
+      "title": "Beyond Prompting: An Autonomous Framework for Systematic Factor Investing via Agentic AI",
+      "summary": "This paper develops an autonomous framework for systematic factor investing via agentic AI. Rather than relying on sequential manual prompts, our approach operationalizes the model as a self-directed engine that endogenously formulates interpretable trading signals. To mitigate data snooping biases, this closed-loop system imposes strict empirical discipline through out-of-sample validation and economic rationale requirements. Applying this methodology to the U.S. equity market, we document that long-short portfolios formed on the simple linear combination of signals deliver an annualized Sharpe ratio of 3.11 and a return of 59.53%. Finally, our empirics demonstrate that self-evolving AI offers a scalable and interpretable paradigm.",
+      "link": "http://arxiv.org/abs/2603.14288v2",
+      "published": "2026-03-15",
+      "authors": [
+        "Allen Yikuan Huang",
+        "Zheqi Fan"
+      ],
+      "categories": [
+        "q-fin.PM",
+        "q-fin.GN",
+        "q-fin.PR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2603.14288v2",
+      "arxiv_id": "2603.14288v2"
+    },
+    {
+      "title": "Predictive Modeling: An Optimized and Dynamic Solution Framework for Systematic Value Investing",
+      "summary": "This paper defines systematic value investing as an empirical optimization problem. Predictive modeling is introduced as a systematic value investing methodology with dynamic and optimization features. A predictive modeling process is demonstrated using financial metrics from Gray & Carlisle and Buffett & Clark. A 31-year portfolio backtest (1985 - 2016) compares performance between predictive models and Gray & Carlisle's Quantitative Value strategy. A 26-year portfolio backtest (1990 - 2016) uses an expanded set of predictor variables to show financial performance improvements. This paper includes secondary novel contributions. Quantitative definitions are provided for Buffett & Clark's value investing metrics. The \"Sak ratio\" is proposed as an extension to the Benjamini-Hochberg procedure for the inferential identification of false positive observations.",
+      "link": "http://arxiv.org/abs/1709.03226v1",
+      "published": "2017-09-11",
+      "authors": [
+        "R. J. Sak"
+      ],
+      "categories": [
+        "q-fin.PM"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1709.03226v1",
+      "arxiv_id": "1709.03226v1"
+    },
+    {
+      "title": "Comprehensive Unified Models of Structural and Reduced Form Models for Defaultable Fixed Income Bonds (Part 1: One factor-model, Part 2:Two factors-model)",
+      "summary": "Pricing formulae for defaultable corporate bonds with discrete coupons under consideration of the government taxes in the united model of structural and reduced form models are provided. The aim of this paper is to generalize the comprehensive structural model for defaultable fixed income bonds (considered in [1]) into a comprehensive unified model of structural and reduced form models. Here we consider the one factor model and the two factor model. In the one factor model the bond holders receive the deterministic coupon at predetermined coupon dates and the face value (debt) and the coupon at the maturity as well as the effect of government taxes which are paid on the proceeds of an investment in bonds is considered under constant short rate. In the two factor model the bond holders receive the stochastic coupon (discounted value of that at the maturity) at predetermined coupon dates and the face value (debt) and the coupon at the maturity as well as the effect of government taxes which are paid on the proceeds of an investment in bonds is considered under stochastic short rate. The expected default event occurs when the equity value is not enough to pay coupon or debt at the coupon dates or maturity and unexpected default event can occur at the first jump time of a Poisson process with the given default intensity provided by a step function of time variable. We consider the model and pricing formula for equity value and using it calculate expected default barrier. Then we provide pricing model and formula for defaultable corporate bonds with discrete coupons and consider its duration and the effect of the government taxes.",
+      "link": "http://arxiv.org/abs/1309.1647v3",
+      "published": "2013-09-06",
+      "authors": [
+        "Hyong-Chol O",
+        "Song-Yon Kim",
+        "Dong-Hyok Kim",
+        "Chol-Hyok Pak"
+      ],
+      "categories": [
+        "q-fin.PR",
+        "q-fin.CP"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1309.1647v3",
+      "arxiv_id": "1309.1647v3"
+    },
+    {
+      "title": "Capital Asset Pricing Model with Size Factor and Normalizing by Volatility Index",
+      "summary": "The Capital Asset Pricing Model (CAPM) relates a well-diversified stock portfolio to a benchmark portfolio. We insert size effect in the CAPM, capturing the observation that small stocks have higher risk and return than large stocks, on average. Our goal is to make the resulting linear regressions have independent identically distributed Gaussian residuals. In some cases, we find that including the Volatility Index as a multiplicative factor by these residuals makes them closer to that ideal. In this article, we combine these ideas to create a new discrete-time model, which includes volatility, relative size, and the CAPM. We fit this model using real-world data, prove the long-term stability, and connect this research to Stochastic Portfolio Theory.",
+      "link": "http://arxiv.org/abs/2411.19444v7",
+      "published": "2024-11-29",
+      "authors": [
+        "Abraham Atsiwo",
+        "Andrey Sarantsev"
+      ],
+      "categories": [
+        "q-fin.MF",
+        "math.PR",
+        "q-fin.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2411.19444v7",
+      "arxiv_id": "2411.19444v7"
+    },
+    {
+      "title": "On the Pricing of Storable Commodities",
+      "summary": "This paper introduces an information-based model for the pricing of storable commodities such as crude oil and natural gas. The model uses the concept of market information about future supply and demand as a basis for valuation. Physical ownership of a commodity is taken to provide a stream of convenience dividends equivalent to a continuous cash flow. The market filtration is assumed to be generated jointly by (i) current and past levels of the dividend rate, and (ii) partial information concerning the future of the dividend flow. The price of a commodity is the expectation under a suitable pricing measure of the totality of the discounted risk-adjusted future convenience dividend, conditional on the information provided by the market filtration. In the situation where the dividend rate is modelled by an Ornstein-Uhlenbeck process, the prices of options on commodities can be derived in closed form. The approach that we present can be applied to other assets that yield potentially negative effective cash flows, such as real estate, factories, refineries, mines, and power generating plants.",
+      "link": "http://arxiv.org/abs/1307.5540v2",
+      "published": "2013-07-21",
+      "authors": [
+        "Dorje C. Brody",
+        "Lane P. Hughston",
+        "Xun Yang"
+      ],
+      "categories": [
+        "q-fin.PR",
+        "math.PR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1307.5540v2",
+      "arxiv_id": "1307.5540v2"
+    },
+    {
+      "title": "Pricing and Valuation under the Real-World Measure",
+      "summary": "In general it is not clear which kind of information is supposed to be used for calculating the fair value of a contingent claim. Even if the information is specified, it is not guaranteed that the fair value is uniquely determined by the given information. A further problem is that asset prices are typically expressed in terms of a risk-neutral measure. This makes it difficult to transfer the fundamental results of financial mathematics to econometrics. I show that the aforementioned problems evaporate if the financial market is complete and sensitive. In this case, after an appropriate choice of the numeraire, the discounted price processes turn out to be uniformly integrable martingales under the real-world measure. This leads to a Law of One Price and a simple real-world valuation formula in a model-independent framework where the number of assets as well as the lifetime of the market can be finite or infinite.",
+      "link": "http://arxiv.org/abs/1304.3824v13",
+      "published": "2013-04-13",
+      "authors": [
+        "Gabriel Frahm"
+      ],
+      "categories": [
+        "q-fin.GN"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1304.3824v13",
+      "arxiv_id": "1304.3824v13"
+    },
+    {
+      "title": "An Information-Based Framework for Asset Pricing: X-Factor Theory and its Applications",
+      "summary": "A new framework for asset pricing based on modelling the information available to market participants is presented. Each asset is characterised by the cash flows it generates. Each cash flow is expressed as a function of one or more independent random variables called market factors or \"X-factors\". Each X-factor is associated with a \"market information process\", the values of which become available to market participants. In addition to true information about the X-factor, the information process contains an independent \"noise\" term modelled here by a Brownian bridge. The information process thus gives partial information about the X-factor, and the value of the market factor is only revealed at the termination of the process. The market filtration is assumed to be generated by the information processes associated with the X-factors. The price of an asset is given by the risk-neutral expectation of the sum of the discounted cash flows, conditional on the information available from the filtration. The theory is developed in some detail, with a variety of applications to credit risk management, share prices, interest rates, and inflation. A number of new exactly solvable models are obtained for the price processes of various types of assets and derivative securities; and a novel mechanism is proposed to account for the dynamics of stochastic volatility and dynamic correlation. A discrete-time version of the information-based framework is also developed, and is used to construct a new class of models for the real and nominal interest rate term structures, and the dynamics of the associated price index.",
+      "link": "http://arxiv.org/abs/0807.2124v1",
+      "published": "2008-07-14",
+      "authors": [
+        "Andrea Macrina"
+      ],
+      "categories": [
+        "q-fin.PR",
+        "math.PR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/0807.2124v1",
+      "arxiv_id": "0807.2124v1"
+    },
+    {
+      "title": "A two-Factor Asset Pricing Model and the Fat Tail Distribution of Firm Sizes",
+      "summary": "In the standard equilibrium and/or arbitrage pricing framework, the value of any asset is uniquely specified from the belief that only the systematic risks need to be remunerated by the market. Here, we show that, even for arbitrary large economies when the distribution of the capitalization of firms is sufficiently heavy-tailed as is the case of real economies, there may exist a new source of significant systematic risk, which has been totally neglected up to now but must be priced by the market. This new source of risk can readily explain several asset pricing anomalies on the sole basis of the internal-consistency of the market model. For this, we derive a theoretical two-factor model for asset pricing which has empirically a similar explanatory power as the Fama-French three-factor model. In addition to the usual market risk, our model accounts for a diversification risk, proxied by the equally-weighted portfolio, and which results from an ``internal consistency factor'' appearing for arbitrary large economies, as a consequence of the concentration of the market portfolio when the distribution of the capitalization of firms is sufficiently heavy-tailed as in real economies. Our model rationalizes the superior performance of the Fama and French three-factor model in explaining the cross section of stock returns: the size factor constitutes an alternative proxy of the diversification factor while the book-to-market effect is related to the increasing sensitivity of value stocks to this factor.",
+      "link": "http://arxiv.org/abs/physics/0702027v1",
+      "published": "2007-02-03",
+      "authors": [
+        "Y. Malevergne",
+        "D. Sornette"
+      ],
+      "categories": [
+        "physics.soc-ph",
+        "q-fin.PR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/physics/0702027v1",
+      "arxiv_id": "0702027v1"
+    },
+    {
+      "title": "Information-Based Asset Pricing",
+      "summary": "A new framework for asset price dynamics is introduced in which the concept of noisy information about future cash flows is used to derive the price processes. In this framework an asset is defined by its cash-flow structure. Each cash flow is modelled by a random variable that can be expressed as a function of a collection of independent random variables called market factors. With each such \"X-factor\" we associate a market information process, the values of which are accessible to market agents. Each information process is a sum of two terms; one contains true information about the value of the market factor; the other represents \"noise\". The noise term is modelled by an independent Brownian bridge. The market filtration is assumed to be that generated by the aggregate of the independent information processes. The price of an asset is given by the expectation of the discounted cash flows in the risk-neutral measure, conditional on the information provided by the market filtration. When the cash flows are the dividend payments associated with equities, an explicit model is obtained for the share-price, and the prices of options on dividend-paying assets are derived. Remarkably, the resulting formula for the price of a European call option is of the Black-Scholes-Merton type. The information-based framework also generates a natural explanation for the origin of stochastic volatility.",
+      "link": "http://arxiv.org/abs/0704.1976v1",
+      "published": "2007-04-16",
+      "authors": [
+        "Dorje C. Brody",
+        "Lane P. Hughston",
+        "Andrea Macrina"
+      ],
+      "categories": [
+        "q-fin.PR",
+        "math.PR",
+        "math.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/0704.1976v1",
+      "arxiv_id": "0704.1976v1"
+    },
+    {
+      "title": "Deep Partial Least Squares for Empirical Asset Pricing",
+      "summary": "We use deep partial least squares (DPLS) to estimate an asset pricing model for individual stock returns that exploits conditioning information in a flexible and dynamic way while attributing excess returns to a small set of statistical risk factors. The novel contribution is to resolve the non-linear factor structure, thus advancing the current paradigm of deep learning in empirical asset pricing which uses linear stochastic discount factors under an assumption of Gaussian asset returns and factors. This non-linear factor structure is extracted by using projected least squares to jointly project firm characteristics and asset returns on to a subspace of latent factors and using deep learning to learn the non-linear map from the factor loadings to the asset returns. The result of capturing this non-linear risk factor structure is to characterize anomalies in asset returns by both linear risk factor exposure and interaction effects. Thus the well known ability of deep learning to capture outliers, shed lights on the role of convexity and higher order terms in the latent factor structure on the factor risk premia. On the empirical side, we implement our DPLS factor models and exhibit superior performance to LASSO and plain vanilla deep learning models. Furthermore, our network training times are significantly reduced due to the more parsimonious architecture of DPLS. Specifically, using 3290 assets in the Russell 1000 index over a period of December 1989 to January 2018, we assess our DPLS factor model and generate information ratios that are approximately 1.2x greater than deep learning. DPLS explains variation and pricing errors and identifies the most prominent latent factors and firm characteristics.",
+      "link": "http://arxiv.org/abs/2206.10014v1",
+      "published": "2022-06-20",
+      "authors": [
+        "Matthew F. Dixon",
+        "Nicholas G. Polson",
+        "Kemen Goicoechea"
+      ],
+      "categories": [
+        "q-fin.PR",
+        "cs.LG",
+        "q-fin.PM",
+        "q-fin.RM",
+        "stat.ML"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2206.10014v1",
+      "arxiv_id": "2206.10014v1"
+    },
+    {
+      "title": "Pricing Options in Incomplete Equity Markets via the Instantaneous Sharpe Ratio",
+      "summary": "We use a continuous version of the standard deviation premium principle for pricing in incomplete equity markets by assuming that the investor issuing an unhedgeable derivative security requires compensation for this risk in the form of a pre-specified instantaneous Sharpe ratio. First, we apply our method to price options on non-traded assets for which there is a traded asset that is correlated to the non-traded asset. Our main contribution to this particular problem is to show that our seller/buyer prices are the upper/lower good deal bounds of Cochrane and Saá-Requejo (2000) and of Björk and Slinko (2006) and to determine the analytical properties of these prices. Second, we apply our method to price options in the presence of stochastic volatility. Our main contribution to this problem is to show that the instantaneous Sharpe ratio, an integral ingredient in our methodology, is the negative of the market price of volatility risk, as defined in Fouque, Papanicolaou, and Sircar (2000).",
+      "link": "http://arxiv.org/abs/math/0701650v2",
+      "published": "2007-01-23",
+      "authors": [
+        "Erhan Bayraktar",
+        "Virginia R. Young"
+      ],
+      "categories": [
+        "math.OC",
+        "q-fin.PR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/math/0701650v2",
+      "arxiv_id": "0701650v2"
+    },
+    {
+      "title": "Asset pricing with random information flow",
+      "summary": "In the information-based approach to asset pricing the market filtration is modelled explicitly as a superposition of signals concerning relevant market factors and independent noise. The rate at which the signal is revealed to the market then determines the overall magnitude of asset volatility. By letting this information flow rate random, we obtain an elementary stochastic volatility model within the information-based approach. Such an extension is economically justified on account of the fact that in real markets information flow rates are rarely measurable. Effects of having a random information flow rate is investigated in detail in the context of a simple model setup. Specifically, the price process of the asset is derived, and its characteristic behaviours are revealed via simulation studies. The price of a European-style option is worked out, showing that the model has a sufficient flexibility to fit volatility surface. As an extension of the random information flow model, price manipulation is considered. A simple model is used to show how the skewness of the manipulated and unmanipulated price processes take opposite signature.",
+      "link": "http://arxiv.org/abs/1009.3810v1",
+      "published": "2010-09-20",
+      "authors": [
+        "Dorje C. Brody",
+        "Yan Tai Law"
+      ],
+      "categories": [
+        "q-fin.PR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1009.3810v1",
+      "arxiv_id": "1009.3810v1"
+    },
+    {
+      "title": "An Asymmetric Capital Asset Pricing Model",
+      "summary": "Providing a measure of market risk is an important issue for investors and financial institutions. However, the existing models for this purpose are per definition symmetric. The current paper introduces an asymmetric capital asset pricing model for measurement of the market risk. It explicitly accounts for the fact that falling prices determine the risk for a long position in the risky asset and the rising prices govern the risk for a short position. Thus, a position dependent market risk measure that is provided accords better with reality. The empirical application reveals that Apple stock is more volatile than the market only for the short seller. Surprisingly, the investor that has a long position in this stock is facing a lower volatility than the market. This property is not captured by the standard asset pricing model, which has important implications for the expected returns and hedging designs.",
+      "link": "http://arxiv.org/abs/2404.14137v2",
+      "published": "2024-04-22",
+      "authors": [
+        "Abdulnasser Hatemi-J"
+      ],
+      "categories": [
+        "q-fin.PR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2404.14137v2",
+      "arxiv_id": "2404.14137v2"
+    },
+    {
+      "title": "Semiparametric Conditional Factor Models in Asset Pricing",
+      "summary": "We introduce a simple and tractable methodology for estimating semiparametric conditional latent factor models. Our approach disentangles the roles of characteristics in capturing factor betas of asset returns from ``alpha.'' We construct factors by extracting principal components from Fama-MacBeth managed portfolios. Applying this methodology to the cross-section of U.S. individual stock returns, we find compelling evidence of substantial nonzero pricing errors, even though our factors demonstrate superior performance in standard asset pricing tests. Unexplained ``arbitrage'' portfolios earn high Sharpe ratios, which decline over time. Combining factors with these orthogonal portfolios produces out-of-sample Sharpe ratios exceeding 4.",
+      "link": "http://arxiv.org/abs/2112.07121v5",
+      "published": "2021-12-14",
+      "authors": [
+        "Qihui Chen",
+        "Nikolai Roussanov",
+        "Xiaoliang Wang"
+      ],
+      "categories": [
+        "econ.EM",
+        "math.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2112.07121v5",
+      "arxiv_id": "2112.07121v5"
+    },
+    {
+      "title": "Dynamic Asset Pricing Theory for Life Contingent Risks",
+      "summary": "Although the valuation of life contingent assets has been thoroughly investigated under the framework of mathematical statistics, little financial economics research pays attention to the pricing of these assets in a non-arbitrage, complete market. In this paper, we first revisit the Fundamental Theorem of Asset Pricing (FTAP) and the short proof of it. Then we point out that discounted asset price is a martingale only when dividends are zero under all random states of the world, using a simple proof based on pricing kernel. Next, we apply Fundamental Theorem of Asset Pricing (FTAP) to find valuation formula for life contingent assets including life insurance policies and life contingent annuities. Last but not least, we state the assumption of static portfolio in a dynamic economy, and clarify the FTAP that accommodates the valuation of a portfolio of life contingent policies.",
+      "link": "http://arxiv.org/abs/2503.21256v1",
+      "published": "2025-03-27",
+      "authors": [
+        "Patrick Ling"
+      ],
+      "categories": [
+        "q-fin.PR",
+        "math.PR",
+        "q-fin.MF",
+        "q-fin.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2503.21256v1",
+      "arxiv_id": "2503.21256v1"
+    },
+    {
+      "title": "Option Pricing via Multi-path Autoregressive Monte Carlo Approach",
+      "summary": "The pricing of financial derivatives, which requires massive calculations and close-to-real-time operations under many trading and arbitrage scenarios, were largely infeasible in the past. However, with the advancement of modern computing, the efficiency has substantially improved. In this work, we propose and design a multi-path option pricing approach via autoregression (AR) process and Monte Carlo Simulations (MCS). Our approach learns and incorporates the price characteristics into AR process, and re-generates the price paths for options. We apply our approach to price weekly options underlying Taiwan Stock Exchange Capitalization Weighted Stock Index (TAIEX) and compare the results with prior practiced models, e.g., Black-Scholes-Merton and Binomial Tree. The results show that our approach is comparable with prior practiced models.",
+      "link": "http://arxiv.org/abs/1906.06483v1",
+      "published": "2019-06-15",
+      "authors": [
+        "Wei-Cheng Chen",
+        "Wei-Ho Chung"
+      ],
+      "categories": [
+        "q-fin.PR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1906.06483v1",
+      "arxiv_id": "1906.06483v1"
+    },
+    {
+      "title": "Behavioral Finance Option Pricing Formulas Consistent with Rational Dynamic Asset Pricing",
+      "summary": "We derive behavioral finance option pricing formulas consistent with the rational dynamic asset pricing theory. In the existing behavioral finance option pricing formulas, the price process of the representative agent is not a semimartingale, which leads to arbitrage opportunities for the option seller. In the literature on behavioral finance option pricing it is allowed the option buyer and seller to have different views on the instantaneous mean return of the underlying price process, which leads to arbitrage opportunities according to Black (1972). We adjust the behavioral finance option pricing formulas to be consistent with the rational dynamic asset pricing theory, by introducing transaction costs on the velocity of trades which offset the gains from the arbitrage trades.",
+      "link": "http://arxiv.org/abs/1710.03205v1",
+      "published": "2017-10-09",
+      "authors": [
+        "Svetlozar Rachev",
+        "Stoyan Stoyanov",
+        "Frank J. Fabozzi"
+      ],
+      "categories": [
+        "q-fin.PR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1710.03205v1",
+      "arxiv_id": "1710.03205v1"
+    },
+    {
+      "title": "Asset Prices and Risk Aversion",
+      "summary": "The standard asset pricing models (the CCAPM and the Epstein-Zin non-expected utility model) counterintuitively predict that equilibrium asset prices can rise if the representative agent's risk aversion increases. If the income effect, which implies enhanced saving as a result of an increase in risk aversion, dominates the substitution effect, which causes the representative agent to reallocate his portfolio in favour of riskless assets, the demand for securities increases. Thus, asset prices are forced to rise when the representative agent is more risk adverse. By disentangling risk aversion and intertemporal substituability, we demonstrate that the risky asset price is an increasing function of the coefficient of risk aversion only if the elasticity of intertemporal substitution (EIS) exceeds unity. This result, which was first proved par Epstein (1988) in a stationary economy setting with a constant risk aversion, is shown to hold true for non-stationary economies with a variable or constant risk aversion coefficient. The conclusion is that the EIS probably exceeds unity.",
+      "link": "http://arxiv.org/abs/1403.0851v1",
+      "published": "2014-03-04",
+      "authors": [
+        "Dominique Pepin"
+      ],
+      "categories": [
+        "q-fin.CP",
+        "q-fin.GN",
+        "q-fin.PR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1403.0851v1",
+      "arxiv_id": "1403.0851v1"
+    },
+    {
+      "title": "Heat Kernel Framework for Asset Pricing in Finite Time",
+      "summary": "A heat kernel approach is proposed for the development of a general, flexible, and mathematically tractable asset pricing framework in finite time. The pricing kernel, giving rise to the price system in an incomplete market, is modelled by weighted heat kernels which are driven by multivariate Markov processes and which provide enough degrees of freedom in order to calibrate to relevant data, e.g. to the term structure of bond prices. It is shown how, for a class of models, the prices of bonds, caplets, and swaptions can be computed in closed form. The dynamical equations for the price processes are derived, and explicit formulae are obtained for the short rate of interest, the risk premium, and for the stochastic volatility of prices. Several of the closed-form asset price models presented in this paper are driven by combinations of Markovian jump processes with different probability laws. Such models provide a rich basis for consistent applications in several sectors of a financial market including equity, fixed-income, commodities, and insurance. The flexible, multidimensional and multivariate structure, on which the asset price models are constructed, lends itself well to the transparent modelling of dependence across asset classes. As an illustration, the impact on prices by spiralling debt, a typical feature of a financial crisis, is modelled explicitly, and contagion effects are readily observed in the dynamics of asset returns.",
+      "link": "http://arxiv.org/abs/1211.0856v2",
+      "published": "2012-11-05",
+      "authors": [
+        "Andrea Macrina"
+      ],
+      "categories": [
+        "q-fin.PR",
+        "math.PR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1211.0856v2",
+      "arxiv_id": "1211.0856v2"
+    },
+    {
+      "title": "A six-factor asset pricing model",
+      "summary": "The present study introduce the human capital component to the Fama and French five-factor model proposing an equilibrium six-factor asset pricing model. The study employs an aggregate of four sets of portfolios mimicking size and industry with varying dimensions. The first set consists of three set of six portfolios each sorted on size to B/M, size to investment, and size to momentum. The second set comprises of five index portfolios, third, a four-set of twenty-five portfolios each sorted on size to B/M, size to investment, size to profitability, and size to momentum, and the final set constitute thirty industry portfolios. To estimate the parameters of six-factor asset pricing model for the four sets of variant portfolios, we use OLS and Generalized method of moments based robust instrumental variables technique (IVGMM). The results obtained from the relevance, endogeneity, overidentifying restrictions, and the Hausman's specification, tests indicate that the parameter estimates of the six-factor model using IVGMM are robust and performs better than the OLS approach. The human capital component shares equally the predictive power alongside the factors in the framework in explaining the variations in return on portfolios. Furthermore, we assess the t-ratio of the human capital component of each IVGMM estimates of the six-factor asset pricing model for the four sets of variant portfolios. The t-ratio of the human capital of the eighty-three IVGMM estimates are more than 3.00 with reference to the standard proposed by Harvey et al. (2016). This indicates the empirical success of the six-factor asset-pricing model in explaining the variation in asset returns.",
+      "link": "http://arxiv.org/abs/1810.07790v1",
+      "published": "2018-09-21",
+      "authors": [
+        "Rahul Roy",
+        "Santhakumar Shijin"
+      ],
+      "categories": [
+        "q-fin.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1810.07790v1",
+      "arxiv_id": "1810.07790v1"
+    },
+    {
+      "title": "Entropy-Based Financial Asset Pricing",
+      "summary": "We investigate entropy as a financial risk measure. Entropy explains the equity premium of securities and portfolios in a simpler way and, at the same time, with higher explanatory power than the beta parameter of the capital asset pricing model. For asset pricing we define the continuous entropy as an alternative measure of risk. Our results show that entropy decreases in the function of the number of securities involved in a portfolio in a similar way to the standard deviation, and that efficient portfolios are situated on a hyperbola in the expected return - entropy system. For empirical investigation we use daily returns of 150 randomly selected securities for a period of 27 years. Our regression results show that entropy has a higher explanatory power for the expected return than the capital asset pricing model beta. Furthermore we show the time varying behaviour of the beta along with entropy.",
+      "link": "http://arxiv.org/abs/1501.01155v1",
+      "published": "2015-01-06",
+      "authors": [
+        "Mihaly Ormos",
+        "David Zibriczky"
+      ],
+      "categories": [
+        "q-fin.PR",
+        "q-fin.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1501.01155v1",
+      "arxiv_id": "1501.01155v1"
+    },
+    {
+      "title": "A simplified Capital Asset Pricing Model",
+      "summary": "We consider a Black-Scholes market in which a number of stocks and an index are traded. The simplified Capital Asset Pricing Model is the conjunction of the usual Capital Asset Pricing Model, or CAPM, and the statement that the appreciation rate of the index is equal to its squared volatility plus the interest rate. (The mathematical statement of the conjunction is simpler than that of the usual CAPM.) Our main result is that either we can outperform the index or the simplified CAPM holds.",
+      "link": "http://arxiv.org/abs/1111.2846v1",
+      "published": "2011-11-11",
+      "authors": [
+        "Vladimir Vovk"
+      ],
+      "categories": [
+        "q-fin.PM",
+        "q-fin.PR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1111.2846v1",
+      "arxiv_id": "1111.2846v1"
+    },
+    {
+      "title": "Unifying Market Microstructure and Dynamic Asset Pricing",
+      "summary": "We introduce a discrete binary tree for pricing contingent claims with the underlying security prices exhibiting history dependence characteristic of that induced by market microstructure phenomena. Example dependencies considered include moving average or autoregressive behavior. Our model is market-complete, arbitrage-free, and preserves all of the parameters governing the historical (natural world) price dynamics when passing to an equivalent martingale (risk-neutral) measure. Specifically, this includes the instantaneous mean and variance of the asset return and the instantaneous probabilities for the direction of asset price movement. We believe this is the first paper to demonstrate the ability to include market microstructure effects in dynamic asset/option pricing in a market-complete, no-arbitrage, format.",
+      "link": "http://arxiv.org/abs/2304.02356v3",
+      "published": "2023-04-05",
+      "authors": [
+        "Davide Lauria",
+        "W. Brent Lindquist",
+        "Svetlozar T. Rachev",
+        "Yuan Hu"
+      ],
+      "categories": [
+        "q-fin.MF",
+        "q-fin.PR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2304.02356v3",
+      "arxiv_id": "2304.02356v3"
+    },
+    {
+      "title": "Three Remarks On Asset Pricing",
+      "summary": "We consider the consumption-based asset pricing model, derive a new modified basic pricing equation, and present its successive approximations using the Taylor series expansions of the investor's utility during the averaging time interval. For linear and quadratic Taylor approximations, we derive new expressions for the mean price, mean payoff, volatility, skewness, and the asset's amount that define the maximum of the investor's utility. We discuss the market-based origin of price probability. We use volume weighted average price (VWAP) as a market-based average price and introduce market-based price volatility. The use of VWAP results in zero correlations between the price p and trade volume U. We derive a correlation between price p and squares of trade volume {U^2} and between squares of price {p^2} and volume {U^2}. To predict market-based price volatility, one should forecast the 2-d statistical moments of the market trade values and volumes at the same horizon T.",
+      "link": "http://arxiv.org/abs/2105.13903v4",
+      "published": "2021-05-24",
+      "authors": [
+        "Victor Olkhov"
+      ],
+      "categories": [
+        "econ.GN",
+        "q-fin.GN",
+        "q-fin.PR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2105.13903v4",
+      "arxiv_id": "2105.13903v4"
+    },
+    {
+      "title": "Dynamic Asset Pricing with α-MEU Model",
+      "summary": "We study a dynamic asset pricing problem in which a representative agent is ambiguous about the aggregate endowment growth rate and trades a risky stock, human capital, and a risk-free asset to maximize her preference value of consumption represented by the α-maxmin expected utility model. This preference model is known to be dynamically inconsistent, so we consider intra-personal equilibrium strategies for the representative agent and define the market equilibrium as the one in which the strategy that clears the market is an intra-personal equilibrium. We prove the existence and uniqueness of the market equilibrium and show that the asset prices in the equilibrium are the same as in the case when the agent does not perceive any ambiguity but believes in a particular probabilistic model of the endowment process. We show that with reasonable parameter values, the more ambiguity the agent perceives or the more ambiguity-averse she is, the lower the risk-free rate, the higher the stock price, the higher the stock risk premium, and the lower the stock volatility.",
+      "link": "http://arxiv.org/abs/2507.04093v2",
+      "published": "2025-07-05",
+      "authors": [
+        "Jiacheng Fan",
+        "Xue Dong He",
+        "Ruocheng Wu"
+      ],
+      "categories": [
+        "q-fin.PR",
+        "econ.TH"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2507.04093v2",
+      "arxiv_id": "2507.04093v2"
+    },
+    {
+      "title": "Ambiguous volatility and asset pricing in continuous time",
+      "summary": "This paper formulates a model of utility for a continuous time framework that captures the decision-maker's concern with ambiguity about both volatility and drift. Corresponding extensions of some basic results in asset pricing theory are presented. First, we derive arbitrage-free pricing rules based on hedging arguments. Ambiguous volatility implies market incompleteness that rules out perfect hedging. Consequently, hedging arguments determine prices only up to intervals. However, sharper predictions can be obtained by assuming preference maximization and equilibrium. Thus we apply the model of utility to a representative agent endowment economy to study equilibrium asset returns. A version of the C-CAPM is derived and the effects of ambiguous volatility are described.",
+      "link": "http://arxiv.org/abs/1301.4614v1",
+      "published": "2013-01-20",
+      "authors": [
+        "Larry G. Epstein",
+        "Shaolin Ji"
+      ],
+      "categories": [
+        "q-fin.PR",
+        "math.PR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1301.4614v1",
+      "arxiv_id": "1301.4614v1"
+    },
+    {
+      "title": "(Early) AI Compute Asset Pricing",
+      "summary": "Compute (computing power) is a scarce, capital-intensive input at the center of the AI economy. Compute capital expenditure and service flow already exceed 1% of U.S. GDP and are growing rapidly. The price of compute reflects uncertainty over AI adoption. The announced launch of compute futures turns this uncertainty into a tradable risk, raising questions on the pricing of a new asset class. We provide an early asset-pricing framework for compute. We begin by discussing the underlying compute rental market and its indexation. We then turn to pricing: 1) direct no-arbitrage links between futures prices and current spot prices fail due to the non-storable nature of compute, 2) synthetic futures prices from existing term rental contracts are likely upper bounds on true futures prices and, 3) upon financialization, futures prices will be investors' expectations of spot prices at expiration net of a risk premium. Using synthetic futures as stand-ins before the compute futures market launches, we construct the first compute futures return panel sorted by GPU generation and maturity. Our preliminary evidence is consistent with a positive compute risk premium, suggesting hedging pressure on the part of compute providers.",
+      "link": "http://arxiv.org/abs/2607.12156v1",
+      "published": "2026-07-13",
+      "authors": [
+        "Federico M. Bandi",
+        "Yinan Su"
+      ],
+      "categories": [
+        "q-fin.PR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2607.12156v1",
+      "arxiv_id": "2607.12156v1"
+    },
+    {
+      "title": "Asset Pricing and Deep Learning",
+      "summary": "Traditional machine learning methods have been widely studied in financial innovation. My study focuses on the application of deep learning methods on asset pricing. I investigate various deep learning methods for asset pricing, especially for risk premia measurement. All models take the same set of predictive signals (firm characteristics, systematic risks and macroeconomics). I demonstrate high performance of all kinds of state-of-the-art (SOTA) deep learning methods, and figure out that RNNs with memory mechanism and attention have the best performance in terms of predictivity. Furthermore, I demonstrate large economic gains to investors using deep learning forecasts. The results of my comparative experiments highlight the importance of domain knowledge and financial theory when designing deep learning models. I also show return prediction tasks bring new challenges to deep learning. The time varying distribution causes distribution shift problem, which is essential for financial time series prediction. I demonstrate that deep learning methods can improve asset risk premium measurement. Due to the booming deep learning studies, they can constantly promote the study of underlying financial mechanisms behind asset pricing. I also propose a promising research method that learning from data and figuring out the underlying economic mechanisms through explainable artificial intelligence (AI) methods. My findings not only justify the value of deep learning in blooming fintech development, but also highlight their prospects and advantages over traditional machine learning methods.",
+      "link": "http://arxiv.org/abs/2209.12014v1",
+      "published": "2022-09-24",
+      "authors": [
+        "Chen Zhang"
+      ],
+      "categories": [
+        "q-fin.ST",
+        "cs.LG",
+        "q-fin.PR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2209.12014v1",
+      "arxiv_id": "2209.12014v1"
+    },
+    {
+      "title": "A note on arbitrage, approximate arbitrage and the fundamental theorem of asset pricing",
+      "summary": "We provide a critical analysis of the proof of the fundamental theorem of asset pricing given in the paper \"Arbitrage and approximate arbitrage: the fundamental theorem of asset pricing\" by B. Wong and C.C. Heyde (Stochastics, 2010) in the context of incomplete Itô-process models. We show that their approach can only work in the known case of a complete financial market model and give an explicit counterexample.",
+      "link": "http://arxiv.org/abs/1311.7027v1",
+      "published": "2013-11-27",
+      "authors": [
+        "Claudio Fontana"
+      ],
+      "categories": [
+        "q-fin.PR",
+        "math.PR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1311.7027v1",
+      "arxiv_id": "1311.7027v1"
+    },
+    {
+      "title": "Multimodal Reasoning with LLM for Encrypted Traffic Interpretation: A Benchmark",
+      "summary": "Network traffic, as a key media format, is crucial for ensuring security and communications in modern internet infrastructure. While existing methods offer excellent performance, they face two key bottlenecks: (1) They fail to capture multidimensional semantics beyond unimodal sequence patterns. (2) Their black box property, i.e., providing only category labels, lacks an auditable reasoning process. We identify a key factor that existing network traffic datasets are primarily designed for classification and inherently lack rich semantic annotations, failing to generate human-readable evidence report. To address data scarcity, this paper proposes a Byte-Grounded Traffic Description (BGTD) benchmark for the first time, combining raw bytes with structured expert annotations. BGTD provides necessary behavioral features and verifiable chains of evidence for multimodal reasoning towards explainable encrypted traffic interpretation. Built upon BGTD, this paper proposes an end-to-end traffic-language representation framework (mmTraffic), a multimodal reasoning architecture bridging physical traffic encoding and semantic interpretation. In order to alleviate modality interference and generative hallucinations, mmTraffic adopts a jointly-optimized perception-cognition architecture. By incorporating a perception-centered traffic encoder and a cognition-centered LLM generator, mmTraffic achieves refined traffic interpretation with guaranteed category prediction. Extensive experiments demonstrate that mmTraffic autonomously generates high-fidelity, human-readable, and evidence-grounded traffic interpretation reports, while maintaining highly competitive classification accuracy comparing to specialized unimodal model (e.g., NetMamba). The source code is available at https://github.com/lgzhangzlg/Multimodal-Reasoning-with-LLM-for-Encrypted-Traffic-Interpretation-A-Benchmark",
+      "link": "http://arxiv.org/abs/2604.08140v1",
+      "published": "2026-04-09",
+      "authors": [
+        "Longgang Zhang",
+        "Xiaowei Fu",
+        "Fuxiang Huang",
+        "Lei Zhang"
+      ],
+      "categories": [
+        "cs.CR",
+        "cs.AI",
+        "cs.MM",
+        "cs.NI"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2604.08140v1",
+      "arxiv_id": "2604.08140v1"
+    },
+    {
+      "title": "Factorized Inference in Deep Markov Models for Incomplete Multimodal Time Series",
+      "summary": "Integrating deep learning with latent state space models has the potential to yield temporal models that are powerful, yet tractable and interpretable. Unfortunately, current models are not designed to handle missing data or multiple data modalities, which are both prevalent in real-world data. In this work, we introduce a factorized inference method for Multimodal Deep Markov Models (MDMMs), allowing us to filter and smooth in the presence of missing data, while also performing uncertainty-aware multimodal fusion. We derive this method by factorizing the posterior p(z|x) for non-linear state space models, and develop a variational backward-forward algorithm for inference. Because our method handles incompleteness over both time and modalities, it is capable of interpolation, extrapolation, conditional generation, label prediction, and weakly supervised learning of multimodal time series. We demonstrate these capabilities on both synthetic and real-world multimodal data under high levels of data deletion. Our method performs well even with more than 50% missing data, and outperforms existing deep approaches to inference in latent time series.",
+      "link": "http://arxiv.org/abs/1905.13570v3",
+      "published": "2019-05-30",
+      "authors": [
+        "Tan Zhi-Xuan",
+        "Harold Soh",
+        "Desmond C. Ong"
+      ],
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.NE",
+        "stat.ML"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1905.13570v3",
+      "arxiv_id": "1905.13570v3"
+    },
+    {
+      "title": "Low Rank Fusion based Transformers for Multimodal Sequences",
+      "summary": "Our senses individually work in a coordinated fashion to express our emotional intentions. In this work, we experiment with modeling modality-specific sensory signals to attend to our latent multimodal emotional intentions and vice versa expressed via low-rank multimodal fusion and multimodal transformers. The low-rank factorization of multimodal fusion amongst the modalities helps represent approximate multiplicative latent signal interactions. Motivated by the work of~\\cite{tsai2019MULT} and~\\cite{Liu_2018}, we present our transformer-based cross-fusion architecture without any over-parameterization of the model. The low-rank fusion helps represent the latent signal interactions while the modality-specific attention helps focus on relevant parts of the signal. We present two methods for the Multimodal Sentiment and Emotion Recognition results on CMU-MOSEI, CMU-MOSI, and IEMOCAP datasets and show that our models have lesser parameters, train faster and perform comparably to many larger fusion-based architectures.",
+      "link": "http://arxiv.org/abs/2007.02038v1",
+      "published": "2020-07-04",
+      "authors": [
+        "Saurav Sahay",
+        "Eda Okur",
+        "Shachi H Kumar",
+        "Lama Nachman"
+      ],
+      "categories": [
+        "cs.CL"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2007.02038v1",
+      "arxiv_id": "2007.02038v1"
+    },
+    {
+      "title": "Structured Event Representation and Stock Return Predictability",
+      "summary": "We find that event features extracted by large language models (LLMs) are effective for text-based stock return prediction. Using a pre-trained LLM to extract event features from news articles, we propose a novel deep learning model based on structured event representation (SER) and attention mechanisms to predict stock returns in the cross-section. Our SER-based model provides superior performance compared with other existing text-driven models to forecast stock returns out of sample and offers highly interpretable feature structures to examine the mechanisms underlying the stock return predictability. We further provide various implications based on SER and highlight the crucial benefit of structured model inputs in stock return predictability.",
+      "link": "http://arxiv.org/abs/2512.19484v1",
+      "published": "2025-12-22",
+      "authors": [
+        "Gang Li",
+        "Dandan Qiao",
+        "Mingxuan Zheng"
+      ],
+      "categories": [
+        "econ.GN",
+        "cs.CE",
+        "stat.ML"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2512.19484v1",
+      "arxiv_id": "2512.19484v1"
+    },
+    {
+      "title": "FactorGCL: A Hypergraph-Based Factor Model with Temporal Residual Contrastive Learning for Stock Returns Prediction",
+      "summary": "As a fundamental method in economics and finance, the factor model has been extensively utilized in quantitative investment. In recent years, there has been a paradigm shift from traditional linear models with expert-designed factors to more flexible nonlinear machine learning-based models with data-driven factors, aiming to enhance the effectiveness of these factor models. However, due to the low signal-to-noise ratio in market data, mining effective factors in data-driven models remains challenging. In this work, we propose a hypergraph-based factor model with temporal residual contrastive learning (FactorGCL) that employs a hypergraph structure to better capture high-order nonlinear relationships among stock returns and factors. To mine hidden factors that supplement human-designed prior factors for predicting stock returns, we design a cascading residual hypergraph architecture, in which the hidden factors are extracted from the residual information after removing the influence of prior factors. Additionally, we propose a temporal residual contrastive learning method to guide the extraction of effective and comprehensive hidden factors by contrasting stock-specific residual information over different time periods. Our extensive experiments on real stock market data demonstrate that FactorGCL not only outperforms existing state-of-the-art methods but also mines effective hidden factors for predicting stock returns.",
+      "link": "http://arxiv.org/abs/2502.05218v1",
+      "published": "2025-02-05",
+      "authors": [
+        "Yitong Duan",
+        "Weiran Wang",
+        "Jian Li"
+      ],
+      "categories": [
+        "q-fin.ST",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2502.05218v1",
+      "arxiv_id": "2502.05218v1"
+    },
+    {
+      "title": "From Index to Equity: Pre-Training Transformers for Stock Return Prediction",
+      "summary": "This research aims to leverage machine learning to improve stock price prediction and support informed investment decisions related to buying, selling, and holding assets. Specifically, this work investigates transformer-based models for stock prediction and examines the impact of pre-training strategies on forecasting performance. A transformer model was first pre-trained on the Toronto Stock Exchange Index (TSX) to predict intra-day return direction and subsequently fine-tuned on individual TSX stocks. The model was further adapted for return-value regression tasks. Performance was benchmarked against Long Short-Term Memory (LSTM) and XGBoost models. Pre-training on the market index improved the binary cross-entropy loss for individual stock prediction from 0.69 to 0.64. The fine-tuned transformer regression model achieved lower mean squared error than the benchmark models, although the ensemble and XGBoost models achieved higher average daily returns. In addition, a practical application was developed to deliver real-time stock predictions for trading support. Future work will focus on increasing transformer model capacity, incorporating broader global technical indicators, and filtering out stocks with low predictability.",
+      "link": "http://arxiv.org/abs/2605.23962v1",
+      "published": "2026-05-12",
+      "authors": [
+        "Marie Soehl Coolsaet",
+        "Roberto Gallardo",
+        "Zhen Gao"
+      ],
+      "categories": [
+        "q-fin.ST",
+        "cs.LG"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2605.23962v1",
+      "arxiv_id": "2605.23962v1"
+    },
+    {
+      "title": "Time-varying return predictability in the Chinese stock market",
+      "summary": "China's stock market is the largest emerging market all over the world. It is widely accepted that the Chinese stock market is far from efficiency and it possesses possible linear and nonlinear dependence. We study the predictability of returns in the Chinese stock market by employing the wild bootstrap automatic variance ratio test and the generalized spectral test. We find that the return predictability vary over time and significant return predictability is observed around market turmoils. Our findings are consistent with the Adaptive Markets Hypothesis and have practical implications for market participants.",
+      "link": "http://arxiv.org/abs/1611.04090v1",
+      "published": "2016-11-13",
+      "authors": [
+        "Huai-Long Shi",
+        "Zhi-Qiang Jiang",
+        "Wei-Xing Zhou"
+      ],
+      "categories": [
+        "q-fin.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1611.04090v1",
+      "arxiv_id": "1611.04090v1"
+    },
+    {
+      "title": "Time-varying neural network for stock return prediction",
+      "summary": "We consider the problem of neural network training in a time-varying context. Machine learning algorithms have excelled in problems that do not change over time. However, problems encountered in financial markets are often time-varying. We propose the online early stopping algorithm and show that a neural network trained using this algorithm can track a function changing with unknown dynamics. We compare the proposed algorithm to current approaches on predicting monthly U.S. stock returns and show its superiority. We also show that prominent factors (such as the size and momentum effects) and industry indicators, exhibit time varying stock return predictiveness. We find that during market distress, industry indicators experience an increase in importance at the expense of firm level features. This indicates that industries play a role in explaining stock returns during periods of heightened risk.",
+      "link": "http://arxiv.org/abs/2003.02515v4",
+      "published": "2020-03-05",
+      "authors": [
+        "Steven Y. K. Wong",
+        "Jennifer Chan",
+        "Lamiae Azizi",
+        "Richard Y. D. Xu"
+      ],
+      "categories": [
+        "q-fin.CP",
+        "cs.LG",
+        "q-fin.PM"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2003.02515v4",
+      "arxiv_id": "2003.02515v4"
+    },
+    {
+      "title": "Predicting Stock Returns with Batched AROW",
+      "summary": "We extend the AROW regression algorithm developed by Vaits and Crammer in [VC11] to handle synchronous mini-batch updates and apply it to stock return prediction. By design, the model should be more robust to noise and adapt better to non-stationarity compared to a simple rolling regression. We empirically show that the new model outperforms more classical approaches by backtesting a strategy on S\\&P500 stocks.",
+      "link": "http://arxiv.org/abs/2003.03076v2",
+      "published": "2020-03-06",
+      "authors": [
+        "Rachid Guennouni Hassani",
+        "Alexis Gilles",
+        "Emmanuel Lassalle",
+        "Arthur Dénouveaux"
+      ],
+      "categories": [
+        "q-fin.CP",
+        "stat.ML"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2003.03076v2",
+      "arxiv_id": "2003.03076v2"
+    },
+    {
+      "title": "Neuroevolution Neural Architecture Search for Evolving RNNs in Stock Return Prediction and Portfolio Trading",
+      "summary": "Stock return forecasting is a major component of numerous finance applications. Predicted stock returns can be incorporated into portfolio trading algorithms to make informed buy or sell decisions which can optimize returns. In such portfolio trading applications, the predictive performance of a time series forecasting model is crucial. In this work, we propose the use of the Evolutionary eXploration of Augmenting Memory Models (EXAMM) algorithm to progressively evolve recurrent neural networks (RNNs) for stock return predictions. RNNs are evolved independently for each stocks and portfolio trading decisions are made based on the predicted stock returns. The portfolio used for testing consists of the 30 companies in the Dow-Jones Index (DJI) with each stock have the same weight. Results show that using these evolved RNNs and a simple daily long-short strategy can generate higher returns than both the DJI index and the S&P 500 Index for both 2022 (bear market) and 2023 (bull market).",
+      "link": "http://arxiv.org/abs/2410.17212v1",
+      "published": "2024-10-22",
+      "authors": [
+        "Zimeng Lyu",
+        "Amulya Saxena",
+        "Rohaan Nadeem",
+        "Hao Zhang",
+        "Travis Desell"
+      ],
+      "categories": [
+        "q-fin.PM",
+        "cs.AI",
+        "cs.CE",
+        "cs.LG"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2410.17212v1",
+      "arxiv_id": "2410.17212v1"
+    },
+    {
+      "title": "Multifractal characteristics and return predictability in the Chinese stock markets",
+      "summary": "By adopting Multifractal detrended fluctuation (MF-DFA) analysis methods, the multifractal nature is revealed in the high-frequency data of two typical indexes, the Shanghai Stock Exchange Composite 180 Index (SH180) and the Shenzhen Stock Exchange Composite Index (SZCI). The characteristics of the corresponding multifractal spectra are defined as a measurement of market volatility. It is found that there is a statistically significant relationship between the stock index returns and the spectral characteristics, which can be applied to forecast the future market return. The in-sample and out-of-sample tests on the return predictability of multifractal characteristics indicate the spectral width $Δα$ is a significant and positive excess return predictor. Our results shed new lights on the application of multifractal nature in asset pricing.",
+      "link": "http://arxiv.org/abs/1806.07604v1",
+      "published": "2018-06-20",
+      "authors": [
+        "Xin-Lan Fu",
+        "Xing-Lu Gao",
+        "Zheng Shan",
+        "Zhi-Qiang Jiang",
+        "Wei-Xing Zhou"
+      ],
+      "categories": [
+        "q-fin.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1806.07604v1",
+      "arxiv_id": "1806.07604v1"
+    },
+    {
+      "title": "The Role of Intangible Investment in Predicting Stock Returns: Six Decades of Evidence",
+      "summary": "Using an intangible intensity factor that is orthogonal to the Fama--French factors, we compare the role of intangible investment in predicting stock returns over the periods 1963--1992 and 1993--2022. For 1963--1992, intangible investment is weak in predicting stock returns, but for 1993--2022, the predictive power of intangible investment becomes very strong. Intangible investment has a significant impact not only on the MTB ratio (Fama--French high minus low [HML] factor) but also on operating profitability (OP) (Fama--French robust minus weak [RMW] factor) when forecasting stock returns from 1993 to 2022. For intangible asset-intensive firms, intangible investment is the main predictor of stock returns, rather than MTB ratio and profitability. Our evidence suggests that intangible investment has become an important factor in explaining stock returns over time, independent of other factors such as profitability and MTB ratio.",
+      "link": "http://arxiv.org/abs/2505.16336v1",
+      "published": "2025-05-22",
+      "authors": [
+        "Lin Li"
+      ],
+      "categories": [
+        "q-fin.PR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2505.16336v1",
+      "arxiv_id": "2505.16336v1"
+    },
+    {
+      "title": "Value matters: Predictability of Stock Index Returns",
+      "summary": "We present a simple dynamical model of stock index returns which is grounded on the ability of the Cyclically Adjusted Price Earning (CAPE) valuation ratio devised by Robert Shiller to predict long-horizon performances of the market. More precisely, we discuss a discrete time dynamics in which the return growth depends on three components: i) a momentum component, naturally justified in terms of agents' belief that expected returns are higher in bullish markets than in bearish ones, ii) a fundamental component proportional to the logarithmic CAPE at time zero. The initial value of the ratio determines the reference growth level, from which the actual stock price may deviate as an effect of random external disturbances, and iii) a driving component which ensures the diffusive behaviour of stock prices. Under these assumptions, we prove that for a sufficiently large horizon the expected rate of return and the expected gross return are linear in the initial logarithmic CAPE, and their variance goes to zero with a rate of convergence consistent with the diffusive behaviour. Eventually this means that the momentum component may generate bubbles and crashes in the short and medium run, nevertheless the valuation ratio remains a good reference point of future long-run returns.",
+      "link": "http://arxiv.org/abs/1204.5055v2",
+      "published": "2012-04-23",
+      "authors": [
+        "Natascia Angelini",
+        "Giacomo Bormetti",
+        "Stefano Marmi",
+        "Franco Nardini"
+      ],
+      "categories": [
+        "q-fin.GN"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1204.5055v2",
+      "arxiv_id": "1204.5055v2"
+    },
+    {
+      "title": "RVRAE: A Dynamic Factor Model Based on Variational Recurrent Autoencoder for Stock Returns Prediction",
+      "summary": "In recent years, the dynamic factor model has emerged as a dominant tool in economics and finance, particularly for investment strategies. This model offers improved handling of complex, nonlinear, and noisy market conditions compared to traditional static factor models. The advancement of machine learning, especially in dealing with nonlinear data, has further enhanced asset pricing methodologies. This paper introduces a groundbreaking dynamic factor model named RVRAE. This model is a probabilistic approach that addresses the temporal dependencies and noise in market data. RVRAE ingeniously combines the principles of dynamic factor modeling with the variational recurrent autoencoder (VRAE) from deep learning. A key feature of RVRAE is its use of a prior-posterior learning method. This method fine-tunes the model's learning process by seeking an optimal posterior factor model informed by future data. Notably, RVRAE is adept at risk modeling in volatile stock markets, estimating variances from latent space distributions while also predicting returns. Our empirical tests with real stock market data underscore RVRAE's superior performance compared to various established baseline methods.",
+      "link": "http://arxiv.org/abs/2403.02500v1",
+      "published": "2024-03-04",
+      "authors": [
+        "Yilun Wang",
+        "Shengjie Guo"
+      ],
+      "categories": [
+        "q-fin.PM",
+        "cs.LG",
+        "q-fin.PR"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2403.02500v1",
+      "arxiv_id": "2403.02500v1"
+    },
+    {
+      "title": "A Study on Neural Network Architecture Applied to the Prediction of Brazilian Stock Returns",
+      "summary": "In this paper we present a statistical analysis about the characteristics that we intend to influence in the performance of the neural networks in terms of assertiveness in the prediction of Brazilian stock returns. We created a population of architectures for analysis and extracted the sample that had the best assertive performance. It was verified how the characteristics of this sample stand out and affect the neural networks. In addition, we make inferences about what kind of influence the different architectures have on the performance of neural networks. In the study, the prediction of the return of a Brazilian stock traded on the stock exchange of São Paulo to measure the error committed by the different architectures of constructed neural networks. The results are promising and indicate that some aspects of the neural network architecture have a significant impact on the assertiveness of the model.",
+      "link": "http://arxiv.org/abs/1901.09143v1",
+      "published": "2019-01-26",
+      "authors": [
+        "Leonardo Felizardo",
+        "Afonso Pinto"
+      ],
+      "categories": [
+        "q-fin.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1901.09143v1",
+      "arxiv_id": "1901.09143v1"
+    },
+    {
+      "title": "Modelling stock correlations with expected returns from investors",
+      "summary": "Stock correlations is crucial to asset pricing, investor decision-making, and financial risk regulations. However, microscopic explanation based on agent-based modeling is still lacking. We here propose a model derived from minority game for modeling stock correlations, in which an agent's expected return for one stock is influenced by the historical return of the other stock. Each agent makes a decision based on his expected return with reference to information dissemination and the historical return of the stock. We find that the returns of the stocks are positively (negatively) correlated when agents' expected returns for one stock are positively (negatively) correlated with the historical return of the other. We provide both numerical simulations and analytical studies and give explanations to stock correlations for cases with agents having either homogeneous or heterogeneous expected returns. The result still holds when other factors such as holding decisions and external events are included which broadens the practicability of the model.",
+      "link": "http://arxiv.org/abs/1803.02019v2",
+      "published": "2018-03-06",
+      "authors": [
+        "Ming-Yuan Yang",
+        "Sai-Ping Li",
+        "Li-Xin Zhong",
+        "Fei Ren"
+      ],
+      "categories": [
+        "q-fin.CP",
+        "q-fin.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1803.02019v2",
+      "arxiv_id": "1803.02019v2"
+    },
+    {
+      "title": "Multi-Horizon Echo State Network Prediction of Intraday Stock Returns",
+      "summary": "Stock return prediction is a problem that has received much attention in the finance literature. In recent years, sophisticated machine learning methods have been shown to perform significantly better than ''classical'' prediction techniques. One downside of these approaches is that they are often very expensive to implement, for both training and inference, because of their high complexity. We propose a return prediction framework for intraday returns at multiple horizons based on Echo State Network (ESN) models, wherein a large portion of parameters are drawn at random and never trained. We show that this approach enjoys the benefits of recurrent neural network expressivity, inherently efficient implementation, and strong forecasting performance.",
+      "link": "http://arxiv.org/abs/2504.19623v1",
+      "published": "2025-04-28",
+      "authors": [
+        "Giovanni Ballarin",
+        "Jacopo Capra",
+        "Petros Dellaportas"
+      ],
+      "categories": [
+        "q-fin.CP",
+        "q-fin.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2504.19623v1",
+      "arxiv_id": "2504.19623v1"
+    },
+    {
+      "title": "Ensemble Committees for Stock Return Classification and Prediction",
+      "summary": "This paper considers a portfolio trading strategy formulated by algorithms in the field of machine learning. The profitability of the strategy is measured by the algorithm's capability to consistently and accurately identify stock indices with positive or negative returns, and to generate a preferred portfolio allocation on the basis of a learned model. Stocks are characterized by time series data sets consisting of technical variables that reflect market conditions in a previous time interval, which are utilized produce binary classification decisions in subsequent intervals. The learned model is constructed as a committee of random forest classifiers, a non-linear support vector machine classifier, a relevance vector machine classifier, and a constituent ensemble of k-nearest neighbors classifiers. The Global Industry Classification Standard (GICS) is used to explore the ensemble model's efficacy within the context of various fields of investment including Energy, Materials, Financials, and Information Technology. Data from 2006 to 2012, inclusive, are considered, which are chosen for providing a range of market circumstances for evaluating the model. The model is observed to achieve an accuracy of approximately 70% when predicting stock price returns three months in advance.",
+      "link": "http://arxiv.org/abs/1404.1492v1",
+      "published": "2014-04-05",
+      "authors": [
+        "James Brofos"
+      ],
+      "categories": [
+        "stat.ML",
+        "cs.LG"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1404.1492v1",
+      "arxiv_id": "1404.1492v1"
+    },
+    {
+      "title": "A Large Confirmatory Dynamic Factor Model for Stock Market Returns in Different Time Zones",
+      "summary": "We propose a confirmatory dynamic factor model for a large number of stocks whose returns are observed daily across multiple time zones. The model has a global factor and a continental factor that both drive the individual stock return series. We propose two estimators of the model: a quasi-maximum likelihood estimator (QML-just-identified), and an improved estimator based on an Expectation Maximization (EM) algorithm (QML-all-res). Our estimators are consistent and asymptotically normal under the large approximate factor model setting. In particular, the asymptotic distributions of QML-all-res are the same as those of the infeasible OLS estimators that treat factors as known and utilize all the restrictions on the parameters of the model. We apply the model to MSCI equity indices of 42 developed and emerging markets, and find that most markets are more integrated when the CBOE Volatility Index (VIX) is high.",
+      "link": "http://arxiv.org/abs/2202.03638v7",
+      "published": "2022-02-08",
+      "authors": [
+        "Oliver B. Linton",
+        "Haihan Tang",
+        "Jianbin Wu"
+      ],
+      "categories": [
+        "math.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2202.03638v7",
+      "arxiv_id": "2202.03638v7"
+    },
+    {
+      "title": "A New Multivariate Predictive Model for Stock Returns",
+      "summary": "One of the most important studies in finance is to find out whether stock returns could be predicted. This research aims to create a new multivariate model, which includes dividend yield, earnings-to-price ratio, book-to-market ratio as well as consumption-wealth ratio as explanatory variables, for future stock returns predictions. The new multivariate model will be assessed for its forecasting performance using empirical analysis. The empirical analysis is performed on S&P500 quarterly data from Quarter 1, 1952 to Quarter 4, 2019 as well as S&P500 monthly data from Month 12, 1920 to Month 12, 2019. Results have shown this new multivariate model has predictability for future stock returns. When compared to other benchmark models, the new multivariate model performs the best in terms of the Root Mean Squared Error (RMSE) most of the time.",
+      "link": "http://arxiv.org/abs/2110.01873v1",
+      "published": "2021-10-05",
+      "authors": [
+        "Jianying Xie"
+      ],
+      "categories": [
+        "econ.EM",
+        "stat.AP"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2110.01873v1",
+      "arxiv_id": "2110.01873v1"
+    },
+    {
+      "title": "Macroeconomic factors and Stock exchange return: A Statistical Analysis",
+      "summary": "The purpose of this research is to examine the relationship between the Dhaka Stock exchange index return and macroeconomic variables such as exchange rate, inflation, money supply etc. The long-term relationship between macroeconomic variables and stock market returns has been analyzed by using the Johnson Cointegration test, Augmented Dicky Fuller (ADF) and Phillip Perron (PP) tests. The results revealed the existence of cointegrating relationship between stock prices and the macroeconomic variables in the Dhaka stock exchange. The consumer price index, money supply, and exchange rates proved to be strongly associated with stock returns, while market capitalization was found to be negatively associated with stock returns. The findings suggest that in the long run, the Dhaka stock exchange is reactive to macroeconomic indicators.",
+      "link": "http://arxiv.org/abs/2305.02229v1",
+      "published": "2023-05-03",
+      "authors": [
+        "Md. Fazlul Huq Khan",
+        "Md. Masum Billah"
+      ],
+      "categories": [
+        "econ.GN"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2305.02229v1",
+      "arxiv_id": "2305.02229v1"
+    },
+    {
+      "title": "Designing an Optimal Portfolio for Iran's Stock Market with Genetic Algorithm using Neural Network Prediction of Risk and Return Stocks",
+      "summary": "Optimal capital allocation between different assets is an important financial problem, which is generally framed as the portfolio optimization problem. General models include the single-period and multi-period cases. The traditional Mean-Variance model introduced by Harry Markowitz has been the basis of many models used to solve the portfolio optimization problem. The overall goal is to achieve the highest return and lowest risk in portfolio optimization problems. In this paper, we will present an optimal portfolio based the Markowitz Mean-Variance-Skewness with weight constraints model for short-term investment opportunities in Iran's stock market. We will use a neural network based predictor to predict the stock returns and measure the risk of stocks based on the prediction errors in the neural network. We will perform a series of experiments on our portfolio optimization model with the real data from Iran's stock market indices including Bank, Insurance, Investment, Petroleum Products and Chemicals indices. Finally, 8 different portfolios with low, medium and high risks for different type of investors (risk-averse or risk taker) using genetic algorithm will be designed and analyzed.",
+      "link": "http://arxiv.org/abs/1903.06632v1",
+      "published": "2019-02-17",
+      "authors": [
+        "Masoud Fekri",
+        "Babak Barazandeh"
+      ],
+      "categories": [
+        "q-fin.PM"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/1903.06632v1",
+      "arxiv_id": "1903.06632v1"
+    },
+    {
+      "title": "Fine-Tuning Large Language Models for Stock Return Prediction Using Newsflow",
+      "summary": "Large language models (LLMs) and their fine-tuning techniques have demonstrated superior performance in various language understanding and generation tasks. This paper explores fine-tuning LLMs for stock return forecasting with financial newsflow. In quantitative investing, return forecasting is fundamental for subsequent tasks like stock picking, portfolio optimization, etc. We formulate the model to include text representation and forecasting modules. We propose to compare the encoder-only and decoder-only LLMs, considering they generate text representations in distinct ways. The impact of these different representations on forecasting performance remains an open question. Meanwhile, we compare two simple methods of integrating LLMs' token-level representations into the forecasting module. The experiments on real news and investment universes reveal that: (1) aggregated representations from LLMs' token-level embeddings generally produce return predictions that enhance the performance of long-only and long-short portfolios; (2) in the relatively large investment universe, the decoder LLMs-based prediction model leads to stronger portfolios, whereas in the small universes, there are no consistent winners. Among the three LLMs studied (DeBERTa, Mistral, Llama), Mistral performs more robustly across different universes; (3) return predictions derived from LLMs' text representations are a strong signal for portfolio construction, outperforming conventional sentiment scores.",
+      "link": "http://arxiv.org/abs/2407.18103v2",
+      "published": "2024-07-25",
+      "authors": [
+        "Tian Guo",
+        "Emmanuel Hauptmann"
+      ],
+      "categories": [
+        "q-fin.CP",
+        "cs.LG",
+        "q-fin.PM"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2407.18103v2",
+      "arxiv_id": "2407.18103v2"
+    },
+    {
+      "title": "Stock Return Prediction based on a Functional Capital Asset Pricing Model",
+      "summary": "The capital asset pricing model (CAPM) is readily used to capture a linear relationship between the daily returns of an asset and a market index. We extend this model to an intraday high-frequency setting by proposing a functional CAPM estimation approach. The functional CAPM is a stylized example of a function-on-function linear regression with a bivariate functional regression coefficient. The two-dimensional regression coefficient measures the cross-covariance between cumulative intraday asset returns and market returns. We apply it to the Standard and Poor's 500 index and its constituent stocks to demonstrate its practicality. We investigate the functional CAPM's in-sample goodness-of-fit and out-of-sample prediction for an asset's cumulative intraday return. The findings suggest that the proposed functional CAPM methods have superior model goodness-of-fit and forecast accuracy compared to the traditional CAPM empirical estimation. In particular, the functional methods produce better model goodness-of-fit and prediction accuracy for stocks traditionally considered less price-efficient or more information-opaque.",
+      "link": "http://arxiv.org/abs/2504.01239v1",
+      "published": "2025-04-01",
+      "authors": [
+        "Ufuk Beyaztas",
+        "Kaiying Ji",
+        "Han Lin Shang",
+        "Eliza Wu"
+      ],
+      "categories": [
+        "stat.ME",
+        "stat.AP"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2504.01239v1",
+      "arxiv_id": "2504.01239v1"
+    },
+    {
+      "title": "Model for Non-Gaussian Intraday Stock Returns",
+      "summary": "Stock prices are known to exhibit non-Gaussian dynamics, and there is much interest in understanding the origin of this behavior. Here, we present a model that explains the shape and scaling of the distribution of intraday stock price fluctuations (called intraday returns) and verify the model using a large database for several stocks traded on the London Stock Exchange. We provide evidence that the return distribution for these stocks is non-Gaussian and similar in shape, and that the distribution appears stable over intraday time scales. We explain these results by assuming the volatility of returns is constant intraday, but varies over longer periods such that its inverse square follows a gamma distribution. This produces returns that are Student distributed for intraday time scales. The predicted results show excellent agreement with the data for all stocks in our study and over all regions of the return distribution.",
+      "link": "http://arxiv.org/abs/0906.3841v2",
+      "published": "2009-06-21",
+      "authors": [
+        "Austin Gerig",
+        "Javier Vicente",
+        "Miguel A. Fuentes"
+      ],
+      "categories": [
+        "q-fin.ST",
+        "q-fin.RM"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/0906.3841v2",
+      "arxiv_id": "0906.3841v2"
+    },
+    {
+      "title": "A Nested Factor Model for Equity Markets: Reconciling Multifractal Stock Returns and Rough Index Volatilities",
+      "summary": "The Nested factor model was introduced by Chicheportiche et al. to represent non-linear correlations between stocks. Stock returns are explained by a standard factor model, but the (log)-volatilities of factors and residuals are themselves decomposed into factor modes, with a common dominant volatility mode affecting both market and sector factors but also residuals. Here, we consider the case of a single factor where the only dominant log-volatility mode is rough, with a Hurst exponent $H \\simeq 0.11$ and the log-volatility residuals are ''super-rough'' or ''multifractal'', with $H \\simeq 0$. We demonstrate that such a construction naturally accounts for the somewhat surprising stylized fact reported by Wu et al. , where it has been observed that the Hurst exponents of stock indexes are large compared to those of individual stocks. We propose a statistical procedure to estimate the Hurst factor exponent from the stock returns dynamics together with theoretical guarantees of its consistency. We demonstrate the effectiveness of our approach through numerical experiments and apply it to daily stock data from the S&P500 index. The estimated roughness exponents for both the factor and idiosyncratic components validate the assumptions underlying our model.",
+      "link": "http://arxiv.org/abs/2505.02678v4",
+      "published": "2025-05-05",
+      "authors": [
+        "Othmane Zarhali",
+        "Cecilia Aubrun",
+        "Emmanuel Bacry",
+        "Jean-Philippe Bouchaud",
+        "Jean-François Muzy"
+      ],
+      "categories": [
+        "q-fin.ST"
+      ],
+      "pdf_link": "https://arxiv.org/pdf/2505.02678v4",
+      "arxiv_id": "2505.02678v4"
+    }
+  ]
+}

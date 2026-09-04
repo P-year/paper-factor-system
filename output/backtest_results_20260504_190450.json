@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-05-04 19:04:50",
+  "mode": "estimate",
+  "config": {
+    "start_date": "20180101",
+    "end_date": "20241231",
+    "universe": "全A股",
+    "weighting": "equal",
+    "quantile_groups": "5",
+    "rebalance_freq": "monthly",
+    "min_icir": "0.3",
+    "min_top_return": "-20"
+  },
+  "total_factors": 1,
+  "results": [
+    {
+      "factor_name": "社交媒体情绪因子",
+      "ic": 0.0533,
+      "icir": 0.6956,
+      "rank_ic": 0.043,
+      "top_return": 7.6122,
+      "bottom_return": -10.505,
+      "top_minus_bottom": 18.1172,
+      "annual_return": 9.2413,
+      "max_drawdown": 18.282,
+      "win_rate": 0.6666,
+      "sharpe": 0.7582,
+      "t_stat": 5.2973,
+      "p_value": 0.001,
+      "data_points": 60,
+      "modality": "single",
+      "news_contribution": ""
+    }
+  ],
+  "summary": {
+    "mean_ic": 0.0533,
+    "mean_icir": 0.6956,
+    "best_factor": "社交媒体情绪因子",
+    "best_icir": 0.6955772168312154
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "papers": [
+    {
+      "arxiv_id": "test://cost_smoke",
+      "title": "Test momentum paper for cost tracking",
+      "summary": "本文研究 1 月动量因子在 A 股的表现。",
+      "link": "test://cost_smoke"
+    }
+  ],
+  "stats": {
+    "total": 1,
+    "source": "injected"
+  }
+}

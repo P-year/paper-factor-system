@@ -1,0 +1,14 @@
+{
+  "papers": [
+    {
+      "arxiv_id": "test://momentum_paper",
+      "title": "Short-term Reversal in A-shares",
+      "summary": "本文研究 A 股 1 个月动量因子的反转效应，月度 IC 约 -0.04。基于 2015-2024 年全 A 数据，1 月反转因子多空组合年化 -8%。",
+      "link": "test://momentum_paper"
+    }
+  ],
+  "stats": {
+    "total": 1,
+    "source": "injected"
+  }
+}

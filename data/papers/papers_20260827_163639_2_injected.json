@@ -1,0 +1,14 @@
+{
+  "papers": [
+    {
+      "arxiv_id": "test://cache_test",
+      "title": "Cost cache test",
+      "summary": "test",
+      "link": "test://cache_test"
+    }
+  ],
+  "stats": {
+    "total": 1,
+    "source": "injected"
+  }
+}

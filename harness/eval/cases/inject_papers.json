@@ -1,0 +1,109 @@
+{
+  "_comment": "Inject-papers eval cases. 给定论文，跳过 collect，直接进 analyze / persist / quality / backtest。",
+  "test_cases": [
+    {
+      "id": "case_inject_momentum_dict",
+      "type": "inject_papers",
+      "pipeline": "paper_factor",
+      "goal": "从给定论文提取动量因子并回测",
+      "input_papers": [
+        {
+          "source": "dict",
+          "title": "Momentum Strategies in Chinese A-Share Market",
+          "summary": "本文系统研究 A 股市场 1 个月、3 个月、12 个月动量因子的截面预测能力。基于 2010-2024 年的全 A 数据，发现 1 个月动量因子（月度反转）在 A 股有显著的反转效应，月度 IC 约 -0.03，ICIR 约 -0.5。12 个月动量因子效果较弱但仍可作为组合构建的辅助因子。",
+          "link": "test://paper_momentum_2024"
+        }
+      ],
+      "skip_nodes": ["collect"],
+      "expected_steps": ["analyze", "persist_factors", "quality_check", "backtest", "respond"],
+      "min_papers": 1,
+      "min_factors": 1,
+      "judge_criteria": [
+        "成功从论文提取至少1个动量相关因子",
+        "quality_check 给出可行性判断（heuristic 或 LLM 近似）",
+        "backtest 阶段用真实数据跑了回测",
+        "respond 阶段输出包含因子名 + IC/ICIR 指标"
+      ],
+      "weight": 1.0
+    },
+    {
+      "id": "case_inject_quality_dict",
+      "type": "inject_papers",
+      "pipeline": "paper_factor",
+      "goal": "从给定论文提取 ROE 质量因子并回测",
+      "input_papers": [
+        {
+          "source": "dict",
+          "title": "Profitability Factor and Cross-section of Stock Returns",
+          "summary": "本文用 ROE、ROA、毛利率等盈利质量指标构造多空组合。在 A 股市场 2015-2024 年区间，ROE 因子表现最稳定，多空组合年化收益 8.5%，最大回撤 12%。结合毛利率和净利率的复合因子 IC 提升至 0.045。",
+          "link": "test://paper_quality_2024"
+        }
+      ],
+      "skip_nodes": ["collect"],
+      "expected_steps": ["analyze", "persist_factors", "quality_check", "backtest", "respond"],
+      "min_papers": 1,
+      "min_factors": 1,
+      "judge_criteria": [
+        "成功从论文提取至少1个质量因子（ROE / 毛利率 / 净利率）",
+        "feasibility check 把因子近似到 ROE 或 gross_profit_margin",
+        "回测阶段正常完成",
+        "输出包含因子名 + IC 值"
+      ],
+      "weight": 1.0
+    },
+    {
+      "id": "case_inject_multi_dict",
+      "type": "inject_papers",
+      "pipeline": "paper_factor",
+      "goal": "从两篇论文分别提取动量+质量因子，回测对比",
+      "input_papers": [
+        {
+          "source": "dict",
+          "title": "Short-term Reversal in China",
+          "summary": "本文发现 A 股市场存在显著的 1 个月短期反转效应，月度 IC 约 -0.04。"
+        },
+        {
+          "source": "dict",
+          "title": "Quality Premium in Emerging Markets",
+          "summary": "本文发现 ROE 因子在新兴市场有 5-7% 的年化溢价，IC 稳定在 0.03-0.05。"
+        }
+      ],
+      "skip_nodes": ["collect"],
+      "expected_steps": ["analyze", "persist_factors", "quality_check", "backtest", "respond"],
+      "min_papers": 2,
+      "min_factors": 2,
+      "judge_criteria": [
+        "从 2 篇论文分别提取至少 2 个不同因子",
+        "quality_check 对每个因子给出独立可行性判断",
+        "回测阶段对每个 feasible 因子分别跑了回测",
+        "respond 输出包含多个因子对比"
+      ],
+      "weight": 1.5
+    },
+    {
+      "id": "case_inject_non_factor_paper",
+      "type": "inject_papers",
+      "pipeline": "paper_factor",
+      "goal": "给一篇非因子论文，应识别为非因子",
+      "input_papers": [
+        {
+          "source": "dict",
+          "title": "Deep Reinforcement Learning for Portfolio Optimization with Transaction Costs",
+          "summary": "本文提出基于深度强化学习的组合优化方法，考虑交易成本和市场冲击。在加密货币回测中年化收益 35%。需要高频 tick 数据和 GPU 训练环境。",
+          "link": "test://paper_rl_2024"
+        }
+      ],
+      "skip_nodes": ["collect"],
+      "expected_steps": ["analyze", "respond"],
+      "min_papers": 1,
+      "min_factors": 0,
+      "judge_criteria": [
+        "agent 正确识别该论文不是传统因子论文",
+        "没有为了凑结果而编造因子",
+        "feasibility check 正确判 infeasible（高频数据 / DL 模型）",
+        "respond 给出合理的'无可行因子'反馈"
+      ],
+      "weight": 0.8
+    }
+  ]
+}

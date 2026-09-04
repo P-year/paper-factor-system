@@ -1,0 +1,20 @@
+{
+  "papers": [
+    {
+      "arxiv_id": "https://x/p1",
+      "title": "P1",
+      "summary": "S1",
+      "link": "https://x/p1"
+    },
+    {
+      "arxiv_id": "manual:5890595e16",
+      "title": "P2",
+      "summary": "S2",
+      "link": "https://arxiv.org/abs/manual:5890595e16"
+    }
+  ],
+  "stats": {
+    "total": 2,
+    "source": "injected"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "papers": [
+    {
+      "arxiv_id": "https://test/p1",
+      "title": "Test momentum paper",
+      "summary": "abstract here",
+      "link": "https://test/p1"
+    }
+  ],
+  "stats": {
+    "total": 1,
+    "source": "injected"
+  }
+}
