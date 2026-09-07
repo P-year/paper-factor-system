@@ -4,14 +4,15 @@ analyze_node - LLM 提取因子（调 extract_factor_tool）
 v3-6：每个提取的 factor 标 _lineage（source_paper_id / extract_iteration / timestamp）。
 v3-7：每个 factor 跑 verify_extracted_factor 打 _verified / _verify_issues，
       防止"假因子"（名字太宽泛 / 公式空泛 / 过度自信）流入下游。
+v3-8：改用 harness/tool_call.verified_extracted_factor() 闭环 wrapper——
+      自动 verify + 标记 + 跟踪每次调用的元数据（_tool_attempts / _tool_name）。
 """
 from typing import Any, Dict, List
 
 from pipelines.paper_factor.state import PaperFactorState
-from agent.tools import extract_factor_tool
 from harness.observability import observe_node
 from harness.lineage import tag_factor_lineage
-from harness.verify import verify_extracted_factor
+from harness.tool_call import verified_extracted_factor
 
 
 def _load_papers(paper_ids: List[str]) -> List[Dict]:
@@ -36,7 +37,7 @@ def _load_papers(paper_ids: List[str]) -> List[Dict]:
 
 @observe_node("analyze_node")
 def analyze_node(state: PaperFactorState) -> Dict[str, Any]:
-    """真实分析：对 collected_paper_ids 调用 extract_factor_tool"""
+    """真实分析：对 collected_paper_ids 调用 extract_factor_tool（闭环 wrapper）"""
     paper_ids = state.get("collected_paper_ids", [])
 
     if not paper_ids:
@@ -48,24 +49,31 @@ def analyze_node(state: PaperFactorState) -> Dict[str, Any]:
 
     new_factors = list(state.get("extracted_factors", []))
     errors = list(state.get("errors", []))
+    verify_log: List[Dict[str, Any]] = list(state.get("verify_log", []))
 
     for paper in papers:
-        r = extract_factor_tool(paper)
+        # v3-8：使用闭环 wrapper
+        r = verified_extracted_factor(paper, max_retries=0)
         if r.get("error"):
             errors.append(f"extract_factor failed for {paper.get('title', '?')[:30]}: {r['error']}")
             continue
         if r.get("is_factor") and r.get("factor"):
             factor = r["factor"]
-            # v3-7：verify 提取的因子（假因子 / 字段缺失 / 过度自信）
-            v = verify_extracted_factor(factor)
-            factor["_verified"] = v["verified"]
-            factor["_verify_issues"] = v["issues"]
-            factor["_verify_confidence"] = v["confidence"]
+            # 闭环 wrapper 已经打了 _verified / _verify_issues / _verify_confidence / _tool_attempts
             # v3-6：tag lineage
             tag_factor_lineage(factor, state, source_paper=paper)
             new_factors.append(factor)
 
+            # 记录 verify 日志
+            if not factor.get("_verified", True):
+                verify_log.append({
+                    "factor_name": factor.get("factor_name"),
+                    "paper_title": paper.get("title", "")[:50],
+                    "issues": factor.get("_verify_issues", []),
+                })
+
     return {
         "extracted_factors": new_factors,
         "errors": errors,
+        "verify_log": verify_log,
     }
