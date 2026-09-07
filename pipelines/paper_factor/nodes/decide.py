@@ -41,24 +41,40 @@ def _apply_human_action(state: PaperFactorState, action: Dict) -> Dict[str, Any]
 
 @observe_node("decide_node")
 def decide_node(state: PaperFactorState) -> Dict[str, Any]:
-    """决策节点：应用 human_action 或自动决策"""
+    """决策节点：应用 human_action 或自动决策
+
+    v3-7：增加 _verified 检查——未通过 verify 的回测结果不进 pending，
+    防止错误决策（IC=NaN / 方向反转 / 数据不足等系统 bug 导致的 reject 误判）。
+    """
 
     # 收集所有待审批项
     backtest = state.get("backtest_results", [])
     pending = list(state.get("pending_decisions", []))
+    skipped_unverified: list = []
 
     # 找出还没进 pending 的回测结果
     pending_names = {p.get("factor_name") for p in pending}
     for r in backtest:
         fname = r.get("original_factor_name") or r.get("factor_name", "")
         if fname and fname not in pending_names and not r.get("_stub"):
+            # v3-7：未通过 verify 的不进 pending（避免错误决策）
+            if r.get("_verified") is False:
+                skipped_unverified.append({
+                    "factor_name": fname,
+                    "issues": r.get("_verify_issues", []),
+                    "verify_confidence": r.get("_verify_confidence"),
+                })
+                continue
             pending.append({
                 "factor_name": fname,
                 "backtest": r,
                 "decision": "pending",
             })
 
-    updates: Dict[str, Any] = {"pending_decisions": pending}
+    updates: Dict[str, Any] = {
+        "pending_decisions": pending,
+        "skipped_unverified": skipped_unverified,
+    }
 
     # 应用 human_action
     action = state.get("human_action")

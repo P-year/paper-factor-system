@@ -2,6 +2,8 @@
 analyze_node - LLM 提取因子（调 extract_factor_tool）
 
 v3-6：每个提取的 factor 标 _lineage（source_paper_id / extract_iteration / timestamp）。
+v3-7：每个 factor 跑 verify_extracted_factor 打 _verified / _verify_issues，
+      防止"假因子"（名字太宽泛 / 公式空泛 / 过度自信）流入下游。
 """
 from typing import Any, Dict, List
 
@@ -9,6 +11,7 @@ from pipelines.paper_factor.state import PaperFactorState
 from agent.tools import extract_factor_tool
 from harness.observability import observe_node
 from harness.lineage import tag_factor_lineage
+from harness.verify import verify_extracted_factor
 
 
 def _load_papers(paper_ids: List[str]) -> List[Dict]:
@@ -52,9 +55,15 @@ def analyze_node(state: PaperFactorState) -> Dict[str, Any]:
             errors.append(f"extract_factor failed for {paper.get('title', '?')[:30]}: {r['error']}")
             continue
         if r.get("is_factor") and r.get("factor"):
+            factor = r["factor"]
+            # v3-7：verify 提取的因子（假因子 / 字段缺失 / 过度自信）
+            v = verify_extracted_factor(factor)
+            factor["_verified"] = v["verified"]
+            factor["_verify_issues"] = v["issues"]
+            factor["_verify_confidence"] = v["confidence"]
             # v3-6：tag lineage
-            tag_factor_lineage(r["factor"], state, source_paper=paper)
-            new_factors.append(r["factor"])
+            tag_factor_lineage(factor, state, source_paper=paper)
+            new_factors.append(factor)
 
     return {
         "extracted_factors": new_factors,
