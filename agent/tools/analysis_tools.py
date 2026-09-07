@@ -6,8 +6,8 @@ import json
 from typing import Dict, Any, List, Optional
 from pathlib import Path
 
-from analyzer import FactorAnalyzer
-from data_fetcher import FACTOR_CONFIGS
+from core.analyzer import FactorAnalyzer
+from core.data_fetcher import FACTOR_CONFIGS
 
 
 def _load_feasibility_prompt() -> str:

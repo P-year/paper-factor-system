@@ -1,15 +1,14 @@
 """
-论文挖因子系统 - 第一阶段
+论文挖因子系统
 Paper → Factor Extraction → Backtest Verification
 
-Author: 理 (Li)
-Date: 2026-05-03
+Author: 刘烨 (Liu Ye)
 """
 
-from collector import PaperCollector
-from analyzer import FactorAnalyzer
-from factor_db import FactorDatabase
-from backtester import FactorBacktester
+from core.collector import PaperCollector
+from core.analyzer import FactorAnalyzer
+from core.factor_db import FactorDatabase
+from core.backtester import FactorBacktester
 
 __all__ = [
     "PaperCollector",

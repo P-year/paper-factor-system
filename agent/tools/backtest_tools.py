@@ -32,7 +32,7 @@ def run_backtest(
         }
     """
     try:
-        from data_fetcher import DataFetcher
+        from core.data_fetcher import DataFetcher
 
         fetcher = DataFetcher()
         result = fetcher.run_backtest(

@@ -13,7 +13,7 @@ from harness.observability import observe_node
 @observe_node("persist_factors_node")
 def persist_factors_node(state: PaperFactorState) -> Dict[str, Any]:
     """把 extracted_factors 写入 factor 库"""
-    from factor_db import FactorDatabase
+    from core.factor_db import FactorDatabase
 
     factors = state.get("extracted_factors", [])
     if not factors:

@@ -252,7 +252,7 @@ class FactorBacktester:
             BacktestResult
         """
         if self._data_fetcher is None:
-            from data_fetcher import DataFetcher
+            from core.data_fetcher import DataFetcher
             self._data_fetcher = DataFetcher()
 
         result_dict = self._data_fetcher.run_backtest(

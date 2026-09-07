@@ -7,9 +7,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from local_collector import LocalPaperCollector
-from analyzer import FactorAnalyzer
-from factor_db import FactorDatabase
+from core.local_collector import LocalPaperCollector
+from core.analyzer import FactorAnalyzer
+from core.factor_db import FactorDatabase
 from config import GLM_API_KEY
 
 # 设置API Key（请替换为你的）

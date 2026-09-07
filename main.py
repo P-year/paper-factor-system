@@ -26,10 +26,10 @@ from datetime import datetime
 # 添加项目路径
 sys.path.insert(0, str(Path(__file__).parent))
 
-from collector import PaperCollector
-from analyzer import FactorAnalyzer
-from factor_db import FactorDatabase
-from backtester import FactorBacktester
+from core.collector import PaperCollector
+from core.analyzer import FactorAnalyzer
+from core.factor_db import FactorDatabase
+from core.backtester import FactorBacktester
 from config import OUTPUT_DIR, check_api_keys
 
 
@@ -209,7 +209,7 @@ def run_backtest_real(
     print_step(3, "AKShare真实数据回测（Phase 2）")
 
     try:
-        from data_fetcher import DataFetcher, FACTOR_CONFIGS
+        from core.data_fetcher import DataFetcher, FACTOR_CONFIGS
         fetcher = DataFetcher()
     except ImportError as e:
         print(f"  FAIL: {e}")
@@ -244,7 +244,7 @@ def run_backtest_real(
         print(f"    结论: {result_dict['status']}")
 
         # 转成 BacktestResult
-        from backtester import BacktestResult
+        from core.backtester import BacktestResult
         r = result_dict
         result = BacktestResult(
             factor_name=r['factor_name'],
@@ -277,7 +277,7 @@ def run_backtest_real(
                 n_stocks=50,
             )
             if "error" not in r:
-                from backtester import BacktestResult
+                from core.backtester import BacktestResult
                 result = BacktestResult(
                     factor_name=r['factor_name'],
                     ic=r['IC'], icir=r['ICIR'], rank_ic=r['RankIC'],
@@ -298,7 +298,7 @@ def run_backtest_real(
 
         if results:
             results.sort(key=lambda x: x.icir, reverse=True)
-            from backtester import FactorBacktester
+            from core.backtester import FactorBacktester
             tester = FactorBacktester()
             tester.export_results(results)
             print(f"\n  完成: {len(results)} 个因子")

@@ -5,8 +5,8 @@ v3-3：search_arxiv 加 arxiv_search 速率限制
 """
 from typing import Dict, List, Optional
 
-from collector import PaperCollector
-from local_collector import LocalPaperCollector
+from core.collector import PaperCollector
+from core.local_collector import LocalPaperCollector
 from agent.paths import PAPER_DIR
 from harness.ratelimit import get_default_limiter, RateLimitExceeded
 

@@ -4,7 +4,7 @@ db_tools - 因子库 CRUD
 """
 from typing import Dict, List, Optional
 
-from factor_db import FactorDatabase
+from core.factor_db import FactorDatabase
 
 
 def list_factors(
