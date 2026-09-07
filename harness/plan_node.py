@@ -111,13 +111,9 @@ def _get_prompt_template(pipeline: PipelineConfig) -> str:
 
 
 def _resolve_call_llm():
-    """获取 LLM 调用函数（先 harness.llm_client，后 agent.nodes._llm 兼容）。"""
-    try:
-        from harness.llm_client import call_llm_json
-        return call_llm_json
-    except ImportError:
-        from agent.nodes._llm import call_llm_json
-        return call_llm_json
+    """获取 LLM 调用函数（直接从 harness.llm_client 拿）。"""
+    from harness.llm_client import call_llm_json
+    return call_llm_json
 
 
 def make_plan_node(pipeline: PipelineConfig) -> Callable:
