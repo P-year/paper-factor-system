@@ -37,6 +37,7 @@ _BOOLEAN_PREDICATES = frozenset({
     "has_quality",
     "has_backtest",
     "has_decisions",
+    "has_retrieval_context",  # v5：state.retrieval_context 非空
 })
 
 _INT_PREDICATES = frozenset({"iteration_count"})
@@ -55,6 +56,9 @@ class StateView:
         self.has_quality: bool = bool(s.get("quality_results"))
         self.has_backtest: bool = bool(s.get("backtest_results"))
         self.has_decisions: bool = bool(s.get("pending_decisions"))
+        # v5：retrieval_context 是 List[Dict]，非空 + 非 None 视为 True
+        rc = s.get("retrieval_context")
+        self.has_retrieval_context: bool = bool(rc) and isinstance(rc, list)
         self.iteration_count: int = int(s.get("iteration_count", 0))
 
     def get_predicate(self, name: str) -> Any:

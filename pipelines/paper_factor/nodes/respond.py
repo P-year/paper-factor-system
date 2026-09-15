@@ -44,6 +44,25 @@ def respond_node(state: PaperFactorState) -> Dict[str, Any]:
                 f"[{r.get('status', '?')}]"
             )
 
+    # v5：相关论文推荐（来自 RAG 检索的 retrieval_context）
+    retrieval_context = state.get("retrieval_context")
+    if retrieval_context:
+        try:
+            from harness.rag.retriever import PaperRetriever  # 仅为下面 duck-type 用
+            # 直接用 PaperRetriever.format_context 风格（不实例化 store，避免重复加载）
+            summary_lines.append("")
+            summary_lines.append(f"相关论文推荐 Top {len(retrieval_context)}（本地 RAG）：")
+            for i, ch in enumerate(retrieval_context[:5], start=1):
+                title = ch.get("paper_title", "") or ch.get("arxiv_id", "")
+                arxiv = ch.get("arxiv_id", "")
+                score = ch.get("score", 0.0)
+                text = (ch.get("text", "") or "").strip().replace("\n", " ")[:120]
+                summary_lines.append(
+                    f"  [{i}] {title} ({arxiv}) — score={score:.3f}\n      {text}..."
+                )
+        except Exception:
+            pass
+
     message = {
         "role": "assistant",
         "content": "\n".join(summary_lines),

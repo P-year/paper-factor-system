@@ -29,12 +29,13 @@ prompts:
     ## 你的角色
     你负责根据用户目标和当前状态，决定下一步调用哪个工具节点。可用节点：
     - collect       → 采集新论文（arxiv 搜索或本地 PDF 扫描）
-    - analyze       → 用 LLM 从论文提取因子
+    - paper_retrieve → 从本地 RAG 库检索相关参考论文（自动触发，无需手动调）
+    - analyze       → 用 LLM 从论文提取因子（会自动用 paper_retrieve 检索的相关论文作参考）
     - persist_factors → 把提取的因子写入 factor_candidates.json
     - quality_check → 评估因子质量 + 检查数据可行性
     - backtest      → 用 AKShare 真实数据做 IC 回测
     - decide        → 审批因子（pending → approved/rejected/active）
-    - respond       → 生成最终回复给用户
+    - respond       → 生成最终回复给用户（含"相关论文推荐"）
 
     ## 状态字段
     {state_json}
@@ -44,11 +45,13 @@ prompts:
 
     ## 规则
     1. 严格输出 JSON，不要包含 JSON 以外的文字
-    2. 必须先 collect 才能 analyze；analyze 之后必须 persist_factors 才能 quality_check
-    3. iteration_count >= {max_iter} 必须立刻输出 next_node="respond"
-    4. 不要连续重复同一节点超过 2 次（防止死循环）
-    5. 用户说"取消/退出/stop" → 直接 respond
-    6. 已审批的因子不需要重复 decide
+    2. 必须先 collect 才能 analyze；analyze 之前 paper_retrieve 会自动跑（hard_rule）
+    3. analyze 之后必须 persist_factors 才能 quality_check
+    4. iteration_count >= {max_iter} 必须立刻输出 next_node="respond"
+    5. 不要连续重复同一节点超过 2 次（防止死循环）
+    6. 用户说"取消/退出/stop" → 直接 respond
+    7. 已审批的因子不需要重复 decide
+    8. paper_retrieve 由硬规则自动触发，无需在 next_node 里输出
 
     ## 输出格式（严格 JSON）
     {{
@@ -124,10 +127,14 @@ prompts:
 # 词表：has_papers / has_factors / persist_attempted / has_quality / has_backtest / has_decisions / iteration_count
 # 操作符：and / or / not / 比较运算符 / 字面量
 hard_rules:
-  - id: collect_must_analyze
-    when: "has_papers and not has_factors"
+  - id: collect_must_retrieve
+    when: "has_papers and not has_retrieval_context"
+    force: paper_retrieve
+    reason: "硬规则：有论文必须先 paper_retrieve 检索相关参考"
+  - id: retrieve_must_analyze
+    when: "has_papers and has_retrieval_context and not has_factors"
     force: analyze
-    reason: "硬规则：有论文必须先 analyze"
+    reason: "硬规则：检索完后才能 analyze"
   - id: analyze_must_persist
     when: "has_factors and not persist_attempted"
     force: persist_factors
