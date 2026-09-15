@@ -16,6 +16,14 @@ memory/runs/*/
 memory/audit/*.jsonl
 !memory/audit/.gitkeep
 
+# v5：本地论文 RAG 索引（运行时生成，体积大）
+memory/rag/index.faiss
+memory/rag/index.faiss.ids.json
+memory/rag/chunks.jsonl
+memory/rag/bm25.json
+memory/rag/manifest.json
+!memory/rag/.gitkeep
+
 # IDE
 .vscode/
 .idea/
