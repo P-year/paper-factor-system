@@ -37,7 +37,10 @@ def _load_papers(paper_ids: List[str]) -> List[Dict]:
 
 @observe_node("analyze_node")
 def analyze_node(state: PaperFactorState) -> Dict[str, Any]:
-    """真实分析：对 collected_paper_ids 调用 extract_factor_tool（闭环 wrapper）"""
+    """真实分析：对 collected_paper_ids 调用 extract_factor_tool（闭环 wrapper）
+
+    v5：注入 state.retrieval_context（RAG 检索结果）作为 LLM 抽因子的参考上下文。
+    """
     paper_ids = state.get("collected_paper_ids", [])
 
     if not paper_ids:
@@ -50,15 +53,23 @@ def analyze_node(state: PaperFactorState) -> Dict[str, Any]:
     new_factors = list(state.get("extracted_factors", []))
     errors = list(state.get("errors", []))
     verify_log: List[Dict[str, Any]] = list(state.get("verify_log", []))
+    # v5：从 state 取 RAG 检索的相似论文（paper_retrieve_node 注入）
+    similar_papers = state.get("retrieval_context") or None
 
     for paper in papers:
-        # v3-8：使用闭环 wrapper
-        r = verified_extracted_factor(paper, max_retries=0)
+        # v3-8 + v5：使用闭环 wrapper，注入 similar_papers
+        r = verified_extracted_factor(
+            paper, similar_papers=similar_papers, max_retries=0,
+        )
         if r.get("error"):
             errors.append(f"extract_factor failed for {paper.get('title', '?')[:30]}: {r['error']}")
             continue
         if r.get("is_factor") and r.get("factor"):
             factor = r["factor"]
+            # v5：标记"曾用 RAG 上下文"
+            if similar_papers:
+                factor["_used_rag_context"] = True
+                factor["_rag_top_k"] = len(similar_papers)
             # 闭环 wrapper 已经打了 _verified / _verify_issues / _verify_confidence / _tool_attempts
             # v3-6：tag lineage
             tag_factor_lineage(factor, state, source_paper=paper)

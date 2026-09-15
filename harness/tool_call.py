@@ -27,7 +27,7 @@ harness/tool_call.py - Closed-loop tool call wrapper
 """
 import logging
 import time
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Callable, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -222,19 +222,21 @@ def factor_recovery(
 def verified_extracted_factor(
     paper: Dict[str, Any],
     *,
+    similar_papers: Optional[List[Dict]] = None,
     max_retries: int = 0,
 ) -> Dict[str, Any]:
     """对单篇论文做带 verify 的因子提取。
 
     这是业务节点的便捷 wrapper，集成了 extract_factor_tool + verify_extracted_factor。
+    v5：similar_papers 注入 prompt。
     """
     from agent.tools import extract_factor_tool
     from harness.verify import verify_extracted_factor
 
     return safe_tool_call(
         tool_name="extract_factor",
-        args={"paper": paper},
-        tool_fn=lambda paper: extract_factor_tool(paper),
+        args={"paper": paper, "similar_papers": similar_papers},
+        tool_fn=lambda paper: extract_factor_tool(paper, similar_papers=similar_papers),
         verifier=verify_extracted_factor,
         max_retries=max_retries,
         recovery_fn=factor_recovery,

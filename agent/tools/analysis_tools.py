@@ -24,12 +24,13 @@ def _load_feasibility_prompt() -> str:
 FEASIBILITY_PROMPT = _load_feasibility_prompt()
 
 
-def extract_factor_tool(paper: Dict[str, Any]) -> Dict[str, Any]:
+def extract_factor_tool(paper: Dict[str, Any], similar_papers: Optional[List[Dict]] = None) -> Dict[str, Any]:
     """
     用 LLM（GLM/DeepSeek）从单篇论文提取因子。
 
     Args:
         paper: 论文 dict（需含 title, summary, link 字段）
+        similar_papers: v5 RAG 检索到的相似论文 chunks（None = 不注入）
 
     Returns:
         {
@@ -43,7 +44,7 @@ def extract_factor_tool(paper: Dict[str, Any]) -> Dict[str, Any]:
     """
     try:
         analyzer = FactorAnalyzer(provider="auto")
-        result = analyzer.extract_factor(paper)
+        result = analyzer.extract_factor(paper, similar_papers=similar_papers)
 
         if result.error:
             return {

@@ -49,7 +49,20 @@ class FactorAnalyzer:
     - 多模态因子分析
     - 并发批量处理
     - 详细执行日志
+    - v5：可选注入 RAG 检索的相似论文上下文
     """
+
+    @staticmethod
+    def _format_similar_papers(chunks: List[Dict]) -> str:
+        """格式化 similar_papers chunks 成 prompt block（不依赖 PaperRetriever 避免循环）。"""
+        lines = []
+        for i, c in enumerate(chunks, start=1):
+            title = c.get("paper_title", "") or c.get("arxiv_id", "")
+            arxiv = c.get("arxiv_id", "")
+            score = c.get("score", 0.0)
+            text = (c.get("text", "") or "").strip().replace("\n", " ")[:160]
+            lines.append(f"[{i}] {title} ({arxiv}) — score={score:.3f}\n    {text}")
+        return "\n\n".join(lines)
 
     def __init__(
         self,
@@ -186,12 +199,13 @@ class FactorAnalyzer:
 
         raise Exception(f"API调用失败（重试{API_BACKOFF+1}次）: {'; '.join(errors)}")
 
-    def extract_factor(self, paper: Dict) -> AnalysisResult:
+    def extract_factor(self, paper: Dict, similar_papers: Optional[List[Dict]] = None) -> AnalysisResult:
         """
         从单篇论文提取因子（标准Prompt）
 
         Args:
             paper: 论文信息，包含 title/summary/link
+            similar_papers: v5 RAG 检索到的相似论文 chunks，可选注入到 prompt 头部
 
         Returns:
             AnalysisResult 对象
@@ -204,6 +218,17 @@ class FactorAnalyzer:
                 title=paper.get("title", ""),
                 abstract=paper.get("summary", ""),
             )
+            # v5：注入 RAG 检索到的相似论文上下文
+            if similar_papers:
+                try:
+                    from harness.rag.prompts import SIMILAR_PAPERS_CONTEXT_PROMPT
+                    rag_block = SIMILAR_PAPERS_CONTEXT_PROMPT.format(
+                        top_k=len(similar_papers),
+                        similar_papers_block=self._format_similar_papers(similar_papers),
+                    )
+                    prompt = rag_block + "\n\n" + prompt
+                except Exception:
+                    pass
 
             response, provider = self._call_api(prompt)
             result.api_provider = provider
