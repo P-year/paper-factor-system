@@ -116,9 +116,11 @@ class PaperRetriever:
                 "chunk_id": cid,
                 "source_id": chunk.get("source_id", ""),
                 "arxiv_id": chunk.get("arxiv_id") or chunk.get("source_id", ""),
-                "paper_title": chunk.get("paper_title", ""),
-                "paper_link": chunk.get("paper_link", ""),
-                "paper_published": chunk.get("paper_published", ""),
+                # 向后兼容：paper_title / paper_link / paper_published 是对外字段
+                # chunk 里实际字段名是 title / pdf_link / published（来自 paper dict）
+                "paper_title": chunk.get("paper_title") or chunk.get("title", ""),
+                "paper_link": chunk.get("paper_link") or chunk.get("pdf_link", "") or chunk.get("link", ""),
+                "paper_published": chunk.get("paper_published") or chunk.get("published", ""),
                 "text": chunk.get("text", ""),
                 "start": chunk.get("start", 0),
                 "end": chunk.get("end", 0),

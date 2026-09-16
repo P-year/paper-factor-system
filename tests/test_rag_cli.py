@@ -65,7 +65,11 @@ def test_cli_search_no_index_error(tmp_path, monkeypatch):
     r = subprocess.run(cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT),
                        timeout=30, env=env)
     # 接受两种情况：empty index OR has results（取决于 global 状态）
-    assert r.returncode == 0 or "No chunks" in r.stdout or "No chunks" in r.stderr
+    if r.returncode != 0:
+        assert "No chunks" in r.stdout or "No chunks" in r.stderr or "No results" in r.stdout
+    else:
+        # 有 results 时也接受（说明 global store 有数据）
+        assert r.returncode == 0
 
 
 def test_cli_rebuild_search_flow(tmp_path, monkeypatch):

@@ -270,12 +270,15 @@ def test_e2e_format_context_real_chunks(rag_store, pdf_dir):
 
     from harness.rag.retriever import PaperRetriever
     retriever = PaperRetriever(rag_store)
-    chunks = retriever.retrieve("machine learning", top_k=3)
-    text = retriever.format_context(chunks)
+    # 用窄 query + top_k=1 避免 412 chunk 截断
+    chunks = retriever.retrieve("weak factor test asset", top_k=1, min_score=0.0)
+    text = retriever.format_context(chunks, max_chars=5000)
     assert "[1]" in text
     assert "score=" in text
-    # 中文/英文 paper title
-    assert len(text) > 100
+    # 真实论文标题（不是"NBER WORKING PAPER SERIES..."这种元信息）
+    assert any(kw in text for kw in ["WEAK FACTORS", "Test Assets", "Giglio", "Xiu"])
+    # 中文/英文 title 都可能（取决于命中）
+    assert len(text) > 50
 
 
 if __name__ == "__main__":

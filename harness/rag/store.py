@@ -111,7 +111,7 @@ class PaperRAGStore:
         """索引单篇论文。返回新增 chunk 数（去重后）。"""
         source_id = _safe_id(paper)
         chunks = self.chunker.split_paper(paper)
-        return self._add_chunks_internal(chunks, source_id)
+        return self._add_chunks_internal(chunks, source_id, paper_meta=paper)
 
     def index_papers(self, papers: List[Dict[str, Any]]) -> int:
         """批量索引。返回总新增数。"""
@@ -276,8 +276,13 @@ class PaperRAGStore:
 
     # === 内部 ===
 
-    def _add_chunks_internal(self, chunks: List[Dict[str, Any]], source_id: str) -> int:
-        """加 chunks 到 store（去重 + embed + 写 self._chunks_by_id）。"""
+    def _add_chunks_internal(self, chunks: List[Dict[str, Any]], source_id: str,
+                           *, paper_meta: Optional[Dict[str, Any]] = None) -> int:
+        """加 chunks 到 store（去重 + embed + 写 self._chunks_by_id）。
+
+        paper_meta：原始 paper dict（含 arxiv_id / title / link / pdf_link 等），
+        把这些字段注入每个 chunk，方便 retrieve 时直接拿到 paper meta。
+        """
         if not chunks:
             return 0
         # 去重（已存在 chunk_id 跳过）
@@ -308,8 +313,16 @@ class PaperRAGStore:
         self.bm25.add_chunks(new_chunks)
 
         # 写 self._chunks_by_id + paper meta
+        # 把 paper_meta 的字段注入每个 chunk（除 chunk 自身字段外）
+        paper_meta_fields = {}
+        if paper_meta:
+            for k, v in paper_meta.items():
+                if k not in ("chunk_id", "source_id", "text", "start", "end"):
+                    paper_meta_fields[k] = v
         for ch, cid in zip(new_chunks, new_chunk_ids):
-            self._chunks_by_id[cid] = dict(ch)
+            stored = dict(ch)
+            stored.update(paper_meta_fields)
+            self._chunks_by_id[cid] = stored
 
         self._source_ids.add(source_id)
         return len(new_chunks)
