@@ -131,13 +131,26 @@ class FAISSIndex:
             }, f, ensure_ascii=False)
 
     def load(self, path: Path) -> None:
-        """加载索引 + id 映射。"""
+        """加载索引 + id 映射。
+
+        维度不匹配时自动重建（embedder 换了模型）。
+        """
         import faiss
         import json
         path = Path(path)
         if not path.exists():
             raise FileNotFoundError(f"FAISS index not found: {path}")
-        self._index = faiss.read_index(str(path))
+        loaded_index = faiss.read_index(str(path))
+        if loaded_index.d != self.dim:
+            # 维度不匹配：embedder 换了模型。丢弃旧索引，重建空索引。
+            # 调用方需自己 index_papers 重新 embed。
+            self._init_index()
+            # 不读 ids（维度不同，ids 也失效）
+            self._id2idx = {}
+            self._idx2id = {}
+            self._next_idx = 0
+            return
+        self._index = loaded_index
         ids_path = path.with_suffix(path.suffix + ".ids.json")
         if ids_path.exists():
             data = json.loads(ids_path.read_text(encoding="utf-8"))

@@ -98,16 +98,22 @@ def test_st_lazy_no_load_on_init():
     assert st._model is None
 
 
-def test_st_load_failure_raises():
-    """模型加载失败抛 _EmbedderUnavailable。"""
-    st = SentenceTransformerBackend(model_name="nonexistent/model-xyz123")
+def test_st_load_failure_raises(monkeypatch):
+    """模型加载失败抛 _EmbedderUnavailable（mock 不走真实网络）。"""
+    def fake_load(self):
+        raise _EmbedderUnavailable("mocked failure")
+    monkeypatch.setattr(SentenceTransformerBackend, "_load", fake_load)
+    st = SentenceTransformerBackend(model_name="any/model")
     with pytest.raises(_EmbedderUnavailable):
         st.encode(["test"])
 
 
-def test_st_encode_unloaded_no_op():
-    """模型未加载时 encode 抛异常（不静默返回空）。"""
-    st = SentenceTransformerBackend(model_name="nonexistent/model-xyz123")
+def test_st_encode_unloaded_no_op(monkeypatch):
+    """模型未加载时 encode 抛异常（mock 不走真实网络）。"""
+    def fake_load(self):
+        raise _EmbedderUnavailable("mocked not loaded")
+    monkeypatch.setattr(SentenceTransformerBackend, "_load", fake_load)
+    st = SentenceTransformerBackend(model_name="any/model")
     with pytest.raises(_EmbedderUnavailable):
         st.encode(["x"])
 
@@ -119,12 +125,17 @@ def test_get_default_backend_hash():
     assert isinstance(emb, HashBackend)
 
 
-def test_get_default_backend_auto_fallback():
-    """auto 模式失败时降级 HashBackend。"""
+def test_get_default_backend_auto_fallback(monkeypatch):
+    """auto 模式：尝试 ST，失败时降级 HashBackend。
+
+    Mock ST._load 让它抛 EmbedderUnavailable，避免真实网络请求。
+    """
+    from harness.rag.embedder import _EmbedderUnavailable
+    def fake_load(self):
+        raise _EmbedderUnavailable("mocked no network")
+    monkeypatch.setattr(SentenceTransformerBackend, "_load", fake_load)
     emb = get_default_backend(prefer="auto")
-    # 可能是 ST（如果 model 已缓存）或 Hash（fallback）
-    # 不崩
-    assert emb is not None
+    assert isinstance(emb, HashBackend)
     assert emb.dim > 0
 
 

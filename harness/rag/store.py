@@ -228,9 +228,14 @@ class PaperRAGStore:
         )
 
     def load(self) -> None:
-        """从磁盘加载索引 + chunks + manifest。"""
+        """从磁盘加载索引 + chunks + manifest。
+
+        维度不匹配（embedder 换了）时清空 chunks + BM25，保留磁盘文件
+        等调用方 rebuild / 增量索引。
+        """
         # chunks
         self._chunks_by_id = {}
+        dim_mismatch = False
         if self._chunks_path.exists():
             with self._chunks_path.open("r", encoding="utf-8") as f:
                 for line in f:
@@ -244,19 +249,28 @@ class PaperRAGStore:
                         continue
         # 索引
         if self._index_path.exists():
-            self.index.load(self._index_path)
-            # 如果维度不匹配，重建空索引
-            if self.index.dim != self.embedder.dim:
+            try:
+                self.index.load(self._index_path)
+                if self.index.dim != self.embedder.dim:
+                    # 维度不匹配：清空内存里的 chunks（磁盘保留供备份/手动迁移）
+                    self._chunks_by_id = {}
+                    self.index = FAISSIndex(dim=self.embedder.dim, metric="cosine")
+                    dim_mismatch = True
+            except Exception:
+                # 加载失败：当作空 store
                 self.index = FAISSIndex(dim=self.embedder.dim, metric="cosine")
+                dim_mismatch = True
+                self._chunks_by_id = {}
         # 重建 source_ids 集合
         self._source_ids = {ch.get("source_id", "") for ch in self._chunks_by_id.values()}
         self._source_ids.discard("")
-        # v5-3：重建 BM25
-        if self._bm25_path.exists():
+        # v5-3：重建 BM25（维度错时不读）
+        if dim_mismatch:
+            self.bm25 = type(self.bm25)()
+        elif self._bm25_path.exists():
             try:
                 self.bm25.from_dict(json.loads(self._bm25_path.read_text(encoding="utf-8")))
             except Exception:
-                # fallback: 从 chunks 重建
                 self.bm25 = type(self.bm25)()
                 self.bm25.add_chunks(list(self._chunks_by_id.values()))
 
