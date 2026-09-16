@@ -20,9 +20,40 @@ from harness.rag import HashBackend
 
 
 @pytest.fixture(autouse=True)
-def hash_only(monkeypatch):
-    """强制使用 HashBackend（避免下载真实模型）。"""
+def hash_only(monkeypatch, tmp_path):
+    """强制使用 HashBackend（避免下载真实模型）+ 用 tmp_path 隔离 RAG_DIR。
+
+    注意：harness.rag.store.get_default_store 内部缓存全局 store，
+    必须 monkeypatch 该函数使每个测试独立。
+    """
     monkeypatch.setenv("HARNESS_RAG_PREFER", "hash")
+
+    # 把全局 RAG_DIR 重定向到 tmp_path 子目录（独立存储）
+    rag_dir = tmp_path / "rag"
+    rag_dir.mkdir(parents=True, exist_ok=True)
+    monkeypatch.setattr("harness.rag.store.RAG_DIR", rag_dir)
+    monkeypatch.setattr("harness.paths.RAG_DIR", rag_dir)
+
+    # 让 get_default_store 每次返回新实例（不走全局缓存）
+    import harness.rag.store as store_mod
+    original_get = store_mod.get_default_store
+    def fresh_get(*args, **kwargs):
+        kwargs["rag_dir"] = rag_dir
+        kwargs.setdefault("prefer", "hash")
+        return original_get(*args, **kwargs)
+    monkeypatch.setattr(store_mod, "get_default_store", fresh_get)
+    # paper_retrieve_node 内部的 _build_store 也要走 monkeypatch 后的版本
+    import pipelines.paper_factor.nodes.paper_retrieve as node_mod
+    monkeypatch.setattr(node_mod, "_build_store", lambda: fresh_get(prefer="hash"))
+
+    yield
+
+    # 测试结束后清理（如果 fresh_get 内部起了 executor）
+    try:
+        from harness.rag.async_embed import shutdown_executor
+        shutdown_executor(wait=False)
+    except Exception:
+        pass
 
 
 @pytest.fixture

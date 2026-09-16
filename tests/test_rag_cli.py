@@ -23,13 +23,14 @@ def custom_rag_dir(tmp_path, monkeypatch):
 
 
 def _run_cli(*args, rag_dir=None):
-    """调 CLI 子进程。"""
+    """调 CLI 子进程。强制 HARNESS_RAG_PREFER=hash 避免 ST 下载。"""
+    import os
     cmd = [sys.executable, "-m", "harness.rag"] + list(args)
-    if rag_dir is not None:
-        # CLI 默认走 RAG_DIR；测试主要测子命令行为（不依赖路径）
-        pass
+    env = os.environ.copy()
+    env["HARNESS_RAG_PREFER"] = "hash"
     return subprocess.run(
-        cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT), timeout=60,
+        cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT),
+        timeout=30, env=env,
     )
 
 

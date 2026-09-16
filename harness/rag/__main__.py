@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -96,9 +97,9 @@ def cmd_clear(args):
 
 def main():
     parser = argparse.ArgumentParser(description="Paper RAG CLI")
-    parser.add_argument("--prefer", default="auto",
+    parser.add_argument("--prefer", default=os.getenv("HARNESS_RAG_PREFER", "auto"),
                         choices=["auto", "hash", "sentence_transformer"],
-                        help="embedder 偏好（默认 auto）")
+                        help="embedder 偏好（默认 auto；可由 HARNESS_RAG_PREFER env 覆盖）")
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     p_status = sub.add_parser("status", help="查索引状态")
