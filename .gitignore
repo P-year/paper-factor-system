@@ -24,6 +24,10 @@ memory/rag/bm25.json
 memory/rag/manifest.json
 !memory/rag/.gitkeep
 
+# 测试用真实 PDF（不进 git，体积大且版权敏感）
+tests/fixtures/pdfs/*.pdf
+!tests/fixtures/pdfs/.gitkeep
+
 # IDE
 .vscode/
 .idea/
