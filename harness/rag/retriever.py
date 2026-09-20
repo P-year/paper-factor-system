@@ -139,8 +139,12 @@ class PaperRetriever:
                 # 先把 (score, cid) 转成 chunk dict，再 rerank
                 chunk_dicts = [self._chunk_to_dict(s, cid) for s, cid in scored]
                 chunk_dicts = [c for c in chunk_dicts if c]  # 过滤 None
-                reranked = self.reranker.rerank(query_clean, chunk_dicts, top_k=top_k)
-                return reranked
+                if chunk_dicts:
+                    reranked = self.reranker.rerank(query_clean, chunk_dicts, top_k=top_k)
+                    # 给重排后的 chunk 打 rerank_score 标记
+                    for i, c in enumerate(reranked):
+                        c["_rerank_rank"] = i + 1
+                    return reranked
             except Exception:
                 # rerank 失败降级到原排序
                 pass
