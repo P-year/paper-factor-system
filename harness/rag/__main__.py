@@ -43,6 +43,11 @@ def cmd_status(args):
     print(f"BM25 size:       {len(store.bm25)}")
     if m.get("model_unavailable"):
         print("[WARN] Stored manifest: model unavailable")
+    # v6-2: reranker + filters
+    rr = m.get("reranker", {})
+    print(f"Reranker:        enabled={rr.get('enabled', False)}  model={rr.get('model') or '-'}  status={rr.get('status', '?')}")
+    flt = m.get("available_filters", [])
+    print(f"Available filters: {', '.join(flt) if flt else '-'}")
     print(f"Updated at:      {m.get('updated_at', '?')}")
     # 文件大小
     total = 0

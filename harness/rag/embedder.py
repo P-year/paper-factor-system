@@ -99,7 +99,11 @@ class SentenceTransformerBackend:
     """
 
     DEFAULT_MODEL = "BAAI/bge-small-zh-v1.5"
-    DEFAULT_DIM = 512
+    DEFAULT_DIM = 512  # bge-small-zh 实际 512
+
+    # v6-2：可选 base/large 模型
+    BASE_MODEL = "BAAI/bge-base-zh-v1.5"  # ~400MB，768d
+    LARGE_MODEL = "BAAI/bge-large-zh-v1.5"  # ~1.3GB，1024d
 
     def __init__(
         self,

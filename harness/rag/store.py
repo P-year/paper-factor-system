@@ -37,7 +37,7 @@ from harness.rag.index import FAISSIndex
 from harness.paths import RAG_DIR, PAPER_DIR
 
 
-_MANIFEST_VERSION = 1
+_MANIFEST_VERSION = 3
 
 
 class PaperRAGStore:
@@ -337,7 +337,28 @@ class PaperRAGStore:
             "metric": "cosine",
             "updated_at": datetime.now().isoformat(),
             "model_unavailable": isinstance(self.embedder, HashBackend),
+            # v6-2：reranker 状态（默认 off）
+            "reranker": {
+                "enabled": False,
+                "model": None,
+                "status": "disabled",
+            },
+            # v6-5：可用 metadata filter 列表
+            "available_filters": self._collect_available_filters(),
         }
+
+    def _collect_available_filters(self) -> List[str]:
+        """扫 _chunks_by_id 收集出现的 _meta 字段（filter 候选）。"""
+        fields: set = set()
+        for ch in self._chunks_by_id.values():
+            meta = ch.get("_meta", {})
+            if isinstance(meta, dict):
+                fields.update(meta.keys())
+            # 兼容老 chunks：title 等也作为可过滤字段
+            for k in ("source", "year", "topic", "filename"):
+                if k in ch:
+                    fields.add(k)
+        return sorted(fields)
 
     def _clear_chunks(self):
         self._chunks_by_id = {}
