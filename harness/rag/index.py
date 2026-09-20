@@ -23,7 +23,7 @@ class FAISSIndex:
     """FAISS IndexFlatIP 索引封装，支持 cosine 距离 + id 映射。"""
 
     def __init__(self, dim: int, *, metric: str = "cosine"):
-        if metric not in ("cosine", "ip", "l2"):
+        if metric not in ("cosine", "ip", "l2", "hnsw"):
             raise ValueError(f"unsupported metric: {metric}")
         self.dim = dim
         self.metric = metric
@@ -36,10 +36,20 @@ class FAISSIndex:
     def _init_index(self):
         import faiss
         if self.metric in ("cosine", "ip"):
-            # cosine 实现：IndexFlatIP + 归一化（等价 cosine）
             self._index = faiss.IndexFlatIP(self.dim)
-        else:
+        elif self.metric == "l2":
             self._index = faiss.IndexFlatL2(self.dim)
+        elif self.metric == "hnsw":
+            # v6-5：HNSW 图索引（适合 10K+ chunks，< 10ms 查询）
+            # M=32 邻居数，efConstruction=200 构建时搜索深度
+            # efSearch=50 默认查询搜索深度（可调）
+            self._index = faiss.IndexHNSWFlat(
+                self.dim, 32, faiss.METRIC_INNER_PRODUCT,
+            )
+            self._index.hnsw.efConstruction = 200
+            self._index.hnsw.efSearch = 50
+        else:
+            raise ValueError(f"unsupported metric: {self.metric}")
 
     # === write ===
 
@@ -48,7 +58,8 @@ class FAISSIndex:
         if embeddings is None or len(embeddings) == 0:
             return []
         vecs = np.ascontiguousarray(embeddings.astype(np.float32))
-        if self.metric in ("cosine", "ip"):
+        if self.metric in ("cosine", "ip", "hnsw"):
+            # cosine / hnsw 都用 inner product：先归一化
             import faiss
             faiss.normalize_L2(vecs)
 
@@ -87,7 +98,9 @@ class FAISSIndex:
         if query_vec.ndim == 1:
             query_vec = query_vec.reshape(1, -1)
         q = np.ascontiguousarray(query_vec.astype(np.float32))
-        if self.metric in ("cosine", "ip"):
+        if self.metric in ("cosine", "ip", "hnsw"):
+            # cosine / ip / hnsw 都用 inner product：归一化后 score ∈ [-1, 1]
+            # 取正数（cosine 等价），score ∈ [0, 1] 表示相关度
             import faiss
             faiss.normalize_L2(q)
 
@@ -100,6 +113,10 @@ class FAISSIndex:
             cid = self._idx2id.get(int(idx), f"unknown_{idx}")
             if self.metric == "l2":
                 score = -float(score)
+            elif self.metric == "hnsw":
+                # HNSW inner product 实际未 clamp 到 [0,1]（理论 cosine 应在 [-1, 1]）
+                # 这里 clamp 保证 score 在合理范围
+                score = max(0.0, min(1.0, float(score)))
             else:
                 score = float(score)
             out.append((score, cid))

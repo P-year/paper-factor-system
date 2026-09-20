@@ -74,8 +74,17 @@ class PaperRetriever:
         *,
         top_k: Optional[int] = None,
         min_score: float = 0.0,
+        filter: Optional[Dict[str, Any]] = None,  # v6-5: {"topic": "factor"}
     ) -> List[Dict[str, Any]]:
         """按 query 文本检索（embedding + BM25 混合排序，RRF 或 weighted）。
+
+        Args:
+            query: 检索 query
+            top_k: 返回前 K 个
+            min_score: 最低分数阈值
+            filter: v6-5 metadata 过滤
+                支持精确匹配: {"topic": "factor_model"}
+                支持 source_id 列表: {"source_id": ["p1", "p2"]}
 
         返回 List[Dict]，每个含 {chunk_id, source_id, text, arxiv_id, paper_title, paper_link, paper_published, score, _score_embed, _score_bm25}。
         """
@@ -140,6 +149,9 @@ class PaperRetriever:
                 chunk_dicts = [self._chunk_to_dict(s, cid) for s, cid in scored]
                 chunk_dicts = [c for c in chunk_dicts if c]  # 过滤 None
                 if chunk_dicts:
+                    # v6-5：filter 在 rerank 前生效（保证 rerank 在过滤后 top_k 上跑）
+                    if filter:
+                        chunk_dicts = [c for c in chunk_dicts if self._match_filter(c, filter)]
                     reranked = self.reranker.rerank(query_clean, chunk_dicts, top_k=top_k)
                     # 给重排后的 chunk 打 rerank_score 标记
                     for i, c in enumerate(reranked):
@@ -150,13 +162,53 @@ class PaperRetriever:
                 pass
 
         out = []
-        for score, cid in scored[:top_k]:
+        for score, cid in scored:
             if score < min_score:
                 continue
             chunk_dict = self._chunk_to_dict(score, cid)
-            if chunk_dict:
-                out.append(chunk_dict)
+            if not chunk_dict:
+                continue
+            # v6-5：metadata filter
+            if filter and not self._match_filter(chunk_dict, filter):
+                continue
+            out.append(chunk_dict)
+            if len(out) >= top_k:
+                break
         return out
+
+    def _match_filter(self, chunk_dict: Dict[str, Any], filter: Dict[str, Any]) -> bool:
+        """v6-5：metadata filter 匹配。
+
+        支持：
+        - {"topic": "factor_model"}：chunk._meta.topic == "factor_model"
+        - {"source_id": ["p1", "p2"]}：chunk.source_id in list
+        - {"year": "2024"}：chunk._meta.year == "2024"
+        - {"key": value}：chunk._meta[key] == value（通用精确匹配）
+        """
+        for key, expected in filter.items():
+            if key == "source_id":
+                # 支持 list（多选）
+                if isinstance(expected, list):
+                    if chunk_dict.get("source_id") not in expected:
+                        return False
+                else:
+                    if chunk_dict.get("source_id") != expected:
+                        return False
+            else:
+                # 读 chunk._meta
+                cid = chunk_dict.get("chunk_id", "")
+                chunk = self.store._chunks_by_id.get(cid, {})
+                meta = chunk.get("_meta", {})
+                if key not in chunk:
+                    return False
+                actual = meta.get(key, chunk.get(key))
+                if isinstance(expected, list):
+                    if actual not in expected:
+                        return False
+                else:
+                    if actual != expected:
+                        return False
+        return True
 
     def _chunk_to_dict(self, score: float, cid: str) -> Optional[Dict[str, Any]]:
         """从 chunk_id 构造对外 dict（含 paper meta）。"""
