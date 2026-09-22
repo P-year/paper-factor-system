@@ -1,5 +1,5 @@
 """
-eval/badcase_analyzer.py - Badcase 发现器
+harness/badcase/analyzer.py - Badcase 发现器
 
 用启发式规则对 paper-factor-system 跑批结果做 badcase 检测：
 1. JSON 解析失败
@@ -17,9 +17,9 @@ eval/badcase_analyzer.py - Badcase 发现器
 - 支持单 session 文件 / 整个 sessions 目录 / JSON 列表 3 种输入
 
 用法：
-    python -m eval.badcase_analyzer --input memory/sessions/ --output eval/BADCASE_REPORT.md
-    python -m eval.badcase_analyzer --input memory/sessions/final_smoke.json --output /tmp/report.md
-    python -m eval.badcase_analyzer --demo   # 用内置样例演示
+    python -m harness.badcase.analyzer --input memory/sessions/ --output BADCASE_REPORT.md
+    python -m harness.badcase.analyzer --input memory/sessions/final_smoke.json --output /tmp/report.md
+    python -m harness.badcase.analyzer --demo   # 用内置样例演示
 """
 import argparse
 import json

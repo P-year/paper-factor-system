@@ -147,7 +147,7 @@ def verify_extracted_factor(factor: Dict[str, Any]) -> Dict[str, Any]:
     """
     对 LLM 提取的因子做基础校验。
 
-    注意：这是和 eval/badcase_analyzer.py 互补的——badcase_analyzer
+    注意：这是和 harness/badcase/analyzer.py 互补的——badcase_analyzer
     只跑事后分析；这里在节点执行时就实时打 verified 标志。
 
     Returns:
