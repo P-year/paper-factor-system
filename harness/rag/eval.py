@@ -66,22 +66,29 @@ def mrr(retrieved: List[str], relevant: List[str]) -> float:
 
 
 def ndcg_at_k(retrieved: List[str], relevant: List[str], k: int = 5) -> float:
-    """NDCG@K：相关 chunk 的位置加权得分 / 理想 DCG。
+    """NDCG@K：相关 source 的位置加权得分 / 理想 DCG。
 
     binary relevance（命中=1，不命中=0）。
+    每个 source 只计一次（取最好排名），避免同 source 多 chunk 重复加分。
     """
     if not relevant:
         return 0.0
     top_k = retrieved[:k]
     relevant_set = set(relevant)
-    # DCG
-    dcg = 0.0
+
+    # 找每个 source 在 top_k 内的最好排名
+    best_rank: Dict[str, int] = {}
     for rank, cid in enumerate(top_k, start=1):
-        rel = 1.0 if _sources_of_chunk_id(cid) in relevant_set else 0.0
-        dcg += rel / math.log2(rank + 1)
-    # IDCG（理想情况：所有相关都在最前面）
-    ideal_hits = min(len(relevant_set), k)
-    idcg = sum(1.0 / math.log2(rank + 1) for rank in range(1, ideal_hits + 1))
+        src = _sources_of_chunk_id(cid)
+        if src in relevant_set and src not in best_rank:
+            best_rank[src] = rank
+
+    # DCG：每个 source 仅记最好排名一次
+    dcg = sum(1.0 / math.log2(rank + 1) for rank in best_rank.values())
+
+    # IDCG：理想情况，所有相关都在最前面
+    n_rel = min(len(relevant_set), k)
+    idcg = sum(1.0 / math.log2(rank + 1) for rank in range(1, n_rel + 1))
     return dcg / idcg if idcg > 0 else 0.0
 
 

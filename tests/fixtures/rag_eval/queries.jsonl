@@ -1,30 +1,100 @@
-{"query": "test asset weak factor pricing model", "relevant": ["e38ddbd567dcdf3e"], "irrelevant": ["ca55af853320", "4089727947d7"]}
-{"query": "SPCA latent factor supervised PCA", "relevant": ["e38ddbd567dcdf3e"]}
+{"query": "test asset weak factor pricing model SPCA", "relevant": ["e38ddbd567dcdf3e"]}
+{"query": "supervised PCA latent factor estimation", "relevant": ["e38ddbd567dcdf3e"]}
+{"query": "risk premia test asset selection bias", "relevant": ["e38ddbd567dcdf3e"]}
+{"query": "Giglio Xiu Zhang factor model robustness", "relevant": ["e38ddbd567dcdf3e"]}
+{"query": "NBER working paper 29002 factor investing", "relevant": ["e38ddbd567dcdf3e"]}
+{"query": "stochastic discount factor estimation asset pricing", "relevant": ["e38ddbd567dcdf3e"]}
 {"query": "弱因子 测试资产 因子模型", "relevant": ["e38ddbd567dcdf3e"]}
-{"query": "MacroHFT memory augmented high frequency trading", "relevant": ["502816f81f07"]}
-{"query": "cryptocurrency reinforcement learning trading signal", "relevant": ["502816f81f07"]}
-{"query": "加密货币 高频交易 强化学习", "relevant": ["502816f81f07"]}
-{"query": "diffusion generative recommender collaborative filtering", "relevant": ["ac1138528c50"]}
-{"query": "denoising diffusion recommendation system", "relevant": ["ac1138528c50"]}
-{"query": "扩散 生成式 协同过滤 推荐", "relevant": ["ac1138528c50"]}
-{"query": "FinBen financial LLM benchmark evaluation", "relevant": ["3bdf74c677eb"]}
-{"query": "large language model finance benchmark dataset", "relevant": ["3bdf74c677eb"]}
-{"query": "金融 大模型 评测 基准", "relevant": ["3bdf74c677eb"]}
-{"query": "TIGER generative retrieval semantic ID", "relevant": ["ca55af853320"]}
-{"query": "tiger recommender quantized embedding retrieval", "relevant": ["ca55af853320"]}
-{"query": "TIGER 生成式 推荐 语义ID", "relevant": ["ca55af853320"]}
-{"query": "Chronos time series pretrained foundation model", "relevant": ["2832f5e0ef26"]}
-{"query": "chronos language model time series forecasting", "relevant": ["2832f5e0ef26"]}
-{"query": "Chronos 时序 预训练 大模型 预测", "relevant": ["2832f5e0ef26"]}
-{"query": "PatchTST time series patch transformer", "relevant": ["6454ddb47493"]}
-{"query": "patch tokenization time series long term forecasting", "relevant": ["6454ddb47493"]}
-{"query": "PatchTST 时序 patch transformer 长时序", "relevant": ["6454ddb47493"]}
-{"query": "Lag-Llama probabilistic time series foundation model", "relevant": ["5ca45af78749"]}
-{"query": "lag llama probabilistic forecasting", "relevant": ["5ca45af78749"]}
-{"query": "Lag-Llama 概率 时序 基础模型", "relevant": ["5ca45af78749"]}
-{"query": "Moirai-MoE time series mixture of experts", "relevant": ["45db7a726f4b"]}
-{"query": "moirai mixture experts time series forecasting", "relevant": ["45db7a726f4b"]}
-{"query": "Moirai 时序 混合专家 稀疏", "relevant": ["45db7a726f4b"]}
-{"query": "One Fits All universal time series pretrained LM", "relevant": ["4089727947d7"]}
-{"query": "one fits all universal time series analysis", "relevant": ["4089727947d7"]}
-{"query": "通用 时序 预训练 大模型", "relevant": ["4089727947d7"]}
+{"query": "监督主成分分析 潜在因子", "relevant": ["e38ddbd567dcdf3e"]}
+{"query": "资产定价 风险溢价 估计", "relevant": ["e38ddbd567dcdf3e"]}
+{"query": "投资组合 因子模型 稳健性", "relevant": ["e38ddbd567dcdf3e"]}
+{"query": "MacroHFT memory augmented high frequency trading", "relevant": ["502816f81f07a465"]}
+{"query": "context aware reinforcement learning cryptocurrency", "relevant": ["502816f81f07a465"]}
+{"query": "high frequency trading signal reinforcement learning", "relevant": ["502816f81f07a465"]}
+{"query": "MacroHFT Bitcoin Ethereum trading strategy", "relevant": ["502816f81f07a465"]}
+{"query": "memory augmented transformer trading agent", "relevant": ["502816f81f07a465"]}
+{"query": "KDD 2024 cryptocurrency high frequency", "relevant": ["502816f81f07a465"]}
+{"query": "加密货币 高频交易 强化学习", "relevant": ["502816f81f07a465"]}
+{"query": "记忆增强 上下文 交易信号", "relevant": ["502816f81f07a465"]}
+{"query": "强化学习 交易 智能体", "relevant": ["502816f81f07a465"]}
+{"query": "交易策略 加密货币 实时", "relevant": ["502816f81f07a465"]}
+{"query": "diffusion recommender model collaborative filtering", "relevant": ["ac1138528c50c400"]}
+{"query": "denoising diffusion recommendation system", "relevant": ["ac1138528c50c400"]}
+{"query": "generative diffusion model user preference", "relevant": ["ac1138528c50c400"]}
+{"query": "SIGIR 2023 diffusion recommendation", "relevant": ["ac1138528c50c400"]}
+{"query": "noise scheduler recommendation denoise", "relevant": ["ac1138528c50c400"]}
+{"query": "target item embedding diffusion model", "relevant": ["ac1138528c50c400"]}
+{"query": "扩散生成 推荐系统 协同过滤", "relevant": ["ac1138528c50c400"]}
+{"query": "去噪扩散 用户偏好 推荐", "relevant": ["ac1138528c50c400"]}
+{"query": "推荐系统 生成模型 协同", "relevant": ["ac1138528c50c400"]}
+{"query": "序列推荐 扩散生成 嵌入", "relevant": ["ac1138528c50c400"]}
+{"query": "FinBen financial LLM benchmark evaluation", "relevant": ["3bdf74c677eb7490"]}
+{"query": "holistic financial benchmark large language model", "relevant": ["3bdf74c677eb7490"]}
+{"query": "financial NLP benchmark dataset finance", "relevant": ["3bdf74c677eb7490"]}
+{"query": "FinBen NeurIPS 2024 finance LLM", "relevant": ["3bdf74c677eb7490"]}
+{"query": "stock prediction sentiment analysis LLM", "relevant": ["3bdf74c677eb7490"]}
+{"query": "fingpt financial benchmark LLM evaluation", "relevant": ["3bdf74c677eb7490"]}
+{"query": "金融大模型 评测 基准", "relevant": ["3bdf74c677eb7490"]}
+{"query": "金融 自然语言处理 基准", "relevant": ["3bdf74c677eb7490"]}
+{"query": "股票预测 情绪分析 大模型", "relevant": ["3bdf74c677eb7490"]}
+{"query": "金融 LLM 评估 数据集", "relevant": ["3bdf74c677eb7490"]}
+{"query": "TIGER generative retrieval semantic ID", "relevant": ["ca55af85332091c7"]}
+{"query": "TIGER recommender quantized embedding", "relevant": ["ca55af85332091c7"]}
+{"query": "generative retrieval recommender system transformer", "relevant": ["ca55af85332091c7"]}
+{"query": "semantic ID recommendation NeurIPS 2023", "relevant": ["ca55af85332091c7"]}
+{"query": "Google DeepMind TIGER recommendation", "relevant": ["ca55af85332091c7"]}
+{"query": "tuplewise semantic ID retrieval sequential", "relevant": ["ca55af85332091c7"]}
+{"query": "TIGER 生成式 语义ID 推荐", "relevant": ["ca55af85332091c7"]}
+{"query": "推荐系统 生成式 检索 语义", "relevant": ["ca55af85332091c7"]}
+{"query": "推荐 序列 语义 ID 量化", "relevant": ["ca55af85332091c7"]}
+{"query": "生成式 推荐 检索 transformer", "relevant": ["ca55af85332091c7"]}
+{"query": "Chronos time series pretrained foundation model", "relevant": ["2832f5e0ef26ac4e"]}
+{"query": "Chronos learning language time series", "relevant": ["2832f5e0ef26ac4e"]}
+{"query": "Chronos Amazon time series pretraining", "relevant": ["2832f5e0ef26ac4e"]}
+{"query": "Chronos TMLR 2024 time series foundation", "relevant": ["2832f5e0ef26ac4e"]}
+{"query": "time series tokenization Chronos transformer", "relevant": ["2832f5e0ef26ac4e"]}
+{"query": "Chronos scaling time series zero-shot", "relevant": ["2832f5e0ef26ac4e"]}
+{"query": "Chronos 时序 预训练 基础模型", "relevant": ["2832f5e0ef26ac4e"]}
+{"query": "时序 tokenization transformer 零样本", "relevant": ["2832f5e0ef26ac4e"]}
+{"query": "时序 预测 基础模型 预训练", "relevant": ["2832f5e0ef26ac4e"]}
+{"query": "时序 大规模 数据集 预测", "relevant": ["2832f5e0ef26ac4e"]}
+{"query": "PatchTST time series patch transformer", "relevant": ["6454ddb47493d5f2"]}
+{"query": "PatchTST channel independent time series", "relevant": ["6454ddb47493d5f2"]}
+{"query": "64 words time series long term forecasting", "relevant": ["6454ddb47493d5f2"]}
+{"query": "PatchTST ICLR 2023 transformer time series", "relevant": ["6454ddb47493d5f2"]}
+{"query": "patch tokenization multivariate time series", "relevant": ["6454ddb47493d5f2"]}
+{"query": "PatchTST unsupervised representation learning", "relevant": ["6454ddb47493d5f2"]}
+{"query": "PatchTST 时序 patch transformer", "relevant": ["6454ddb47493d5f2"]}
+{"query": "时序 patch 通道独立 预测", "relevant": ["6454ddb47493d5f2"]}
+{"query": "长时序预测 transformer 64词", "relevant": ["6454ddb47493d5f2"]}
+{"query": "PatchTST 多元时序 表示学习", "relevant": ["6454ddb47493d5f2"]}
+{"query": "Lag-Llama probabilistic time series foundation", "relevant": ["5ca45af7874927c1"]}
+{"query": "Lag-Llama lag tokens autoregressive", "relevant": ["5ca45af7874927c1"]}
+{"query": "probabilistic forecasting foundation model", "relevant": ["5ca45af7874927c1"]}
+{"query": "Lag-Llama ICML 2024 probabilistic", "relevant": ["5ca45af7874927c1"]}
+{"query": "time series probabilistic deep learning", "relevant": ["5ca45af7874927c1"]}
+{"query": "Lag-Llama distribution forecasting", "relevant": ["5ca45af7874927c1"]}
+{"query": "Lag-Llama 概率 时序 基础模型", "relevant": ["5ca45af7874927c1"]}
+{"query": "概率预测 时序 自回归", "relevant": ["5ca45af7874927c1"]}
+{"query": "时序分布预测 不确定性", "relevant": ["5ca45af7874927c1"]}
+{"query": "Lag-Llama 基础模型 金融时序", "relevant": ["5ca45af7874927c1"]}
+{"query": "Moirai-MoE time series mixture of experts", "relevant": ["45db7a726f4b0ed0"]}
+{"query": "sparse mixture of experts time series", "relevant": ["45db7a726f4b0ed0"]}
+{"query": "Moirai MoE Salesforce time series foundation", "relevant": ["45db7a726f4b0ed0"]}
+{"query": "Moirai ICML 2025 mixture experts forecasting", "relevant": ["45db7a726f4b0ed0"]}
+{"query": "any-to-any forecasting foundation model", "relevant": ["45db7a726f4b0ed0"]}
+{"query": "Moirai mixture experts multivariate univariate", "relevant": ["45db7a726f4b0ed0"]}
+{"query": "Moirai 稀疏 混合专家 时序", "relevant": ["45db7a726f4b0ed0"]}
+{"query": "混合专家 时序 预测 多变量", "relevant": ["45db7a726f4b0ed0"]}
+{"query": "Moirai 时序 基础模型 专家", "relevant": ["45db7a726f4b0ed0"]}
+{"query": "稀疏 MoE 通用时序 预测", "relevant": ["45db7a726f4b0ed0"]}
+{"query": "One Fits All universal time series pretrained LM", "relevant": ["4089727947d7505b"]}
+{"query": "One Fits All power general time series", "relevant": ["4089727947d7505b"]}
+{"query": "pretrained language model time series forecasting", "relevant": ["4089727947d7505b"]}
+{"query": "One Fits All NeurIPS 2023 GPT time series", "relevant": ["4089727947d7505b"]}
+{"query": "unified time series analysis pretrained", "relevant": ["4089727947d7505b"]}
+{"query": "One Fits All Alibaba time series", "relevant": ["4089727947d7505b"]}
+{"query": "One Fits All 通用 时序 预训练", "relevant": ["4089727947d7505b"]}
+{"query": "时序 通用 大模型 预训练", "relevant": ["4089727947d7505b"]}
+{"query": "统一 时序分析 预训练模型", "relevant": ["4089727947d7505b"]}
+{"query": "One Fits All 时序 GPT 多任务", "relevant": ["4089727947d7505b"]}

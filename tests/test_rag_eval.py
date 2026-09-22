@@ -144,7 +144,7 @@ def test_run_evaluation_returns_metrics(store_with_pdfs):
     assert "recall_at_k" in report
     assert "mrr" in report
     assert "ndcg_at_k" in report
-    assert report["queries_count"] == 30
+    assert report["queries_count"] == 100
 
 
 def test_run_evaluation_at_least_some_hits(store_with_pdfs):
@@ -170,7 +170,7 @@ def test_per_query_breakdown(store_with_pdfs):
     from harness.rag.retriever import PaperRetriever
     r = PaperRetriever(store_with_pdfs, fusion_strategy="rrf")
     report = run_evaluation(r, QUERIES_PATH, k=5)
-    assert len(report["per_query"]) == 30
+    assert len(report["per_query"]) == 100
     for q in report["per_query"]:
         assert "query" in q
         assert "recall_at_k" in q
