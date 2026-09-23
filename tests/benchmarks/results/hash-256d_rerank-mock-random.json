@@ -1,0 +1,10 @@
+{
+  "queries_count": 100,
+  "k": 5,
+  "recall_at_k": 0.57,
+  "mrr": 0.28966666666666663,
+  "ndcg_at_k": 0.3589103403326988,
+  "elapsed_s": 0.1353168487548828,
+  "embedder": "hash-256d",
+  "reranker": "mock-random"
+}

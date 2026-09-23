@@ -1,0 +1,10 @@
+{
+  "queries_count": 100,
+  "k": 5,
+  "recall_at_k": 0.86,
+  "mrr": 0.7753333333333333,
+  "ndcg_at_k": 0.7966471419838154,
+  "elapsed_s": 1.5289397239685059,
+  "embedder": "bge-small-zh-v1.5",
+  "reranker": "noop"
+}

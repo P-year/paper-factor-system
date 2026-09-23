@@ -1,0 +1,97 @@
+name: RAG Benchmark
+
+# 触发：PR + push 到 main
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:  # 手动触发
+
+# 不需要的并发取消
+concurrency:
+  group: rag-benchmark-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt 2>/dev/null || true
+          pip install pytest sentence-transformers faiss-cpu rank-bm25 numpy tiktoken pdfplumber
+
+      # 准备 10 篇真实 PDF（从 gitignored 目录，CI 用 fallback）
+      - name: Prepare PDF fixtures
+        run: |
+          mkdir -p tests/fixtures/pdfs
+          # CI 没有真实 PDF fixture（gitignored），用 placeholder 提示
+          if [ -z "$(ls -A tests/fixtures/pdfs/*.pdf 2>/dev/null)" ]; then
+            echo "::warning::No PDF fixtures found. Benchmark will use empty corpus."
+            # 创建 dummy PDF（会被 pdfplumber 解析失败但不会让测试挂掉）
+            echo "%PDF-1.4 dummy" > tests/fixtures/pdfs/dummy.pdf
+          fi
+
+      - name: Run RAG benchmark (hash baseline)
+        run: |
+          HARNESS_RAG_PREFER=hash python tests/benchmarks/benchmark_embedder.py
+
+      - name: Run RAG benchmark (bge-small-zh + noop rerank)
+        env:
+          HF_HUB_DOWNLOAD_TIMEOUT: 120
+          TRANSFORMERS_CACHE: ${{ github.workspace }}/.cache/huggingface
+        run: |
+          HARNESS_RAG_PREFER=sentence_transformer \
+          HARNESS_RAG_MODEL=BAAI/bge-small-zh-v1.5 \
+          HARNESS_RAG_RERANK=noop \
+          python tests/benchmarks/benchmark_rerank.py
+
+      - name: Run unit tests (RAG subset)
+        run: |
+          python -m pytest tests/test_rag_chunker.py \
+                          tests/test_rag_embedder.py \
+                          tests/test_rag_index.py \
+                          tests/test_rag_store.py \
+                          tests/test_rag_retriever.py \
+                          tests/test_rag_bm25.py \
+                          tests/test_rag_fusion.py \
+                          tests/test_rag_rerank.py \
+                          tests/test_rag_math_chunking.py \
+                          tests/test_rag_hnsw.py \
+                          tests/test_rag_metadata_filter.py \
+                          tests/test_rag_manifest_v3.py \
+                          tests/test_rag_eval.py \
+                          -q --no-header -p no:cacheprovider
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "=== Benchmark Results ==="
+          for f in tests/benchmarks/results/*.json; do
+            if [ -f "$f" ]; then
+              name=$(basename "$f" .json)
+              recall=$(python -c "import json; d=json.load(open('$f')); print(f\"{d['recall_at_k']:.4f}\")")
+              mrr=$(python -c "import json; d=json.load(open('$f')); print(f\"{d['mrr']:.4f}\")")
+              ndcg=$(python -c "import json; d=json.load(open('$f')); print(f\"{d['ndcg_at_k']:.4f}\")")
+              echo "$name: Recall@5=$recall MRR=$mrr NDCG@5=$ndcg"
+            fi
+          done
+
+      - name: Upload benchmark results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rag-benchmark-results
+          path: tests/benchmarks/results/
+          retention-days: 30
