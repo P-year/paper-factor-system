@@ -24,9 +24,11 @@ memory/rag/bm25.json
 memory/rag/manifest.json
 !memory/rag/.gitkeep
 
-# 测试用真实 PDF（不进 git，体积大且版权敏感）
+# 测试用真实 PDF（单篇不进 git，压缩 zip 进 git 让 CI 拿到）
 tests/fixtures/pdfs/*.pdf
 !tests/fixtures/pdfs/.gitkeep
+# 压缩 zip 用于 CI workflow 下载（25MB 一次性 commit）
+!tests/fixtures/pdfs/pdfs.zip
 
 # IDE
 .vscode/

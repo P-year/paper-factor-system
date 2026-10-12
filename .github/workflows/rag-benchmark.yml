@@ -36,13 +36,15 @@ jobs:
           pip install -r requirements.txt 2>/dev/null || true
           pip install pytest sentence-transformers faiss-cpu rank-bm25 numpy tiktoken pdfplumber
 
-      # 准备 PDF fixtures
+      # 准备 PDF fixtures：从 git tracked 的 pdfs.zip 解压（25MB 进 git）
       - name: Prepare PDF fixtures
         run: |
           mkdir -p tests/fixtures/pdfs
-          if [ -z "$(ls -A tests/fixtures/pdfs/*.pdf 2>/dev/null)" ]; then
-            echo "::warning::No PDF fixtures found. Benchmark will use empty corpus (Recall will be 0)."
-            echo "%PDF-1.4 dummy" > tests/fixtures/pdfs/dummy.pdf
+          if [ -f tests/fixtures/pdfs/pdfs.zip ]; then
+            unzip -o -q tests/fixtures/pdfs/pdfs.zip -d tests/fixtures/pdfs/
+            echo "Loaded $(ls tests/fixtures/pdfs/*.pdf | wc -l) PDF fixtures from zip"
+          else
+            echo "::warning::No pdfs.zip found. Benchmark will use empty corpus (Recall will be 0)."
           fi
 
       - name: Run RAG benchmark (hash baseline)
