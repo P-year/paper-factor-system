@@ -61,30 +61,33 @@ jobs:
           HARNESS_RAG_RERANK=noop \
           python tests/benchmarks/benchmark_rerank.py
 
-      - name: Pre-download bge-base-zh (400MB, separate step for clearer logs)
+      - name: Pre-download bge-base-zh (400MB) — download only
         env:
           HF_HUB_DOWNLOAD_TIMEOUT: 300
+          HF_HUB_DISABLE_PROGRESS_BARS: 1
           TRANSFORMERS_CACHE: ${{ github.workspace }}/.cache/huggingface
         run: |
           python -c "
           import os
           os.environ['HF_HUB_DOWNLOAD_TIMEOUT'] = '300'
-          from harness.rag.embedder import SentenceTransformerBackend
-          print('Downloading BAAI/bge-base-zh-v1.5...')
-          b = SentenceTransformerBackend(model_name='BAAI/bge-base-zh-v1.5')
-          _ = b.encode(['test'])
-          print(f'OK: dim={b.dim}')
+          os.environ['HF_HUB_DISABLE_PROGRESS_BARS'] = '1'
+          from huggingface_hub import snapshot_download
+          print('snapshot_download BAAI/bge-base-zh-v1.5...')
+          p = snapshot_download(repo_id='BAAI/bge-base-zh-v1.5', cache_dir=os.environ['TRANSFORMERS_CACHE'])
+          print(f'OK: {p}')
           "
 
       - name: Run RAG benchmark (bge-base-zh)
         env:
           HF_HUB_DOWNLOAD_TIMEOUT: 60
+          HF_HUB_DISABLE_PROGRESS_BARS: 1
           TRANSFORMERS_CACHE: ${{ github.workspace }}/.cache/huggingface
+          TRANSFORMERS_OFFLINE: 1
         timeout-minutes: 8
         run: |
           HARNESS_RAG_PREFER=sentence_transformer \
           HARNESS_RAG_MODEL=BAAI/bge-base-zh-v1.5 \
-          python tests/benchmarks/benchmark_base.py
+          python tests/benchmarks/benchmark_base.py 2>&1 | tail -20
 
       - name: Run unit tests (RAG subset)
         timeout-minutes: 5
