@@ -1,12 +1,12 @@
 name: RAG Benchmark
 
-# 触发：PR + push 到 main
+# 触发：PR + push 到 main + 手动
 on:
   pull_request:
     branches: [main]
   push:
     branches: [main]
-  workflow_dispatch:  # 手动触发
+  workflow_dispatch:
 
 # 不需要的并发取消
 concurrency:
@@ -17,6 +17,10 @@ jobs:
   benchmark:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      # PR 评论所需
+      pull-requests: write
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -32,14 +36,12 @@ jobs:
           pip install -r requirements.txt 2>/dev/null || true
           pip install pytest sentence-transformers faiss-cpu rank-bm25 numpy tiktoken pdfplumber
 
-      # 准备 10 篇真实 PDF（从 gitignored 目录，CI 用 fallback）
+      # 准备 PDF fixtures
       - name: Prepare PDF fixtures
         run: |
           mkdir -p tests/fixtures/pdfs
-          # CI 没有真实 PDF fixture（gitignored），用 placeholder 提示
           if [ -z "$(ls -A tests/fixtures/pdfs/*.pdf 2>/dev/null)" ]; then
-            echo "::warning::No PDF fixtures found. Benchmark will use empty corpus."
-            # 创建 dummy PDF（会被 pdfplumber 解析失败但不会让测试挂掉）
+            echo "::warning::No PDF fixtures found. Benchmark will use empty corpus (Recall will be 0)."
             echo "%PDF-1.4 dummy" > tests/fixtures/pdfs/dummy.pdf
           fi
 
@@ -74,19 +76,19 @@ jobs:
                           tests/test_rag_eval.py \
                           -q --no-header -p no:cacheprovider
 
-      - name: Summary
+      # v6-8：阈值检查 + 生成 markdown 报告
+      - name: Compare benchmarks against thresholds
         if: always()
         run: |
-          echo "=== Benchmark Results ==="
-          for f in tests/benchmarks/results/*.json; do
-            if [ -f "$f" ]; then
-              name=$(basename "$f" .json)
-              recall=$(python -c "import json; d=json.load(open('$f')); print(f\"{d['recall_at_k']:.4f}\")")
-              mrr=$(python -c "import json; d=json.load(open('$f')); print(f\"{d['mrr']:.4f}\")")
-              ndcg=$(python -c "import json; d=json.load(open('$f')); print(f\"{d['ndcg_at_k']:.4f}\")")
-              echo "$name: Recall@5=$recall MRR=$mrr NDCG@5=$ndcg"
-            fi
-          done
+          python tests/benchmarks/compare_benchmarks.py --output benchmark_report.md
+
+      - name: Upload benchmark report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rag-benchmark-report
+          path: benchmark_report.md
+          retention-days: 90
 
       - name: Upload benchmark results
         if: always()
@@ -95,3 +97,22 @@ jobs:
           name: rag-benchmark-results
           path: tests/benchmarks/results/
           retention-days: 30
+
+      # v6-8：PR 评论（只在 PR 触发时；push main 不评论）
+      - name: Comment PR with benchmark results
+        if: github.event_name == 'pull_request' && always()
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ${{ github.workflow }} run [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            ${{ steps.compare.outputs.markdown || '' }}
+          # comment 标识（更新而非新建）
+          edit-mode: replace
+
+      # v6-8：阈值失败时 job 失败（PR 阻塞）
+      - name: Fail job if threshold check failed
+        if: failure() && steps.compare.outcome == 'failure'
+        run: |
+          echo "::error::RAG benchmark below threshold. See benchmark_report.md artifact."
+          exit 1
