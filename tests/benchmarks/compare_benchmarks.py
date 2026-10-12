@@ -27,6 +27,10 @@ THRESHOLDS: Dict[str, Dict[str, float]] = {
         "recall_at_k": 0.80,
         "ndcg_at_k": 0.75,
     },
+    "bge-base-zh-v1.5": {
+        "recall_at_k": 0.85,  # bge-base 预期 0.93+，留 8pp buffer
+        "ndcg_at_k": 0.80,
+    },
     "hash": {
         "recall_at_k": 0.60,
         "ndcg_at_k": 0.50,

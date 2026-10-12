@@ -59,6 +59,15 @@ jobs:
           HARNESS_RAG_RERANK=noop \
           python tests/benchmarks/benchmark_rerank.py
 
+      - name: Run RAG benchmark (bge-base-zh, 400MB first download)
+        env:
+          HF_HUB_DOWNLOAD_TIMEOUT: 180
+          TRANSFORMERS_CACHE: ${{ github.workspace }}/.cache/huggingface
+        run: |
+          HARNESS_RAG_PREFER=sentence_transformer \
+          HARNESS_RAG_MODEL=BAAI/bge-base-zh-v1.5 \
+          python tests/benchmarks/benchmark_base.py
+
       - name: Run unit tests (RAG subset)
         run: |
           python -m pytest tests/test_rag_chunker.py \
