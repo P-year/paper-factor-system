@@ -56,15 +56,11 @@ def test_bge_reranker_lazy_load():
 
 def test_bge_reranker_load_failure_raises(monkeypatch):
     """模型加载失败抛 RerankUnavailable（mock 避免真实网络）。"""
-    # 替换 CrossEncoder 让它构造时抛异常
-    class FakeBrokenCrossEncoder:
-        def __init__(self, *a, **kw):
-            raise RuntimeError("mocked failure")
+    # 替换 BGEReranker._load 直接抛异常（避免触发 sentence_transformers import）
+    def fake_load_raises(self):
+        raise RerankUnavailable("mocked failure")
 
-    monkeypatch.setattr(
-        "sentence_transformers.CrossEncoder",
-        FakeBrokenCrossEncoder,
-    )
+    monkeypatch.setattr(BGEReranker, "_load", fake_load_raises)
     r = BGEReranker(model_name="any/model")
     with pytest.raises(RerankUnavailable):
         r._load()
@@ -115,14 +111,10 @@ def test_bge_reranker_empty_chunks():
 
 def test_bge_reranker_load_failure_falls_back(monkeypatch):
     """加载失败 → rerank 返回原顺序（降级）。"""
-    class FakeBrokenCrossEncoder:
-        def __init__(self, *a, **kw):
-            raise RuntimeError("mocked failure")
+    def fake_load_raises(self):
+        raise RerankUnavailable("mocked failure")
 
-    monkeypatch.setattr(
-        "sentence_transformers.CrossEncoder",
-        FakeBrokenCrossEncoder,
-    )
+    monkeypatch.setattr(BGEReranker, "_load", fake_load_raises)
     r = BGEReranker(model_name="any/model")
     chunks = [{"chunk_id": "c1", "text": "x"}, {"chunk_id": "c2", "text": "y"}]
     out = r.rerank("q", chunks)

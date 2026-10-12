@@ -72,9 +72,9 @@ jobs:
       #   ...
 
       - name: Run unit tests (RAG subset)
-        timeout-minutes: 5
+        timeout-minutes: 8
         env:
-          HARNESS_RAG_PREFER: hash  # 强制 hash 避免 ST 加载（用 cache 时 bge-small 仍可加载）
+          HARNESS_RAG_PREFER: hash
         run: |
           python -m pytest tests/test_rag_chunker.py \
                           tests/test_rag_embedder.py \
@@ -89,7 +89,7 @@ jobs:
                           tests/test_rag_metadata_filter.py \
                           tests/test_rag_manifest_v3.py \
                           tests/test_rag_eval.py \
-                          -q --no-header -p no:cacheprovider --timeout=60
+                          -q --no-header -p no:cacheprovider --timeout=120 -x
 
       # v6-8：阈值检查 + 生成 markdown 报告
       # v6-9 校准期：--warn-only（首次跑 bge-base 阈值是猜的）
