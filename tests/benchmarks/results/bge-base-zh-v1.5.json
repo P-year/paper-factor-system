@@ -1,0 +1,9 @@
+{
+  "queries_count": 100,
+  "k": 5,
+  "recall_at_k": 0.94,
+  "mrr": 0.8265,
+  "ndcg_at_k": 0.8548224356368946,
+  "elapsed_s": 3.5545289516448975,
+  "embedder": "bge-base-zh-v1.5"
+}

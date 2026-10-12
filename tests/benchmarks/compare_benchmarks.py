@@ -22,12 +22,16 @@ from typing import Any, Dict, List, Tuple
 
 
 # 阈值：低于此值 CI fail
-# bge-base-zh 暂不检查（CI 跑不动 400MB 下载 + 100 query embed）
-# 校准期：本地跑生成 results/bge-base-zh-v1.5.json
+# v6-12 校准：bge-base-zh @ 195 query 实测 Recall@5=0.87, NDCG@5=0.76
+# 阈值 = 实测 - 5pp buffer
 THRESHOLDS: Dict[str, Dict[str, float]] = {
     "bge-small-zh-v1.5_rerank-noop": {
         "recall_at_k": 0.80,
         "ndcg_at_k": 0.75,
+    },
+    "bge-base-zh-v1.5": {
+        "recall_at_k": 0.82,  # 0.87 - 0.05
+        "ndcg_at_k": 0.71,    # 0.76 - 0.05
     },
     "hash": {
         "recall_at_k": 0.60,

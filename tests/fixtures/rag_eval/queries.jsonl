@@ -98,3 +98,98 @@
 {"query": "时序 通用 大模型 预训练", "relevant": ["4089727947d7505b"]}
 {"query": "统一 时序分析 预训练模型", "relevant": ["4089727947d7505b"]}
 {"query": "One Fits All 时序 GPT 多任务", "relevant": ["4089727947d7505b"]}
+{"query": "latent factor estimation abstract", "relevant": ["e38ddbd567dcdf3e"]}
+{"query": "Giglio Xiu Zhang", "relevant": ["e38ddbd567dcdf3e"]}
+{"query": "NBER working paper", "relevant": ["e38ddbd567dcdf3e"]}
+{"query": "SDF stochastic discount", "relevant": ["e38ddbd567dcdf3e"]}
+{"query": "factor model time series compare", "relevant": ["e38ddbd567dcdf3e"]}
+{"query": "Test Assets", "relevant": ["e38ddbd567dcdf3e"]}
+{"query": "asset pricing model", "relevant": ["e38ddbd567dcdf3e"]}
+{"query": "risk premia estimation", "relevant": ["e38ddbd567dcdf3e"]}
+{"query": "test asset dataset", "relevant": ["e38ddbd567dcdf3e"]}
+{"query": "context-aware reinforcement abstract", "relevant": ["502816f81f07a465"]}
+{"query": "Zong Wang Qin", "relevant": ["502816f81f07a465"]}
+{"query": "KDD 2024", "relevant": ["502816f81f07a465"]}
+{"query": "RL high frequency", "relevant": ["502816f81f07a465"]}
+{"query": "trading signal recommender", "relevant": ["502816f81f07a465"]}
+{"query": "Memory Augmented", "relevant": ["502816f81f07a465"]}
+{"query": "crypto trading", "relevant": ["502816f81f07a465"]}
+{"query": "memory context agent", "relevant": ["502816f81f07a465"]}
+{"query": "cryptocurrency dataset", "relevant": ["502816f81f07a465"]}
+{"query": "denoising diffusion abstract", "relevant": ["ac1138528c50c400"]}
+{"query": "Wang Xu Feng", "relevant": ["ac1138528c50c400"]}
+{"query": "SIGIR 2023", "relevant": ["ac1138528c50c400"]}
+{"query": "CF collaborative filtering", "relevant": ["ac1138528c50c400"]}
+{"query": "denoising trading generation", "relevant": ["ac1138528c50c400"]}
+{"query": "Diffusion Recommender", "relevant": ["ac1138528c50c400"]}
+{"query": "recsys generative", "relevant": ["ac1138528c50c400"]}
+{"query": "noise scheduler diffusion", "relevant": ["ac1138528c50c400"]}
+{"query": "user-item interaction", "relevant": ["ac1138528c50c400"]}
+{"query": "benchmark financial LLM abstract", "relevant": ["3bdf74c677eb7490"]}
+{"query": "Xie Han Chen", "relevant": ["3bdf74c677eb7490"]}
+{"query": "NeurIPS 2024", "relevant": ["3bdf74c677eb7490"]}
+{"query": "LLM finance", "relevant": ["3bdf74c677eb7490"]}
+{"query": "LLM trading finance", "relevant": ["3bdf74c677eb7490"]}
+{"query": "Financial Benchmark", "relevant": ["3bdf74c677eb7490"]}
+{"query": "fintech language", "relevant": ["3bdf74c677eb7490"]}
+{"query": "evaluation holistic benchmark", "relevant": ["3bdf74c677eb7490"]}
+{"query": "financial NLP dataset", "relevant": ["3bdf74c677eb7490"]}
+{"query": "generative semantic ID abstract", "relevant": ["ca55af85332091c7"]}
+{"query": "Rajput Mehta", "relevant": ["ca55af85332091c7"]}
+{"query": "NeurIPS 2023", "relevant": ["ca55af85332091c7"]}
+{"query": "NLP semantic", "relevant": ["ca55af85332091c7"]}
+{"query": "retrieval language model", "relevant": ["ca55af85332091c7"]}
+{"query": "Generative Retrieval", "relevant": ["ca55af85332091c7"]}
+{"query": "recsys retrieval", "relevant": ["ca55af85332091c7"]}
+{"query": "recommender embedding quantization", "relevant": ["ca55af85332091c7"]}
+{"query": "recommender dataset", "relevant": ["ca55af85332091c7"]}
+{"query": "time series language model abstract", "relevant": ["2832f5e0ef26ac4e"]}
+{"query": "Ansari Stella", "relevant": ["2832f5e0ef26ac4e"]}
+{"query": "TMLR 2024", "relevant": ["2832f5e0ef26ac4e"]}
+{"query": "TSF time series", "relevant": ["2832f5e0ef26ac4e"]}
+{"query": "time series trading forecasting", "relevant": ["2832f5e0ef26ac4e"]}
+{"query": "Learning the Language", "relevant": ["2832f5e0ef26ac4e"]}
+{"query": "TSF model", "relevant": ["2832f5e0ef26ac4e"]}
+{"query": "pretraining scaling forecasting", "relevant": ["2832f5e0ef26ac4e"]}
+{"query": "time series benchmark", "relevant": ["2832f5e0ef26ac4e"]}
+{"query": "patch tokenization forecasting abstract", "relevant": ["6454ddb47493d5f2"]}
+{"query": "Nie Nguyen Sinthong", "relevant": ["6454ddb47493d5f2"]}
+{"query": "ICLR 2023", "relevant": ["6454ddb47493d5f2"]}
+{"query": "TS transformer", "relevant": ["6454ddb47493d5f2"]}
+{"query": "patch time series NLP", "relevant": ["6454ddb47493d5f2"]}
+{"query": "64 Words", "relevant": ["6454ddb47493d5f2"]}
+{"query": "TSFM patch", "relevant": ["6454ddb47493d5f2"]}
+{"query": "channel independent multivariate", "relevant": ["6454ddb47493d5f2"]}
+{"query": "forecasting dataset", "relevant": ["6454ddb47493d5f2"]}
+{"query": "probabilistic time series foundation abstract", "relevant": ["5ca45af7874927c1"]}
+{"query": "Rasul Ashok Williams", "relevant": ["5ca45af7874927c1"]}
+{"query": "ICML 2024", "relevant": ["5ca45af7874927c1"]}
+{"query": "PF probabilistic", "relevant": ["5ca45af7874927c1"]}
+{"query": "probabilistic foundation recommender", "relevant": ["5ca45af7874927c1"]}
+{"query": "Foundation Models", "relevant": ["5ca45af7874927c1"]}
+{"query": "foundation model", "relevant": ["5ca45af7874927c1"]}
+{"query": "autoregressive lag tokens", "relevant": ["5ca45af7874927c1"]}
+{"query": "univariate multivariate", "relevant": ["5ca45af7874927c1"]}
+{"query": "sparse mixture experts abstract", "relevant": ["45db7a726f4b0ed0"]}
+{"query": "Liu Liu Woo", "relevant": ["45db7a726f4b0ed0"]}
+{"query": "ICML 2025", "relevant": ["45db7a726f4b0ed0"]}
+{"query": "MoE mixture experts", "relevant": ["45db7a726f4b0ed0"]}
+{"query": "mixture experts finance", "relevant": ["45db7a726f4b0ed0"]}
+{"query": "Sparse Mixture", "relevant": ["45db7a726f4b0ed0"]}
+{"query": "MoE time series", "relevant": ["45db7a726f4b0ed0"]}
+{"query": "sparse expert routing", "relevant": ["45db7a726f4b0ed0"]}
+{"query": "forecasting benchmark", "relevant": ["45db7a726f4b0ed0"]}
+{"query": "pretrained LM time series abstract", "relevant": ["4089727947d7505b"]}
+{"query": "Zhou Niu Wang", "relevant": ["4089727947d7505b"]}
+{"query": "NeurIPS 2023", "relevant": ["4089727947d7505b"]}
+{"query": "TSFM time series", "relevant": ["4089727947d7505b"]}
+{"query": "pretrained universal trading", "relevant": ["4089727947d7505b"]}
+{"query": "Power General", "relevant": ["4089727947d7505b"]}
+{"query": "pretrained TS", "relevant": ["4089727947d7505b"]}
+{"query": "universal multi-task", "relevant": ["4089727947d7505b"]}
+{"query": "GPT time series dataset", "relevant": ["4089727947d7505b"]}
+{"query": "quantum consciousness trading", "relevant": []}
+{"query": "cryptocurrency transformer diffusion factor", "relevant": []}
+{"query": "foundation model video understanding", "relevant": []}
+{"query": "reinforcement learning Atari game", "relevant": []}
+{"query": "image generation diffusion", "relevant": []}

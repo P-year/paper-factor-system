@@ -306,6 +306,11 @@ class PaperRAGStore:
         if vecs is None or len(vecs) == 0:
             return 0
 
+        # v6-10：embedder 实际 dim 可能与构造时不同（ST 懒加载）
+        # 自动重建 index 以匹配真实 dim
+        if vecs.shape[1] != self.index.dim:
+            self.index = FAISSIndex(dim=vecs.shape[1], metric="cosine")
+
         # 加到 FAISS（按 new_chunk_ids 顺序）
         self.index.add(vecs, ids=new_chunk_ids)
 
