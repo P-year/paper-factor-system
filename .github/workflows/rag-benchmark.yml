@@ -86,10 +86,12 @@ jobs:
                           -q --no-header -p no:cacheprovider
 
       # v6-8：阈值检查 + 生成 markdown 报告
+      # v6-9 校准期：--warn-only（首次跑 bge-base 阈值是猜的）
+      # 待 CI 跑出真实 bge-base-zh 数据后，调阈值并去掉 --warn-only
       - name: Compare benchmarks against thresholds
         if: always()
         run: |
-          python tests/benchmarks/compare_benchmarks.py --output benchmark_report.md
+          python tests/benchmarks/compare_benchmarks.py --output benchmark_report.md --warn-only
 
       - name: Upload benchmark report
         if: always()

@@ -103,6 +103,10 @@ def main():
         "--output", default="benchmark_report.md",
         help="输出 markdown 报告路径",
     )
+    parser.add_argument(
+        "--warn-only", action="store_true",
+        help="阈值失败时仅 warn，不 exit 1（用于初次校准阈值）",
+    )
     args = parser.parse_args()
 
     results_dir = Path(args.results_dir)
@@ -126,10 +130,14 @@ def main():
     if failures:
         print()
         print("=" * 50)
-        print("THRESHOLD FAILURES:")
+        print("THRESHOLD FAILURES:" if not args.warn_only else "THRESHOLD WARNINGS (--warn-only):")
         for name, metric, value, threshold in failures:
-            print(f"  [FAIL] {name} {metric}={value:.4f} < {threshold:.4f}")
+            tag = "[FAIL]" if not args.warn_only else "[WARN]"
+            print(f"  {tag} {name} {metric}={value:.4f} < {threshold:.4f}")
         print("=" * 50)
+        if args.warn_only:
+            print("(warn-only 模式: exit 0 despite failures)")
+            sys.exit(0)
         sys.exit(1)
     else:
         print()
