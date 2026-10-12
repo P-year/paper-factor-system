@@ -16,7 +16,7 @@ concurrency:
 jobs:
   benchmark:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     permissions:
       # PR 评论所需
       pull-requests: write
@@ -61,33 +61,15 @@ jobs:
           HARNESS_RAG_RERANK=noop \
           python tests/benchmarks/benchmark_rerank.py
 
-      - name: Pre-download bge-base-zh (400MB) — download only
-        env:
-          HF_HUB_DOWNLOAD_TIMEOUT: 300
-          HF_HUB_DISABLE_PROGRESS_BARS: 1
-          TRANSFORMERS_CACHE: ${{ github.workspace }}/.cache/huggingface
-        run: |
-          python -c "
-          import os
-          os.environ['HF_HUB_DOWNLOAD_TIMEOUT'] = '300'
-          os.environ['HF_HUB_DISABLE_PROGRESS_BARS'] = '1'
-          from huggingface_hub import snapshot_download
-          print('snapshot_download BAAI/bge-base-zh-v1.5...')
-          p = snapshot_download(repo_id='BAAI/bge-base-zh-v1.5', cache_dir=os.environ['TRANSFORMERS_CACHE'])
-          print(f'OK: {p}')
-          "
-
-      - name: Run RAG benchmark (bge-base-zh)
-        env:
-          HF_HUB_DOWNLOAD_TIMEOUT: 60
-          HF_HUB_DISABLE_PROGRESS_BARS: 1
-          TRANSFORMERS_CACHE: ${{ github.workspace }}/.cache/huggingface
-          TRANSFORMERS_OFFLINE: 1
-        timeout-minutes: 8
-        run: |
-          HARNESS_RAG_PREFER=sentence_transformer \
-          HARNESS_RAG_MODEL=BAAI/bge-base-zh-v1.5 \
-          python tests/benchmarks/benchmark_base.py 2>&1 | tail -20
+      # bge-base-zh 暂时从 CI 移除（首次 400MB 下载 + 100 query embed
+      # 在 ubuntu-latest runner 上不稳定，且本机网络受限无法预热）
+      # 改在本地跑，结果 commit 到 tests/benchmarks/results/
+      # 校准阈值用本地实测数字
+      # TODO: 网络稳定后加回来
+      # - name: Pre-download bge-base-zh (400MB) — download only
+      #   ...
+      # - name: Run RAG benchmark (bge-base-zh)
+      #   ...
 
       - name: Run unit tests (RAG subset)
         timeout-minutes: 5
