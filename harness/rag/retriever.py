@@ -58,10 +58,16 @@ class PaperRetriever:
         self.default_top_k = default_top_k
         self.embedding_weight = embedding_weight
         self.bm25_weight = bm25_weight
-        self.async_embedder = async_embedder  # v5-4：None → 用 sync encode
         self.fusion_strategy = fusion_strategy  # v6-1：rrf | weighted
         self.rrf_k = rrf_k
         self.reranker = reranker  # v6-3：None → 跳过 rerank
+
+        # v7-2：默认用 store.embedder 构造 async_embedder（带 LRU cache）
+        # 重复 query 命中缓存，零成本
+        if async_embedder is None:
+            from harness.rag.async_embed import get_async_embedder
+            async_embedder = get_async_embedder(embedder=store.embedder)
+        self.async_embedder = async_embedder
 
         if fusion_strategy not in ("rrf", "weighted"):
             raise ValueError(f"fusion_strategy must be 'rrf' or 'weighted', got {fusion_strategy}")
@@ -93,6 +99,11 @@ class PaperRetriever:
         top_k = top_k or self.default_top_k
         if self.store.count() == 0:
             return []
+
+        # v7-3：中文 query 自动扩展（加同义词/去停用词）
+        from harness.rag.query_enhance import is_chinese, expand_query
+        if is_chinese(query):
+            query = expand_query(query)
 
         query_clean = query.strip()
         # 多取一些候选避免漏召回（rerank 时再多取 5x）
