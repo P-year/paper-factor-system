@@ -134,5 +134,76 @@ def test_expand_query_recall_boost_zh():
                 assert "paper_title" in c
 
 
+# === v8-2: LLM 改写（mock）===
+
+def test_llm_rewrite_empty_returns_none():
+    from harness.rag.query_enhance import llm_rewrite
+    assert llm_rewrite("") is None
+    assert llm_rewrite("   ") is None
+
+
+def test_llm_rewrite_failure_returns_none(monkeypatch):
+    """LLM 不可用时返 None（降级到 expand_query）。"""
+    from harness.rag import query_enhance
+
+    def fake_call_llm(*a, **kw):
+        raise RuntimeError("LLM unavailable")
+    monkeypatch.setattr(query_enhance, "_call_llm", fake_call_llm)
+
+    out = query_enhance.llm_rewrite("动量因子")
+    assert out is None
+
+
+def test_llm_rewrite_success(monkeypatch):
+    """Mock LLM 返固定字符串。"""
+    from harness.rag import query_enhance
+    monkeypatch.setattr(query_enhance, "_call_llm", lambda **kw: "momentum factor alpha signal")
+
+    out = query_enhance.llm_rewrite("动量因子")
+    assert out == "momentum factor alpha signal"
+
+
+def test_llm_rewrite_too_long_returns_none(monkeypatch):
+    """LLM 返超长字符串时返 None（>500 字符异常）。"""
+    from harness.rag import query_enhance
+    monkeypatch.setattr(query_enhance, "_call_llm", lambda **kw: "x" * 1000)
+
+    out = query_enhance.llm_rewrite("test")
+    assert out is None
+
+
+def test_smart_enhance_default_no_llm():
+    """默认 use_llm=False → 仅 expand_query。"""
+    from harness.rag.query_enhance import smart_enhance
+    out = smart_enhance("动量因子")
+    assert "动量" in out
+    assert "momentum" in out
+
+
+def test_smart_enhance_with_llm(monkeypatch):
+    """use_llm=True 时合并 LLM 改写 + expand_query。"""
+    from harness.rag import query_enhance
+    monkeypatch.setattr(query_enhance, "_call_llm", lambda **kw: "momentum factor")
+
+    out = query_enhance.smart_enhance("动量因子", use_llm=True)
+    assert "momentum factor" in out
+    assert "动量" in out
+    assert "momentum" in out  # expand_query 加的同义词
+
+
+def test_smart_enhance_llm_fails(monkeypatch):
+    """LLM 失败时降级到 expand_query。"""
+    from harness.rag import query_enhance
+
+    def fake_call_llm(*a, **kw):
+        raise RuntimeError("network error")
+    monkeypatch.setattr(query_enhance, "_call_llm", fake_call_llm)
+
+    out = query_enhance.smart_enhance("动量因子", use_llm=True)
+    # LLM 失败 → 降级到 expand_query 结果
+    assert "动量" in out
+    assert "momentum" in out
+
+
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-v"]))

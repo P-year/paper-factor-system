@@ -17,8 +17,15 @@ harness/rag/query_enhance.py - query 预处理
 """
 from __future__ import annotations
 
+import os
 import re
-from typing import List, Set
+from typing import List, Optional, Set
+
+# 缓存 call_llm 引用（避免 monkeypatch 时找不到）
+try:
+    from harness.llm_client import call_llm as _call_llm
+except ImportError:
+    _call_llm = None  # type: ignore
 
 
 # 简化的金融/ML 中英同义词表（覆盖 ground-truth 高频词）
@@ -132,6 +139,68 @@ def expand_query(query: str) -> str:
 
     # 原始 token（精确匹配）+ 扩展 token（语义）混合
     return " ".join(expanded_tokens)
+
+
+# === v8-2: LLM query 改写 ===
+
+_LLM_REWRITE_SYSTEM = """你是学术论文检索 query 改写专家。
+把用户口语化/中文 query 改写为适合学术检索的精准英文表达。
+
+规则：
+1. 改写后 query 应包含：核心概念 + 关键限定词 + 同义词/缩写
+2. 中文概念翻译为英文专业术语（如"动量" → "momentum factor"）
+3. 用空格分隔多个关键词
+4. 保留原始语种信息（不删中英混合）
+5. 输出仅一行，不要解释"""
+
+
+def llm_rewrite(query: str, *, timeout: int = 10) -> Optional[str]:
+    """用 LLM 把 query 改写成精准学术检索词。
+
+    Returns:
+        改写后的 query（字符串）；失败返回 None（降级到 expand_query）
+    """
+    if not query or not query.strip():
+        return None
+    if _call_llm is None:
+        return None
+    try:
+        rewritten = _call_llm(
+            system=_LLM_REWRITE_SYSTEM,
+            user=query,
+            timeout=timeout,
+        )
+        rewritten = rewritten.strip()
+        if rewritten and len(rewritten) < 500:
+            return rewritten
+    except Exception as e:
+        import warnings
+        warnings.warn(f"LLM rewrite failed for {query!r}: {e}")
+    return None
+
+
+def smart_enhance(query: str, *, use_llm: bool = False) -> str:
+    """v8-2：综合 query 增强。
+
+    1. 总是跑 expand_query（轻量、零依赖）
+    2. 可选用 LLM 改写（更精准，但需 API key + 网络）
+    """
+    base = expand_query(query)
+    if not use_llm:
+        return base
+    rewritten = llm_rewrite(query)
+    if rewritten:
+        # 合并：LLM 改写 + 同义词扩展（双保险）
+        return f"{rewritten} {base}"
+    return base
+
+
+__all__ = [
+    "is_chinese",
+    "expand_query",
+    "llm_rewrite",
+    "smart_enhance",
+]
 
 
 __all__ = [
