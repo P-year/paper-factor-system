@@ -10,6 +10,22 @@ from pathlib import Path
 from typing import Optional, AsyncIterator
 from datetime import datetime
 
+# ============================================================
+# Python 3.13 + langgraph + Annotated 兼容性 patch
+# Python 3.13 的 typing.get_type_hints(include_extras=True) 在 eval
+# forward ref 时不注入 Annotated，导致 _Ann / Annotated 都报 NameError。
+# 修复：把 typing_extensions.Annotated 注入 typing 模块的内部 globals。
+# ============================================================
+import typing
+import typing_extensions
+
+# 把 Annotated 注入 typing 模块
+typing.Annotated = typing_extensions.Annotated
+
+# 把 Annotated 注入内置命名空间（关键修复）
+import builtins
+builtins.Annotated = typing_extensions.Annotated
+
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import StreamingResponse, JSONResponse
 from pydantic import BaseModel, Field
@@ -27,6 +43,10 @@ app = FastAPI(
     description="基于 LangGraph 的论文因子挖掘 Agent",
     version="1.0.0",
 )
+
+# 回测 API 路由
+from api.backtest_routes import router as backtest_router
+app.include_router(backtest_router)
 
 # 全局 graph 实例（启动时构建）
 _graph = None
