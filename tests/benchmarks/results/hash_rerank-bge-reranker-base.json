@@ -1,0 +1,10 @@
+{
+  "recall_at_k": 0.8615384615384616,
+  "mrr": 0.767008547008547,
+  "ndcg_at_k": 0.7907219564764607,
+  "embedder": "hash",
+  "reranker": "bge-reranker-base",
+  "elapsed_s": 1685.68,
+  "k": 5,
+  "queries_count": 195
+}

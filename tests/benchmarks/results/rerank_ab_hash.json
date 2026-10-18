@@ -1,0 +1,20 @@
+{
+  "embedder": "hash",
+  "reranker": "BAAI/bge-reranker-base",
+  "baseline": {
+    "recall_at_k": 0.7025641025641025,
+    "mrr": 0.554017094017094,
+    "ndcg_at_k": 0.5911292128710572
+  },
+  "rerank": {
+    "recall_at_k": 0.8615384615384616,
+    "mrr": 0.767008547008547,
+    "ndcg_at_k": 0.7907219564764607
+  },
+  "diff": {
+    "recall_at_k": 0.159,
+    "mrr": 0.213,
+    "ndcg_at_k": 0.1996
+  },
+  "k": 5
+}
