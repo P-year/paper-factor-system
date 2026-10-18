@@ -99,5 +99,95 @@ def test_cli_clear_with_yes():
     assert "Cleared" in r.stdout or "error" in r.stdout.lower()
 
 
+# === v9-2: inspect 子命令 ===
+
+def test_cli_inspect_help():
+    """inspect --help 输出。"""
+    r = _run_cli("inspect", "--help")
+    assert r.returncode == 0
+    assert "inspect" in r.stdout
+    assert "--top-k" in r.stdout
+
+
+def test_cli_inspect_basic(tmp_path, monkeypatch):
+    """inspect 基本输出含 5 个 section。"""
+    paper_dir = tmp_path / "papers"
+    paper_dir.mkdir()
+    (paper_dir / "papers_20260101.json").write_text(
+        json.dumps({"papers": [
+            {"arxiv_id": "p1", "title": "Momentum", "summary": "动量因子在 A 股。" * 30, "link": "L1"},
+            {"arxiv_id": "p2", "title": "Value", "summary": "价值投资策略。" * 30, "link": "L2"},
+            {"arxiv_id": "p3", "title": "Quality", "summary": "质量因子选股。" * 30, "link": "L3"},
+        ]}, ensure_ascii=False), encoding="utf-8",
+    )
+    # rebuild with paper-dir
+    r = _run_cli("rebuild", "--paper-dir", str(paper_dir))
+    assert r.returncode == 0, r.stderr
+
+    r = _run_cli("inspect", "动量", "--top-k", "5")
+    assert r.returncode == 0, r.stderr
+    # 5 个 section 都应在 stdout
+    assert "## Top" in r.stdout
+    assert "## Source distribution" in r.stdout
+    assert "## Score distribution" in r.stdout
+    assert "## Decision details" in r.stdout
+
+
+def test_cli_inspect_no_results(tmp_path, monkeypatch):
+    """min-score 阈值过滤掉所有结果时 inspect 应返 'No results'。"""
+    paper_dir = tmp_path / "papers"
+    paper_dir.mkdir()
+    (paper_dir / "papers_20260101.json").write_text(
+        json.dumps({"papers": [
+            {"arxiv_id": "p1", "title": "Momentum",
+             "summary": "动量因子 套利 高频 交易" * 50, "link": "L1"},
+        ]}, ensure_ascii=False), encoding="utf-8",
+    )
+    r = _run_cli("rebuild", "--paper-dir", str(paper_dir))
+    assert r.returncode == 0
+
+    # min-score 调到 1.0 → 任何结果都会 < 1.0 → 0 result
+    r = _run_cli("inspect", "动量", "--min-score", "1.0")
+    assert r.returncode == 0
+    assert "No results" in r.stdout
+
+
+def test_cli_inspect_with_top_k(tmp_path, monkeypatch):
+    """inspect --top-k 5 应返 ≤5 个 chunk。"""
+    paper_dir = tmp_path / "papers"
+    paper_dir.mkdir()
+    (paper_dir / "papers_20260101.json").write_text(
+        json.dumps({"papers": [
+            {"arxiv_id": f"p{i}", "title": f"Paper {i}",
+             "summary": ("动量 因子 高频 交易 " * 50 + f"\npaper{i} "), "link": f"L{i}"}
+            for i in range(10)
+        ]}, ensure_ascii=False), encoding="utf-8",
+    )
+    r = _run_cli("rebuild", "--paper-dir", str(paper_dir))
+    assert r.returncode == 0
+
+    r = _run_cli("inspect", "动量因子", "--top-k", "5")
+    assert r.returncode == 0
+    # Source distribution 部分有 unique papers 数
+    assert "unique papers" in r.stdout
+
+
+def test_cli_inspect_with_fusion_strategy(tmp_path, monkeypatch):
+    """--fusion weighted 也应工作。"""
+    paper_dir = tmp_path / "papers"
+    paper_dir.mkdir()
+    (paper_dir / "papers_20260101.json").write_text(
+        json.dumps({"papers": [
+            {"arxiv_id": "p1", "title": "Momentum", "summary": "动量因子在 A 股。" * 30, "link": "L1"},
+        ]}, ensure_ascii=False), encoding="utf-8",
+    )
+    r = _run_cli("rebuild", "--paper-dir", str(paper_dir))
+    assert r.returncode == 0
+
+    r = _run_cli("inspect", "动量", "--top-k", "3", "--fusion", "weighted")
+    assert r.returncode == 0, r.stderr
+    assert "fusion_strategy: weighted" in r.stdout
+
+
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-v"]))
