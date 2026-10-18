@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper Factor System — 因子挖掘与回测平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+                    colors: {
+                        primary: { 50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81' },
+                        surface: { 0: '#0a0e1a', 1: '#111827', 2: '#1e293b', 3: '#334155', 4: '#475569' },
+                        accent: { cyan: '#22d3ee', emerald: '#34d399', amber: '#fbbf24', rose: '#fb7185', violet: '#a78bfa' },
+                    },
+                    boxShadow: {
+                        'glow': '0 0 20px rgba(99, 102, 241, 0.15)',
+                        'glow-lg': '0 0 40px rgba(99, 102, 241, 0.2)',
+                        'card': '0 4px 24px rgba(0, 0, 0, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { scrollbar-width: thin; scrollbar-color: #4f46e5 #111827; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #111827; }
+        ::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 3px; }
+
+        .glass {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+        }
+        .glass-hover:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #818cf8 0%, #22d3ee 50%, #34d399 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-border {
+            position: relative;
+        }
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.5), rgba(34, 211, 238, 0.3));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+        .nav-active {
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.2), transparent);
+            border-left: 3px solid #6366f1;
+            color: #a5b4fc;
+        }
+        .stat-glow { position: relative; overflow: hidden; }
+        .stat-glow::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+        }
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .slide-in { animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+        .pulse-dot { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .chart-container { min-height: 320px; }
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            transition: all 0.3s;
+        }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3); }
+        .tab-active {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(34, 211, 238, 0.1));
+            border-color: rgba(99, 102, 241, 0.4);
+            color: #a5b4fc;
+        }
+        .sidebar-link { transition: all 0.2s; }
+        .sidebar-link:hover { background: rgba(99, 102, 241, 0.1); transform: translateX(4px); }
+        input, select, textarea {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            transition: all 0.2s;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: rgba(99, 102, 241, 0.5);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            outline: none;
+        }
+    </style>
+</head>
+<body class="bg-surface-0 text-gray-200 font-sans min-h-screen">
+
+<!-- Sidebar -->
+<aside class="fixed left-0 top-0 h-full w-64 glass z-50 flex flex-col">
+    <!-- Logo -->
+    <div class="p-6 border-b border-surface-3/30">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-cyan flex items-center justify-center">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                </svg>
+            </div>
+            <div>
+                <h1 class="text-lg font-bold gradient-text">FactorLab</h1>
+                <p class="text-xs text-surface-4">因子挖掘与回测平台</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 py-4 overflow-y-auto">
+        <div class="px-4 mb-2">
+            <p class="text-xs font-semibold text-surface-4 uppercase tracking-wider">概览</p>
+        </div>
+        <a href="#" onclick="showPage('dashboard')" class="sidebar-link nav-active flex items-center gap-3 px-4 py-3 text-sm" id="nav-dashboard">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            仪表盘
+        </a>
+
+        <div class="px-4 mt-6 mb-2">
+            <p class="text-xs font-semibold text-surface-4 uppercase tracking-wider">因子挖掘</p>
+        </div>
+        <a href="#" onclick="showPage('papers')" class="sidebar-link flex items-center gap-3 px-4 py-3 text-sm text-surface-4 hover:text-gray-200" id="nav-papers">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            论文库
+        </a>
+        <a href="#" onclick="showPage('rag')" class="sidebar-link flex items-center gap-3 px-4 py-3 text-sm text-surface-4 hover:text-gray-200" id="nav-rag">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            RAG 检索
+        </a>
+
+        <div class="px-4 mt-6 mb-2">
+            <p class="text-xs font-semibold text-surface-4 uppercase tracking-wider">回测系统</p>
+        </div>
+        <a href="#" onclick="showPage('factor-backtest')" class="sidebar-link flex items-center gap-3 px-4 py-3 text-sm text-surface-4 hover:text-gray-200" id="nav-factor-backtest">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            因子回测
+        </a>
+        <a href="#" onclick="showPage('strategy-backtest')" class="sidebar-link flex items-center gap-3 px-4 py-3 text-sm text-surface-4 hover:text-gray-200" id="nav-strategy-backtest">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            策略回测
+        </a>
+        <a href="#" onclick="showPage('reports')" class="sidebar-link flex items-center gap-3 px-4 py-3 text-sm text-surface-4 hover:text-gray-200" id="nav-reports">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            报告中心
+        </a>
+    </nav>
+
+    <!-- Footer -->
+    <div class="p-4 border-t border-surface-3/30">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-accent-emerald to-accent-cyan flex items-center justify-center">
+                <span class="text-xs font-bold text-white">AI</span>
+            </div>
+            <div>
+                <p class="text-xs font-medium">Paper Factor Agent</p>
+                <p class="text-xs text-surface-4 flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent-emerald pulse-dot"></span>
+                    系统运行中
+                </p>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- Main Content -->
+<main class="ml-64 min-h-screen">
+    <!-- Top Bar -->
+    <header class="glass sticky top-0 z-40 px-8 py-4">
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-xl font-semibold" id="page-title">仪表盘</h2>
+                <p class="text-sm text-surface-4" id="page-subtitle">因子挖掘与回测系统总览</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg glass">
+                    <div class="w-2 h-2 rounded-full bg-accent-emerald pulse-dot"></div>
+                    <span class="text-xs text-surface-4">API 已连接</span>
+                </div>
+                <button onclick="location.reload()" class="p-2 rounded-lg glass glass-hover" title="刷新">
+                    <svg class="w-5 h-5 text-surface-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Content -->
+    <div class="p-8">
+
+        <!-- ==================== DASHBOARD ==================== -->
+        <div id="page-dashboard" class="fade-in">
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-4 gap-6 mb-8">
+                <div class="glass stat-glow rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-primary-500/20 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                        </div>
+                        <span class="text-xs font-medium text-accent-emerald">+12%</span>
+                    </div>
+                    <p class="text-3xl font-bold text-white" id="stat-papers">35</p>
+                    <p class="text-sm text-surface-4 mt-1">已挖掘因子</p>
+                </div>
+                <div class="glass stat-glow rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-accent-cyan/20 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-accent-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <span class="text-xs font-medium text-accent-emerald">+8%</span>
+                    </div>
+                    <p class="text-3xl font-bold text-white" id="stat-approved">18</p>
+                    <p class="text-sm text-surface-4 mt-1">已验证因子</p>
+                </div>
+                <div class="glass stat-glow rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-accent-emerald/20 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-accent-emerald" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                        </div>
+                        <span class="text-xs font-medium text-accent-amber">IC 0.82</span>
+                    </div>
+                    <p class="text-3xl font-bold text-white" id="stat-backtests">156</p>
+                    <p class="text-sm text-surface-4 mt-1">回测次数</p>
+                </div>
+                <div class="glass stat-glow rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-accent-violet/20 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-accent-violet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                        </div>
+                        <span class="text-xs font-medium text-surface-4">RAG v3</span>
+                    </div>
+                    <p class="text-3xl font-bold text-white" id="stat-chunks">395</p>
+                    <p class="text-sm text-surface-4 mt-1">RAG 索引块</p>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="grid grid-cols-2 gap-6 mb-8">
+                <div class="glass rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">因子表现分布</h3>
+                    <div id="chart-factor-dist" class="chart-container"></div>
+                </div>
+                <div class="glass rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">回测收益曲线</h3>
+                    <div id="chart-equity-curve" class="chart-container"></div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="glass rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-white">最近活动</h3>
+                    <button class="text-sm text-primary-400 hover:text-primary-300">查看全部</button>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-surface-2/50 transition-colors">
+                        <div class="w-10 h-10 rounded-lg bg-accent-emerald/20 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-accent-emerald" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-white">因子「动量反转」回测完成</p>
+                            <p class="text-xs text-surface-4">IC=0.062 | ICIR=0.83 | 年化+12.3%</p>
+                        </div>
+                        <span class="text-xs text-surface-4">2 分钟前</span>
+                    </div>
+                    <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-surface-2/50 transition-colors">
+                        <div class="w-10 h-10 rounded-lg bg-primary-500/20 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-white">论文「Weak Factors in Asset Pricing」已分析</p>
+                            <p class="text-xs text-surface-4">提取因子 2 个 | 置信度: 高</p>
+                        </div>
+                        <span class="text-xs text-surface-4">15 分钟前</span>
+                    </div>
+                    <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-surface-2/50 transition-colors">
+                        <div class="w-10 h-10 rounded-lg bg-accent-cyan/20 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-accent-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-white">RAG 索引更新完成</p>
+                            <p class="text-xs text-surface-4">新增 270 chunks | bge-base-zh-v1.5</p>
+                        </div>
+                        <span class="text-xs text-surface-4">1 小时前</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== PAPERS ==================== -->
+        <div id="page-papers" class="hidden">
+            <div class="glass rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-white">论文库</h3>
+                    <button class="btn-primary px-4 py-2 rounded-xl text-sm font-medium text-white">
+                        + 上传论文
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="text-left text-xs text-surface-4 border-b border-surface-3/30">
+                                <th class="pb-3 pr-4">论文标题</th>
+                                <th class="pb-3 pr-4">来源</th>
+                                <th class="pb-3 pr-4">提取因子</th>
+                                <th class="pb-3 pr-4">置信度</th>
+                                <th class="pb-3 pr-4">状态</th>
+                                <th class="pb-3">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm">
+                            <tr class="border-b border-surface-3/20 hover:bg-surface-2/30 transition-colors">
+                                <td class="py-4 pr-4">
+                                    <p class="font-medium text-white">Weak Factors in Asset Pricing</p>
+                                    <p class="text-xs text-surface-4">Giglio, Xiu, Zhang</p>
+                                </td>
+                                <td class="py-4 pr-4"><span class="px-2 py-1 rounded-md bg-primary-500/20 text-primary-300 text-xs">NBER</span></td>
+                                <td class="py-4 pr-4 text-surface-3">2 个</td>
+                                <td class="py-4 pr-4"><span class="text-accent-emerald">高</span></td>
+                                <td class="py-4 pr-4"><span class="px-2 py-1 rounded-md bg-accent-emerald/20 text-accent-emerald text-xs">已完成</span></td>
+                                <td class="py-4"><button class="text-primary-400 hover:text-primary-300 text-xs">查看详情</button></td>
+                            </tr>
+                            <tr class="border-b border-surface-3/20 hover:bg-surface-2/30 transition-colors">
+                                <td class="py-4 pr-4">
+                                    <p class="font-medium text-white">MacroHFT: Memory-Augmented HFT</p>
+                                    <p class="text-xs text-surface-4">Li, Wang et al.</p>
+                                </td>
+                                <td class="py-4 pr-4"><span class="px-2 py-1 rounded-md bg-accent-cyan/20 text-accent-cyan text-xs">arXiv</span></td>
+                                <td class="py-4 pr-4 text-surface-3">1 个</td>
+                                <td class="py-4 pr-4"><span class="text-accent-emerald">高</span></td>
+                                <td class="py-4 pr-4"><span class="px-2 py-1 rounded-md bg-accent-emerald/20 text-accent-emerald text-xs">已完成</span></td>
+                                <td class="py-4"><button class="text-primary-400 hover:text-primary-300 text-xs">查看详情</button></td>
+                            </tr>
+                            <tr class="hover:bg-surface-2/30 transition-colors">
+                                <td class="py-4 pr-4">
+                                    <p class="font-medium text-white">FinBen: Financial Benchmark</p>
+                                    <p class="text-xs text-surface-4">Xie et al.</p>
+                                </td>
+                                <td class="py-4 pr-4"><span class="px-2 py-1 rounded-md bg-accent-violet/20 text-accent-violet text-xs">PDF</span></td>
+                                <td class="py-4 pr-4 text-surface-3">3 个</td>
+                                <td class="py-4 pr-4"><span class="text-accent-amber">中</span></td>
+                                <td class="py-4 pr-4"><span class="px-2 py-1 rounded-md bg-accent-amber/20 text-accent-amber text-xs">分析中</span></td>
+                                <td class="py-4"><button class="text-primary-400 hover:text-primary-300 text-xs">查看详情</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== RAG ==================== -->
+        <div id="page-rag" class="hidden">
+            <div class="glass rounded-2xl p-6">
+                <h3 class="text-lg font-semibold text-white mb-6">RAG 检索</h3>
+                <div class="flex gap-3 mb-6">
+                    <input type="text" placeholder="输入检索 query..." class="flex-1 px-4 py-3 rounded-xl text-white placeholder-surface-4" id="rag-query">
+                    <button onclick="runRAGSearch()" class="btn-primary px-6 py-3 rounded-xl text-sm font-medium text-white">搜索</button>
+                </div>
+
+                <!-- RAG Stats -->
+                <div class="grid grid-cols-4 gap-4 mb-6">
+                    <div class="glass rounded-xl p-4">
+                        <p class="text-xs text-surface-4">Embedder</p>
+                        <p class="text-lg font-semibold text-white mt-1">bge-base-zh-v1.5</p>
+                    </div>
+                    <div class="glass rounded-xl p-4">
+                        <p class="text-xs text-surface-4">Reranker</p>
+                        <p class="text-lg font-semibold text-accent-emerald mt-1">bge-reranker-base</p>
+                    </div>
+                    <div class="glass rounded-xl p-4">
+                        <p class="text-xs text-surface-4">Recall@5</p>
+                        <p class="text-lg font-semibold text-accent-cyan mt-1">0.86</p>
+                    </div>
+                    <div class="glass rounded-xl p-4">
+                        <p class="text-xs text-surface-4">NDCG@5</p>
+                        <p class="text-lg font-semibold text-accent-violet mt-1">0.79</p>
+                    </div>
+                </div>
+
+                <!-- Search Results -->
+                <div id="rag-results" class="space-y-3">
+                    <div class="text-center py-12 text-surface-4">
+                        <svg class="w-16 h-16 mx-auto mb-4 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <p>输入 query 开始检索</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== FACTOR BACKTEST ==================== -->
+        <div id="page-factor-backtest" class="hidden">
+            <div class="grid grid-cols-3 gap-6">
+                <!-- Config Panel -->
+                <div class="glass rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-white mb-6">因子回测配置</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-xs text-surface-4 block mb-2">因子名称</label>
+                            <select class="w-full px-3 py-2 rounded-lg text-white text-sm" id="fb-factor">
+                                <option value="return_1m">动量 (1M)</option>
+                                <option value="return_3m">动量 (3M)</option>
+                                <option value="return_6m">动量 (6M)</option>
+                                <option value="ROE">ROE</option>
+                                <option value="gross_profit_margin">毛利率</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs text-surface-4 block mb-2">数据源</label>
+                            <select class="w-full px-3 py-2 rounded-lg text-white text-sm" id="fb-provider">
+                                <option value="synthetic">合成数据</option>
+                                <option value="akshare">AKShare</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-xs text-surface-4 block mb-2">股票池</label>
+                                <select class="w-full px-3 py-2 rounded-lg text-white text-sm" id="fb-universe">
+                                    <option value="csi500">中证500</option>
+                                    <option value="csi300">沪深300</option>
+                                    <option value="all_a">全A股</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-xs text-surface-4 block mb-2">股票数</label>
+                                <input type="number" value="50" class="w-full px-3 py-2 rounded-lg text-white text-sm" id="fb-stocks">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-xs text-surface-4 block mb-2">开始日期</label>
+                                <input type="date" value="2023-01-01" class="w-full px-3 py-2 rounded-lg text-white text-sm" id="fb-start">
+                            </div>
+                            <div>
+                                <label class="text-xs text-surface-4 block mb-2">结束日期</label>
+                                <input type="date" value="2024-12-31" class="w-full px-3 py-2 rounded-lg text-white text-sm" id="fb-end">
+                            </div>
+                        </div>
+                        <button onclick="runFactorBacktest()" class="btn-primary w-full py-3 rounded-xl text-sm font-medium text-white">
+                            运行因子回测
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results Panel -->
+                <div class="col-span-2 space-y-6">
+                    <div class="glass rounded-2xl p-6" id="fb-results" style="display:none;">
+                        <h3 class="text-lg font-semibold text-white mb-4">回测结果</h3>
+                        <div class="grid grid-cols-3 gap-4 mb-6" id="fb-stats">
+                            <!-- filled by JS -->
+                        </div>
+                        <div id="chart-ic-series" class="chart-container"></div>
+                    </div>
+                    <div class="glass rounded-2xl p-6" id="fb-placeholder">
+                        <div class="text-center py-16 text-surface-4">
+                            <svg class="w-20 h-20 mx-auto mb-4 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                            <p class="text-lg">配置参数后点击运行</p>
+                            <p class="text-sm mt-2">支持 IC/ICIR/RankIC/分组收益/因子衰减分析</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== STRATEGY BACKTEST ==================== -->
+        <div id="page-strategy-backtest" class="hidden">
+            <div class="grid grid-cols-3 gap-6">
+                <!-- Config Panel -->
+                <div class="glass rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-white mb-6">策略回测配置</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-xs text-surface-4 block mb-2">因子</label>
+                            <select class="w-full px-3 py-2 rounded-lg text-white text-sm" id="sb-factor">
+                                <option value="return_1m">动量 (1M)</option>
+                                <option value="return_3m">动量 (3M)</option>
+                                <option value="ROE">ROE</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs text-surface-4 block mb-2">权重方案</label>
+                            <select class="w-full px-3 py-2 rounded-lg text-white text-sm" id="sb-weighting">
+                                <option value="equal">等权</option>
+                                <option value="market_cap">市值加权</option>
+                                <option value="risk_parity">风险平价</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs text-surface-4 block mb-2">调仓频率</label>
+                            <select class="w-full px-3 py-2 rounded-lg text-white text-sm" id="sb-rebalance">
+                                <option value="monthly">月度</option>
+                                <option value="weekly">周度</option>
+                                <option value="daily">日度</option>
+                                <option value="quarterly">季度</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-xs text-surface-4 block mb-2">分位数</label>
+                                <input type="number" value="5" class="w-full px-3 py-2 rounded-lg text-white text-sm" id="sb-groups">
+                            </div>
+                            <div>
+                                <label class="text-xs text-surface-4 block mb-2">Top 组</label>
+                                <input type="number" value="5" class="w-full px-3 py-2 rounded-lg text-white text-sm" id="sb-top">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs text-surface-4 block mb-2">交易成本 (bps)</label>
+                            <input type="number" value="10" class="w-full px-3 py-2 rounded-lg text-white text-sm" id="sb-cost">
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="sb-longshort" class="w-4 h-4 rounded accent-indigo-500">
+                            <label class="text-sm text-surface-3">多空策略</label>
+                        </div>
+                        <button onclick="runStrategyBacktest()" class="btn-primary w-full py-3 rounded-xl text-sm font-medium text-white">
+                            运行策略回测
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results Panel -->
+                <div class="col-span-2 space-y-6">
+                    <div class="glass rounded-2xl p-6" id="sb-results" style="display:none;">
+                        <h3 class="text-lg font-semibold text-white mb-4">策略净值</h3>
+                        <div id="chart-strategy-equity" class="chart-container"></div>
+                    </div>
+                    <div class="glass rounded-2xl p-6" id="sb-metrics" style="display:none;">
+                        <h3 class="text-lg font-semibold text-white mb-4">绩效指标</h3>
+                        <div class="grid grid-cols-3 gap-4" id="sb-metrics-grid">
+                            <!-- filled by JS -->
+                        </div>
+                    </div>
+                    <div class="glass rounded-2xl p-6" id="sb-placeholder">
+                        <div class="text-center py-16 text-surface-4">
+                            <svg class="w-20 h-20 mx-auto mb-4 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                            <p class="text-lg">配置策略参数后点击运行</p>
+                            <p class="text-sm mt-2">支持等权/市值/风险平价 + 交易成本模拟</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== REPORTS ==================== -->
+        <div id="page-reports" class="hidden">
+            <div class="glass rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-white">报告中心</h3>
+                    <div class="flex gap-2">
+                        <button class="px-4 py-2 rounded-lg text-sm text-surface-3 hover:bg-surface-2/50 transition-colors">全部</button>
+                        <button class="px-4 py-2 rounded-lg text-sm text-surface-3 hover:bg-surface-2/50 transition-colors">因子报告</button>
+                        <button class="px-4 py-2 rounded-lg text-sm text-surface-3 hover:bg-surface-2/50 transition-colors">策略报告</button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4" id="reports-grid">
+                    <div class="glass rounded-xl p-5 hover:bg-surface-2/50 transition-colors cursor-pointer">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-500 to-accent-cyan flex items-center justify-center">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            </div>
+                            <div>
+                                <p class="font-medium text-white">动量因子回测报告</p>
+                                <p class="text-xs text-surface-4">2026-10-18 | IC=0.062</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 text-xs">
+                            <span class="px-2 py-1 rounded bg-accent-emerald/20 text-accent-emerald">IC 0.062</span>
+                            <span class="px-2 py-1 rounded bg-accent-cyan/20 text-accent-cyan">ICIR 0.83</span>
+                            <span class="px-2 py-1 rounded bg-primary-500/20 text-primary-300">Sharpe 1.21</span>
+                        </div>
+                    </div>
+                    <div class="glass rounded-xl p-5 hover:bg-surface-2/50 transition-colors cursor-pointer">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-accent-emerald to-accent-cyan flex items-center justify-center">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                            </div>
+                            <div>
+                                <p class="font-medium text-white">多因子组合策略</p>
+                                <p class="text-xs text-surface-4">2026-10-17 | 年化+15.6%</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 text-xs">
+                            <span class="px-2 py-1 rounded bg-accent-emerald/20 text-accent-emerald">年化 15.6%</span>
+                            <span class="px-2 py-1 rounded bg-accent-amber/20 text-accent-amber">MDD -8.2%</span>
+                            <span class="px-2 py-1 rounded bg-primary-500/20 text-primary-300">Sharpe 1.53</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<script>
+    // === Navigation ===
+    const pageTitles = {
+        'dashboard': ['仪表盘', '因子挖掘与回测系统总览'],
+        'papers': ['论文库', '管理论文与因子提取'],
+        'rag': ['RAG 检索', '语义检索论文与因子'],
+        'factor-backtest': ['因子回测', 'IC/分组收益/因子衰减分析'],
+        'strategy-backtest': ['策略回测', '组合模拟/净值/绩效分析'],
+        'reports': ['报告中心', '查看与管理回测报告'],
+    };
+
+    function showPage(page) {
+        // Hide all pages
+        document.querySelectorAll('[id^="page-"]').forEach(el => el.classList.add('hidden'));
+        // Show target
+        const target = document.getElementById('page-' + page);
+        if (target) {
+            target.classList.remove('hidden');
+            target.classList.add('fade-in');
+        }
+        // Update nav
+        document.querySelectorAll('.sidebar-link').forEach(el => {
+            el.classList.remove('nav-active');
+            el.classList.add('text-surface-4');
+        });
+        const nav = document.getElementById('nav-' + page);
+        if (nav) {
+            nav.classList.add('nav-active');
+            nav.classList.remove('text-surface-4');
+        }
+        // Update title
+        const [title, subtitle] = pageTitles[page] || ['', ''];
+        document.getElementById('page-title').textContent = title;
+        document.getElementById('page-subtitle').textContent = subtitle;
+
+        // Init charts if needed
+        if (page === 'dashboard') initDashboardCharts();
+        if (page === 'factor-backtest') initFactorCharts();
+        if (page === 'strategy-backtest') initStrategyCharts();
+    }
+
+    // === Charts ===
+    function initDashboardCharts() {
+        // Factor distribution
+        const factorChart = echarts.init(document.getElementById('chart-factor-dist'));
+        factorChart.setOption({
+            backgroundColor: 'transparent',
+            tooltip: { trigger: 'axis', backgroundColor: '#1e293b', borderColor: '#4f46e5', textStyle: { color: '#e2e8f0' } },
+            grid: { left: 40, right: 20, top: 30, bottom: 30 },
+            xAxis: { type: 'category', data: ['动量', '价值', '质量', '成长', '波动', '流动性'], axisLine: { lineStyle: { color: '#334155' } }, axisLabel: { color: '#64748b' } },
+            yAxis: { type: 'value', axisLine: { lineStyle: { color: '#334155' } }, splitLine: { lineStyle: { color: '#1e293b' } }, axisLabel: { color: '#64748b' } },
+            series: [{
+                type: 'bar',
+                data: [
+                    { value: 12, itemStyle: { color: '#6366f1' } },
+                    { value: 8, itemStyle: { color: '#22d3ee' } },
+                    { value: 6, itemStyle: { color: '#34d399' } },
+                    { value: 5, itemStyle: { color: '#fbbf24' } },
+                    { value: 3, itemStyle: { color: '#fb7185' } },
+                    { value: 4, itemStyle: { color: '#a78bfa' } },
+                ],
+                barWidth: '50%',
+                itemStyle: { borderRadius: [6, 6, 0, 0] }
+            }]
+        });
+
+        // Equity curve
+        const equityChart = echarts.init(document.getElementById('chart-equity-curve'));
+        const dates = Array.from({length: 252}, (_, i) => {
+            const d = new Date(2024, 0, 1);
+            d.setDate(d.getDate() + i);
+            return d.toISOString().slice(5, 10);
+        });
+        let equity = 1.0;
+        const equityData = dates.map(() => {
+            equity *= (1 + (Math.random() - 0.48) * 0.02);
+            return equity.toFixed(4);
+        });
+        equityChart.setOption({
+            backgroundColor: 'transparent',
+            tooltip: { trigger: 'axis', backgroundColor: '#1e293b', borderColor: '#4f46e5', textStyle: { color: '#e2e8f0' } },
+            grid: { left: 50, right: 20, top: 30, bottom: 30 },
+            xAxis: { type: 'category', data: dates, axisLine: { lineStyle: { color: '#334155' } }, axisLabel: { color: '#64748b', interval: 49 } },
+            yAxis: { type: 'value', axisLine: { lineStyle: { color: '#334155' } }, splitLine: { lineStyle: { color: '#1e293b' } }, axisLabel: { color: '#64748b' } },
+            series: [{
+                name: '策略净值',
+                type: 'line',
+                data: equityData,
+                smooth: true,
+                symbol: 'none',
+                lineStyle: { color: '#6366f1', width: 2 },
+                areaStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: 'rgba(99, 102, 241, 0.3)' },
+                        { offset: 1, color: 'rgba(99, 102, 241, 0)' }
+                    ])
+                }
+            }]
+        });
+
+        window.addEventListener('resize', () => { factorChart.resize(); equityChart.resize(); });
+    }
+
+    function initFactorCharts() {
+        const el = document.getElementById('chart-ic-series');
+        if (!el) return;
+        const chart = echarts.init(el);
+        const icData = Array.from({length: 60}, () => (Math.random() - 0.45) * 0.15);
+        chart.setOption({
+            backgroundColor: 'transparent',
+            tooltip: { trigger: 'axis', backgroundColor: '#1e293b', borderColor: '#4f46e5', textStyle: { color: '#e2e8f0' } },
+            grid: { left: 50, right: 20, top: 30, bottom: 30 },
+            xAxis: { type: 'category', data: Array.from({length: 60}, (_, i) => `D${i+1}`), axisLine: { lineStyle: { color: '#334155' } }, axisLabel: { color: '#64748b' } },
+            yAxis: { type: 'value', axisLine: { lineStyle: { color: '#334155' } }, splitLine: { lineStyle: { color: '#1e293b' } }, axisLabel: { color: '#64748b' } },
+            series: [{
+                type: 'bar',
+                data: icData.map(v => ({
+                    value: v.toFixed(4),
+                    itemStyle: { color: v > 0 ? '#34d399' : '#fb7185', borderRadius: [2, 2, 0, 0] }
+                })),
+                barWidth: '60%'
+            }]
+        });
+        window.addEventListener('resize', () => chart.resize());
+    }
+
+    function initStrategyCharts() {
+        const el = document.getElementById('chart-strategy-equity');
+        if (!el) return;
+        const chart = echarts.init(el);
+        const dates = Array.from({length: 252}, (_, i) => {
+            const d = new Date(2024, 0, 1);
+            d.setDate(d.getDate() + i);
+            return d.toISOString().slice(5, 10);
+        });
+        let eq = 1.0;
+        let bench = 1.0;
+        const eqData = dates.map(() => { eq *= (1 + (Math.random() - 0.47) * 0.02); return eq.toFixed(4); });
+        const benchData = dates.map(() => { bench *= (1 + (Math.random() - 0.49) * 0.015); return bench.toFixed(4); });
+
+        chart.setOption({
+            backgroundColor: 'transparent',
+            tooltip: { trigger: 'axis', backgroundColor: '#1e293b', borderColor: '#4f46e5', textStyle: { color: '#e2e8f0' } },
+            legend: { data: ['策略净值', '基准'], textStyle: { color: '#64748b' }, top: 0 },
+            grid: { left: 50, right: 20, top: 40, bottom: 30 },
+            xAxis: { type: 'category', data: dates, axisLine: { lineStyle: { color: '#334155' } }, axisLabel: { color: '#64748b', interval: 49 } },
+            yAxis: { type: 'value', axisLine: { lineStyle: { color: '#334155' } }, splitLine: { lineStyle: { color: '#1e293b' } }, axisLabel: { color: '#64748b' } },
+            series: [
+                {
+                    name: '策略净值', type: 'line', data: eqData, smooth: true, symbol: 'none',
+                    lineStyle: { color: '#6366f1', width: 2 },
+                    areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(99, 102, 241, 0.2)' }, { offset: 1, color: 'rgba(99, 102, 241, 0)' }]) }
+                },
+                {
+                    name: '基准', type: 'line', data: benchData, smooth: true, symbol: 'none',
+                    lineStyle: { color: '#64748b', width: 1.5, type: 'dashed' }
+                }
+            ]
+        });
+        window.addEventListener('resize', () => chart.resize());
+    }
+
+    // === API Functions ===
+    async function runRAGSearch() {
+        const query = document.getElementById('rag-query').value;
+        if (!query) return;
+        const results = document.getElementById('rag-results');
+        results.innerHTML = '<div class="text-center py-8"><div class="animate-spin w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full mx-auto"></div><p class="text-surface-4 mt-3">检索中...</p></div>';
+        try {
+            const r = await fetch('/agent/run', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({goal: query})
+            });
+            const data = await r.json();
+            results.innerHTML = `
+                <div class="glass rounded-xl p-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="px-2 py-1 rounded bg-accent-emerald/20 text-accent-emerald text-xs">检索成功</span>
+                    </div>
+                    <p class="text-sm text-gray-300">${data.final_message || '检索完成'}</p>
+                </div>
+            `;
+        } catch (e) {
+            results.innerHTML = `<div class="glass rounded-xl p-4 text-accent-rose">检索失败: ${e.message}</div>`;
+        }
+    }
+
+    async function runFactorBacktest() {
+        const btn = event.target;
+        btn.disabled = true;
+        btn.textContent = '运行中...';
+        try {
+            const r = await fetch('/backtest/factor', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    factor_name: document.getElementById('fb-factor').value,
+                    provider: document.getElementById('fb-provider').value,
+                    universe: document.getElementById('fb-universe').value,
+                    n_stocks: parseInt(document.getElementById('fb-stocks').value),
+                })
+            });
+            const data = await r.json();
+            document.getElementById('fb-placeholder').style.display = 'none';
+            document.getElementById('fb-results').style.display = 'block';
+
+            // Stats
+            document.getElementById('fb-stats').innerHTML = `
+                <div class="glass rounded-xl p-4">
+                    <p class="text-xs text-surface-4">IC</p>
+                    <p class="text-2xl font-bold ${data.ic > 0 ? 'text-accent-emerald' : 'text-accent-rose'}">${data.ic.toFixed(4)}</p>
+                </div>
+                <div class="glass rounded-xl p-4">
+                    <p class="text-xs text-surface-4">ICIR</p>
+                    <p class="text-2xl font-bold text-accent-cyan">${data.icir.toFixed(4)}</p>
+                </div>
+                <div class="glass rounded-xl p-4">
+                    <p class="text-xs text-surface-4">Rank IC</p>
+                    <p class="text-2xl font-bold text-accent-violet">${data.rank_ic.toFixed(4)}</p>
+                </div>
+            `;
+            initFactorCharts();
+        } catch (e) {
+            alert('回测失败: ' + e.message);
+        }
+        btn.disabled = false;
+        btn.textContent = '运行因子回测';
+    }
+
+    async function runStrategyBacktest() {
+        const btn = event.target;
+        btn.disabled = true;
+        btn.textContent = '运行中...';
+        try {
+            const r = await fetch('/backtest/strategy', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    factor_name: document.getElementById('sb-factor').value,
+                    weighting: document.getElementById('sb-weighting').value,
+                    rebalance_freq: document.getElementById('sb-rebalance').value,
+                    long_short: document.getElementById('sb-longshort').checked,
+                    transaction_cost_bps: parseFloat(document.getElementById('sb-cost').value),
+                })
+            });
+            const data = await r.json();
+            document.getElementById('sb-placeholder').style.display = 'none';
+            document.getElementById('sb-results').style.display = 'block';
+            document.getElementById('sb-metrics').style.display = 'block';
+
+            const m = data.result?.metrics || {};
+            document.getElementById('sb-metrics-grid').innerHTML = `
+                <div class="glass rounded-xl p-4">
+                    <p class="text-xs text-surface-4">年化收益</p>
+                    <p class="text-2xl font-bold ${m.annual_return > 0 ? 'text-accent-emerald' : 'text-accent-rose'}">${(m.annual_return * 100).toFixed(2)}%</p>
+                </div>
+                <div class="glass rounded-xl p-4">
+                    <p class="text-xs text-surface-4">夏普比率</p>
+                    <p class="text-2xl font-bold text-accent-cyan">${(m.sharpe || 0).toFixed(3)}</p>
+                </div>
+                <div class="glass rounded-xl p-4">
+                    <p class="text-xs text-surface-4">最大回撤</p>
+                    <p class="text-2xl font-bold text-accent-rose">${(m.max_drawdown * 100).toFixed(2)}%</p>
+                </div>
+                <div class="glass rounded-xl p-4">
+                    <p class="text-xs text-surface-4">索提诺</p>
+                    <p class="text-2xl font-bold text-accent-violet">${(m.sortino || 0).toFixed(3)}</p>
+                </div>
+                <div class="glass rounded-xl p-4">
+                    <p class="text-xs text-surface-4">卡玛比率</p>
+                    <p class="text-2xl font-bold text-accent-amber">${(m.calmar || 0).toFixed(3)}</p>
+                </div>
+                <div class="glass rounded-xl p-4">
+                    <p class="text-xs text-surface-4">胜率</p>
+                    <p class="text-2xl font-bold text-white">${((m.win_rate || 0) * 100).toFixed(1)}%</p>
+                </div>
+            `;
+            initStrategyCharts();
+        } catch (e) {
+            alert('策略回测失败: ' + e.message);
+        }
+        btn.disabled = false;
+        btn.textContent = '运行策略回测';
+    }
+
+    // === Init ===
+    initDashboardCharts();
+</script>
+</body>
+</html>

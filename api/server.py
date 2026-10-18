@@ -48,6 +48,13 @@ app = FastAPI(
 from api.backtest_routes import router as backtest_router
 app.include_router(backtest_router)
 
+# 前端静态文件
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+_frontend_dir = PROJECT_ROOT / "frontend"
+if _frontend_dir.exists():
+    app.mount("/static", StaticFiles(directory=str(_frontend_dir / "static")), name="static")
+
 # 全局 graph 实例（启动时构建）
 _graph = None
 _checkpointer = None
@@ -89,15 +96,22 @@ class RunResponse(BaseModel):
 # ============================================================
 @app.get("/")
 async def root():
-    """健康检查 + 服务信息"""
+    """前端页面（优先），或 API 信息。"""
+    index_file = PROJECT_ROOT / "frontend" / "index.html"
+    if index_file.exists():
+        return FileResponse(str(index_file))
     return {
         "service": "Paper Factor Agent API",
         "version": "1.0.0",
         "status": "running",
+        "note": "frontend/index.html not found, serving API info instead",
         "endpoints": [
             "POST /agent/run       同步运行",
             "POST /agent/stream    流式（SSE）",
             "GET  /sessions/:tid    查看会话状态",
+            "POST /backtest/factor  因子回测",
+            "POST /backtest/strategy 策略回测",
+            "POST /backtest/pipeline 一键回测",
         ],
     }
 
