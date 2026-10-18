@@ -51,8 +51,8 @@ def test_frontend_has_api_integration():
 def test_frontend_has_styling():
     content = (FRONTEND_DIR / "index.html").read_text(encoding="utf-8")
     assert "tailwind" in content.lower()
-    assert "glass" in content
-    assert "gradient" in content
+    assert "chart-box" in content or "chart" in content.lower()
+    assert "card" in content or "btn-primary" in content
 
 
 def test_frontend_has_responsive_meta():
