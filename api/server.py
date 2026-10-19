@@ -48,6 +48,14 @@ app = FastAPI(
 from api.backtest_routes import router as backtest_router
 app.include_router(backtest_router)
 
+# 论文 + RAG + 因子/仪表盘 API 路由
+from api.paper_routes import router as paper_router
+from api.rag_routes import router as rag_router
+from api.factor_routes import router as factor_router
+app.include_router(paper_router)
+app.include_router(rag_router)
+app.include_router(factor_router)
+
 # 前端静态文件
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse

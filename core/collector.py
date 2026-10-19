@@ -62,6 +62,32 @@ class PaperCollector:
     # 公开API
     # ------------------------------------------------------
 
+    def search_arxiv(self, query: str, max_results: int = 10, days: int = 0) -> List[Dict]:
+        """搜索 arXiv 论文（不持久化，返回结果供选择导入）。"""
+        import arxiv
+        results = []
+        try:
+            search = arxiv.Search(
+                query=query,
+                max_results=max_results,
+                sort_by=arxiv.SortCriterion.SubmittedDate,
+                sort_order=arxiv.SortOrder.Descending,
+            )
+            for paper in self.client.results(search):
+                results.append({
+                    "arxiv_id": paper.entry_id.split("/")[-1],
+                    "title": paper.title,
+                    "summary": paper.summary[:500] if paper.summary else "",
+                    "link": paper.entry_id,
+                    "published": paper.published.strftime("%Y-%m-%d") if paper.published else "",
+                    "authors": [a.name for a in paper.authors[:3]],
+                    "source": "arxiv",
+                })
+        except Exception as e:
+            import warnings
+            warnings.warn(f"arXiv search failed: {e}")
+        return results
+
     def collect_factor_papers(
         self,
         days: int = COLLECTION_DAYS,
