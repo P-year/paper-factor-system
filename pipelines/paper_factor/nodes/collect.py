@@ -19,7 +19,7 @@ def collect_node(state: PaperFactorState) -> Dict[str, Any]:
                 args = tc.get("args", {})
 
     days = args.get("days", 90)
-    force = args.get("force", False)
+    force = args.get("force", True)  # 默认强制搜索新论文（避免加载旧缓存）
 
     result = search_arxiv(days=days, force=force)
 
