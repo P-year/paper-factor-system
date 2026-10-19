@@ -219,6 +219,29 @@ class BacktestPipeline:
 
         return report
 
+    def run_batch(self, factor_names: List[str], parallel: bool = True, max_workers: int = 4) -> List[FactorEvalResult]:
+        """批量回测多个因子（可并行）。"""
+        if self.data is None:
+            self.load_data()
+
+        if not parallel or len(factor_names) <= 1:
+            return [self.run_factor(fname) for fname in factor_names]
+
+        # 并行回测（共享 MarketData，只并行计算）
+        from concurrent.futures import ThreadPoolExecutor
+        calc = FactorCalculator(self.data)
+
+        def _eval_one(fname: str) -> FactorEvalResult:
+            try:
+                panel = calc.compute(fname)
+                return self._evaluate_factor(panel)
+            except Exception as e:
+                return FactorEvalResult(factor_name=fname, status="error", error=str(e))
+
+        with ThreadPoolExecutor(max_workers=max_workers) as ex:
+            results = list(ex.map(_eval_one, factor_names))
+        return results
+
     def run_batch(self, factor_names: List[str]) -> BacktestReport:
         self.config.factor_names = factor_names
         return self.run()

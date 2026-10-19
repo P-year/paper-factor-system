@@ -93,8 +93,15 @@ async def decide_factor(name: str, req: DecisionRequest):
 
 # === Dashboard ===
 
+# 缓存 30 秒
+_stats_cache: Dict[str, Any] = {"data": None, "ts": 0}
+
 @router.get("/dashboard/stats")
 async def dashboard_stats():
+    import time as _time
+    if _stats_cache["data"] and _time.time() - _stats_cache["ts"] < 30:
+        return _stats_cache["data"]
+
     from core.factor_db import FactorDatabase
     from core.paper_library import PaperLibrary
 
@@ -139,7 +146,7 @@ async def dashboard_stats():
         if bt.get("icir"):
             best_icir = max(best_icir, abs(bt["icir"]))
 
-    return {
+    result = {
         "factors": factors_summary,
         "papers": papers_summary,
         "backtests": {
@@ -151,6 +158,9 @@ async def dashboard_stats():
             "best_icir": round(best_icir, 4),
         },
     }
+    _stats_cache["data"] = result
+    _stats_cache["ts"] = _time.time()
+    return result
 
 
 # === Reports ===

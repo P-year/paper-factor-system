@@ -392,6 +392,16 @@
                         </div>
                     </div>
                 </div>
+                <!-- Factor Review Section -->
+                <div class="card mt-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-[14px] font-semibold text-ink-900">因子审核</h3>
+                        <button onclick="loadFactorList()" class="btn-secondary !py-1.5 !px-3 !text-xs">刷新</button>
+                    </div>
+                    <div id="factor-review-list">
+                        <p class="text-ink-400 text-sm text-center py-8">加载中...</p>
+                    </div>
+                </div>
             </div>
 
             <!-- ===== STRATEGY BACKTEST ===== -->
@@ -501,6 +511,7 @@ function showPage(page) {
     if (page === 'dashboard') loadDashboard();
     if (page === 'papers') loadPapers();
     if (page === 'reports') loadReports();
+    if (page === 'factor-backtest') loadFactorList();
 }
 
 // ===== Dashboard =====
@@ -650,6 +661,77 @@ async function extractPaper(paperId) {
         loadPapers();
     } catch (e) {
         alert('提取失败: ' + e.message);
+    }
+}
+
+// ===== Factor Review =====
+async function loadFactorList() {
+    try {
+        const r = await fetch('/factors?limit=50');
+        const d = await r.json();
+        const container = document.getElementById('factor-review-list');
+        if (!d.factors || d.factors.length === 0) {
+            container.innerHTML = '<p class="text-ink-400 text-sm text-center py-8">暂无因子</p>';
+            return;
+        }
+        container.innerHTML = d.factors.map(f => `
+            <div class="flex items-center justify-between p-3 border border-ink-100 rounded-lg mb-2 hover:bg-ink-50">
+                <div class="flex-1">
+                    <div class="text-sm font-medium text-ink-900">${f.factor_name}</div>
+                    <div class="text-xs text-ink-400 mt-1">
+                        <span class="tag ${f.status === 'approved' ? 'tag-green' : f.status === 'rejected' ? 'tag-red' : f.status === 'active' ? 'tag-blue' : 'tag-amber'}">${f.status}</span>
+                        <span class="tag tag-gray ml-1">${f.confidence || '中'}</span>
+                        ${f.backtest_result ? `<span class="tag tag-green ml-1">IC ${(f.backtest_result.ic || 0).toFixed(4)}</span>` : ''}
+                        ${f.compute_source ? `<span class="tag tag-gray ml-1">${f.compute_source}</span>` : ''}
+                    </div>
+                </div>
+                <div class="flex gap-1">
+                    ${f.status !== 'approved' ? `<button onclick="decideFactor('${f.factor_name}','approved')" class="btn-secondary !py-1 !px-2 !text-xs !text-green-600">批准</button>` : ''}
+                    ${f.status !== 'rejected' ? `<button onclick="decideFactor('${f.factor_name}','rejected')" class="btn-secondary !py-1 !px-2 !text-xs !text-red-600">拒绝</button>` : ''}
+                    ${f.status === 'approved' ? `<button onclick="decideFactor('${f.factor_name}','active')" class="btn-secondary !py-1 !px-2 !text-xs !text-blue-600">激活</button>` : ''}
+                    <button onclick="backtestFactor('${f.factor_name}')" class="btn-primary !py-1 !px-2 !text-xs">回测</button>
+                </div>
+            </div>
+        `).join('');
+    } catch (e) {
+        console.warn('factor list failed:', e);
+    }
+}
+
+async function decideFactor(name, decision) {
+    try {
+        const r = await fetch(`/factors/${encodeURIComponent(name)}/decision`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ decision, notes: 'UI 操作' })
+        });
+        if (r.ok) {
+            loadFactorList();
+        } else {
+            alert('操作失败');
+        }
+    } catch (e) {
+        alert('操作失败: ' + e.message);
+    }
+}
+
+async function backtestFactor(name) {
+    try {
+        const r = await fetch(`/factors/${encodeURIComponent(name)}/backtest`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ provider: 'synthetic', n_stocks: 20, seed: 42 })
+        });
+        const d = await r.json();
+        if (d.backtests && d.backtests.length > 0) {
+            const bt = d.backtests[0];
+            alert(`回测完成: IC=${(bt.ic||0).toFixed(4)} ICIR=${(bt.icir||0).toFixed(4)}`);
+        } else {
+            alert('回测完成');
+        }
+        loadFactorList();
+    } catch (e) {
+        alert('回测失败: ' + e.message);
     }
 }
 

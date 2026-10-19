@@ -24,6 +24,7 @@ class FormulaSpec:
 
 # 关键词映射（中文金融术语 → DSL）
 _KEYWORD_MAP = {
+    # 收益/动量
     "近1月收益": "pct_change(close, 21)",
     "近3月收益": "pct_change(close, 63)",
     "近6月收益": "pct_change(close, 126)",
@@ -33,14 +34,54 @@ _KEYWORD_MAP = {
     "6月动量": "pct_change(close, 126)",
     "12月动量": "pct_change(close, 252)",
     "短期反转": "-pct_change(close, 5)",
+    "1月反转": "-pct_change(close, 21)",
+    "动量因子": "pct_change(close, 21)",
+    "反转因子": "-pct_change(close, 21)",
+    # 风险/波动
     "波动率": "-rolling_std(returns, 21)",
+    "波动因子": "-rolling_std(returns, 21)",
+    "风险因子": "-rolling_std(returns, 63)",
+    "下行风险": "-rolling_std(returns[returns < 0], 21)",
+    "21日波动率": "-rolling_std(returns, 21)",
+    # 流动性/交易
     "换手率": "volume",
     "成交量": "volume",
+    "流动性": "volume",
+    "成交额": "volume",
+    # 规模（具体在前，通用在后）
+    "对数市值": "log(market_cap)",
+    "小市值": "-log(market_cap)",
     "市值": "market_cap",
+    "规模": "market_cap",
+    # 质量
     "收益率": "returns",
     "价格": "close",
+    "收盘价": "close",
+    "相对价格": "close / rolling_mean(close, 252)",
+    # 截面
     "截面排名": "cs_rank(returns)",
+    "截面动量": "cs_rank(pct_change(close, 21))",
     "相对强弱": "cs_rank(pct_change(close, 21))",
+    "市场中性": "cs_zscore(returns)",
+    "标准化": "cs_zscore(returns)",
+    # 组合/加权
+    "等权": "cs_rank(returns)",
+    "市值加权": "market_cap * returns",
+    "风险加权": "returns / rolling_std(returns, 21)",
+    # 时序
+    "时序动量": "ts_rank(pct_change(close, 21), 252)",
+    "时序均值": "rolling_mean(close, 21)",
+    "时序标准差": "rolling_std(returns, 21)",
+    "均值回归": "-ts_zscore(close, 21)",
+    # 收益率计算
+    "超额收益": "returns - rolling_mean(returns, 252)",
+    "累计收益": "rolling_sum(returns, 21)",
+    "对数收益": "log(close / delay(close, 1))",
+    # 其他
+    "偏度": "rolling_mean(returns ** 3, 21)",
+    "峰度": "rolling_mean(returns ** 4, 21)",
+    "信息比": "rolling_mean(returns, 21) / rolling_std(returns, 21)",
+    "夏普": "rolling_mean(returns, 21) / (rolling_std(returns, 21) + 0.001)",
 }
 
 
@@ -130,13 +171,25 @@ def _heuristic_normalize(text: str, factor: Dict) -> Optional[str]:
             days = n * 21  # 月 → 日
         return f"pct_change(close, {days})"
 
-    # "N 日波动率" / "N 日标准差"
-    m = re.search(r"(\d+)\s*(?:日|天)\s*(?:波动率|标准差|波动)", text)
+    # "N 日波动率" / "N 日标准差" / "N 日风险"
+    m = re.search(r"(\d+)\s*(?:日|天|周)\s*(?:波动率|标准差|波动|风险)", text)
     if m:
         n = int(m.group(1))
         return f"rolling_std(returns, {n})"
 
-    # "排序" / "排名"
+    # "N 日均值" / "N 日均线"
+    m = re.search(r"(\d+)\s*(?:日|天)\s*(?:均值|均线|平均)", text)
+    if m:
+        n = int(m.group(1))
+        return f"rolling_mean(close, {n})"
+
+    # "N 日收益率" 简写
+    m = re.search(r"(\d+)\s*(?:日|天|周)\s*收益率?", text)
+    if m:
+        n = int(m.group(1))
+        return f"pct_change(close, {n})"
+
+    # "排名" / "排序" / "截面"
     if "排名" in text or "排序" in text or "截面" in text:
         return "cs_rank(returns)"
 
@@ -144,18 +197,43 @@ def _heuristic_normalize(text: str, factor: Dict) -> Optional[str]:
     if "对数" in text or "log" in text.lower():
         return "log(close)"
 
+    # "超额" / "基准"
+    if "超额" in text or "基准" in text:
+        return "returns - rolling_mean(returns, 252)"
+
+    # "均值回归" / "回归"
+    if "均值回归" in text or "回归" in text:
+        return "-ts_zscore(close, 21)"
+
+    # "流动性" / "活跃度"
+    if "流动" in text or "活跃" in text:
+        return "volume"
+
+    # "规模" / "大小"
+    if "规模" in text or "市值" in text or "大小" in text:
+        return "log(market_cap)"
+
     return None
 
 
+# LLM 归一化结果缓存（避免重复调用）
+_normalize_cache: Dict[str, str] = {}
+
+
 def _llm_normalize(text: str, factor: Dict) -> Optional[str]:
-    """LLM 归一化（需要 API key）。"""
+    """LLM 归一化（需要 API key）。带缓存。"""
+    # 缓存查找
+    cache_key = text.strip()[:200]
+    if cache_key in _normalize_cache:
+        return _normalize_cache[cache_key]
+
     try:
         from config import FORMULA_NORMALIZE_PROMPT
     except ImportError:
         return None
 
     try:
-        from harness.llm_client import call_llm
+        from harness.llm_client import call_llm_json
     except ImportError:
         return None
 
@@ -165,13 +243,14 @@ def _llm_normalize(text: str, factor: Dict) -> Optional[str]:
         data_needed=factor.get("data_needed", ""),
     )
     try:
-        result = call_llm(system="你是量化公式转换专家", user=prompt, timeout=15)
-        if result:
-            import json
-            m = re.search(r'\{[^}]+\}', result)
-            if m:
-                data = json.loads(m.group())
-                return data.get("expression", "")
+        result = call_llm_json(system="你是量化公式转换专家", user=prompt, timeout=20)
+        if result and isinstance(result, dict):
+            expr = result.get("expression", "")
+            if expr:
+                _normalize_cache[cache_key] = expr
+                return expr
     except Exception:
         pass
+
+    _normalize_cache[cache_key] = ""
     return None
