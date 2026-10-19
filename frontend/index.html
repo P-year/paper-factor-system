@@ -120,9 +120,25 @@
         /* Status dot */
         .status-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
         .status-online { background: #22c55e; }
+
+        /* Toast */
+        .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+        .toast {
+            padding: 12px 20px; border-radius: 8px; font-size: 13px; font-weight: 500;
+            color: #fff; min-width: 280px; max-width: 420px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+        }
+        .toast-success { background: #22c55e; }
+        .toast-error { background: #ef4444; }
+        .toast-info { background: #2952e8; }
+        .toast-warning { background: #f59e0b; }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateX(40px); } }
     </style>
 </head>
 <body>
+<div class="toast-container" id="toast-container"></div>
 <div class="flex h-screen">
 
     <!-- Sidebar -->
@@ -487,6 +503,21 @@
 </div>
 
 <script>
+// ===== Toast Notifications =====
+function showToast(message, type = 'info') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+}
+
+function toastSuccess(msg) { showToast(msg, 'success'); }
+function toastError(msg) { showToast(msg, 'error'); }
+function toastInfo(msg) { showToast(msg, 'info'); }
+function toastWarning(msg) { showToast(msg, 'warning'); }
+
 // ===== Navigation =====
 const titles = {
     'chat': ['Agent 问答', '与 AI Agent 对话，挖掘因子与策略'],
@@ -601,10 +632,10 @@ async function uploadPaper(input) {
     try {
         const r = await fetch('/papers/upload', { method: 'POST', body: formData });
         const d = await r.json();
-        alert(d.message || '上传成功');
+        toastSuccess(d.message || '上传成功');
         loadPapers();
     } catch (e) {
-        alert('上传失败: ' + e.message);
+        toastError('上传失败: ' + e.message);
     }
     input.value = '';
 }
@@ -644,10 +675,10 @@ async function importPaper(arxivId, title) {
             method: 'POST', headers: {'Content-Type': 'application/json'},
             body: JSON.stringify([{ arxiv_id: arxivId, title: title, source: 'arxiv' }])
         });
-        alert('已导入');
+        toastSuccess('已导入');
         loadPapers();
     } catch (e) {
-        alert('导入失败');
+        toastError('导入失败');
     }
 }
 
@@ -658,10 +689,10 @@ async function extractPaper(paperId) {
             body: JSON.stringify({})
         });
         const d = await r.json();
-        alert(d.message || `提取完成: ${d.extracted || 0} 个因子`);
+        toastSuccess(d.message || `提取完成: ${d.extracted || 0} 个因子`);
         loadPapers();
     } catch (e) {
-        alert('提取失败: ' + e.message);
+        toastError('提取失败: ' + e.message);
     }
 }
 
@@ -676,13 +707,13 @@ async function runPaperPipeline(paperId) {
         });
         const d = await r.json();
         if (d.status === 'ok' || d.status === 'partial') {
-            alert(`回测完成: ${d.factors || 0} 个因子, ${d.backtests || 0} 个回测结果`);
+            toastSuccess(`回测完成: ${d.factors || 0} 个因子, ${d.backtests || 0} 个回测结果`);
         } else {
-            alert(`回测状态: ${d.status}\n${(d.errors || []).join('\n')}`);
+            toastWarning(`回测状态: ${d.status}\n${(d.errors || []).join('\n')}`);
         }
         loadPapers();
     } catch (e) {
-        alert('回测失败: ' + e.message);
+        toastError('回测失败: ' + e.message);
     }
 }
 
@@ -730,10 +761,10 @@ async function decideFactor(name, decision) {
         if (r.ok) {
             loadFactorList();
         } else {
-            alert('操作失败');
+            toastError('操作失败');
         }
     } catch (e) {
-        alert('操作失败: ' + e.message);
+        toastError('操作失败: ' + e.message);
     }
 }
 
@@ -747,13 +778,13 @@ async function backtestFactor(name) {
         const d = await r.json();
         if (d.backtests && d.backtests.length > 0) {
             const bt = d.backtests[0];
-            alert(`回测完成: IC=${(bt.ic||0).toFixed(4)} ICIR=${(bt.icir||0).toFixed(4)}`);
+            toastSuccess(`回测完成: IC=${(bt.ic||0).toFixed(4)} ICIR=${(bt.icir||0).toFixed(4)}`);
         } else {
-            alert('回测完成');
+            toastSuccess('回测完成');
         }
         loadFactorList();
     } catch (e) {
-        alert('回测失败: ' + e.message);
+        toastError('回测失败: ' + e.message);
     }
 }
 
@@ -794,7 +825,7 @@ async function loadReports() {
 // ===== Charts =====
 function ensureEcharts() {
     if (typeof echarts !== 'undefined') return true;
-    alert('ECharts 库未加载，图表无法显示。请检查网络连接或刷新页面。');
+    toastWarning('ECharts 库未加载，图表无法显示。请检查网络连接或刷新页面。');
     return false;
 }
 
@@ -988,7 +1019,7 @@ async function runFactorBT(btn) {
             }]
         });
     } catch (e) {
-        alert('回测失败: ' + e.message);
+        toastError('回测失败: ' + e.message);
     }
     btn.disabled = false;
     btn.textContent = '运行因子回测';
@@ -1043,7 +1074,7 @@ async function runStrategyBT(btn) {
             }]
         });
     } catch (e) {
-        alert('策略回测失败: ' + e.message);
+        toastError('策略回测失败: ' + e.message);
     }
     btn.disabled = false;
     btn.textContent = '运行策略回测';
