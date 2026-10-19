@@ -145,7 +145,7 @@ class FactorDatabase:
 
         # 去重检查（同名）
         if self._find_by_name(factor_name):
-            print(f"  ⚠️ 因子 '{factor_name}' 已存在，跳过")
+            print(f"  [WARN] 因子 '{factor_name}' 已存在，跳过")
             return False
 
         # 相似定义检查
@@ -165,7 +165,7 @@ class FactorDatabase:
         factor["notes"] = factor.get("notes", "")
 
         self.factors.append(factor)
-        print(f"  ✅ 已添加: {factor_name}")
+        print(f"  [OK] 已添加: {factor_name}")
         return True
 
     def add_factors(self, factors: List[Dict], auto_yes: bool = False) -> int:
@@ -203,10 +203,10 @@ class FactorDatabase:
                 if notes:
                     factor["notes"] = notes
 
-                print(f"  ✅ {factor_name}: {old_status} → {status}")
+                print(f"  [OK] {factor_name}: {old_status} → {status}")
                 return True
 
-        print(f"  ⚠️ 未找到因子: {factor_name}")
+        print(f"  [WARN] 未找到因子: {factor_name}")
         return False
 
     def update_backtest_result(self, factor_name: str, result: Dict, *,
