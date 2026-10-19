@@ -7,8 +7,6 @@ harness/state_base.py - 所有 pipeline 共享的 state 字段基类
 v4：messages 加 Annotated[..., add_messages] reducer 让 LangGraph 自动合并；
 加 compaction_history / memory_tiers / retrieval_context 三个新字段。
 """
-from __future__ import annotations
-
 from typing import Any, Dict, List, Optional
 
 from langgraph.graph.message import add_messages
@@ -66,6 +64,7 @@ def make_base_typed_dict():
 
     class _AnnotatedBase(TypedDict, total=False):
         goal: str                     # 用户目标（plan_node 决策依据）
+        final_message: str            # respond 节点生成的最终消息
         plan: List[Dict[str, Any]]
         current_step_idx: int
         iteration_count: int

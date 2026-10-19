@@ -149,15 +149,20 @@ async def run_agent(req: RunRequest):
         )
         elapsed = (datetime.now() - start).total_seconds()
 
-        # 提取 respond 节点的最终消息
-        msgs = final_state.get("messages", []) if isinstance(final_state, dict) else []
+        # 提取 respond 节点的最终消息（优先 final_message 字段，fallback 到 messages）
         final_msg = None
-        if msgs:
-            last = msgs[-1]
-            if isinstance(last, dict):
-                final_msg = last.get("content")
-            else:
-                final_msg = str(last)
+        if isinstance(final_state, dict):
+            final_msg = final_state.get("final_message")
+            if not final_msg:
+                msgs = final_state.get("messages", [])
+                if msgs:
+                    last = msgs[-1]
+                    if isinstance(last, dict):
+                        final_msg = last.get("content") or last.get("text") or ""
+                    elif hasattr(last, "content"):
+                        final_msg = str(last.content)
+                    else:
+                        final_msg = str(last)
 
         return RunResponse(
             thread_id=thread_id,

@@ -63,10 +63,14 @@ def respond_node(state: PaperFactorState) -> Dict[str, Any]:
         except Exception:
             pass
 
+    message_text = "\n".join(summary_lines)
     message = {
-        "role": "assistant",
-        "content": "\n".join(summary_lines),
+        "type": "ai",
+        "content": message_text,
     }
 
-    # v4：state["messages"] 有 add_messages reducer，只需 return 新增消息
-    return {"messages": [message]}
+    # 直接写入 final_message（不依赖 add_messages reducer 的兼容性）
+    return {
+        "messages": [message],
+        "final_message": message_text,
+    }

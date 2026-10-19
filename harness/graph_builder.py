@@ -42,8 +42,8 @@ def _route_from_plan(pipeline: PipelineConfig, state: dict) -> str:
 
     if next_node not in pipeline.nodes:
         return END
-    if next_node in pipeline.terminal_nodes:
-        return END
+    # terminal_nodes 走到节点执行后由该节点的 edge 到 END
+    # 不能直接 return END，否则 respond 等节点永远不会执行
     if state.get("iteration_count", 0) >= pipeline.max_iter:
         return END
     return next_node
