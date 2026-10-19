@@ -236,7 +236,7 @@ def verified_extracted_factor(
     return safe_tool_call(
         tool_name="extract_factor",
         args={"paper": paper, "similar_papers": similar_papers},
-        tool_fn=lambda paper: extract_factor_tool(paper, similar_papers=similar_papers),
+        tool_fn=lambda **kw: extract_factor_tool(**kw),
         verifier=verify_extracted_factor,
         max_retries=max_retries,
         recovery_fn=factor_recovery,

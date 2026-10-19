@@ -32,6 +32,7 @@ def make_base_typed_dict():
 
     class _Base(TypedDict, total=False):
         # === 控制流 ===
+        goal: str                     # 用户目标（plan_node 决策依据）
         plan: List[Dict[str, Any]]
         current_step_idx: int
         iteration_count: int
@@ -59,15 +60,18 @@ def make_base_typed_dict():
 
     # 在 TypedDict 类外注入 Annotated reducer 到 messages 字段
     # 由于 TypedDict 不允许直接用 Annotated，这里用 _AnnotatedTypedDict 模式
-    from typing_extensions import Annotated as _Ann
+    # 注：Python 3.13 的 typing.get_type_hints 在 eval forward ref 时
+    # 不会注入 _Ann 别名，所以必须用全名 Annotated（import 后直接用）
+    from typing_extensions import Annotated
 
     class _AnnotatedBase(TypedDict, total=False):
+        goal: str                     # 用户目标（plan_node 决策依据）
         plan: List[Dict[str, Any]]
         current_step_idx: int
         iteration_count: int
         visited_nodes: List[str]
         errors: List[str]
-        messages: _Ann[List[Dict[str, Any]], add_messages]
+        messages: Annotated[List[Dict[str, Any]], add_messages]
         session_id: str
         run_mode: str
         pipeline_name: str

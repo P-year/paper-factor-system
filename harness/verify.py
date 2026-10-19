@@ -164,6 +164,13 @@ def verify_extracted_factor(factor: Dict[str, Any]) -> Dict[str, Any]:
             "confidence": "low",
         }
 
+    # 兼容嵌套格式: {"is_factor": True, "factor": {...}}
+    if "factor" in factor and isinstance(factor.get("factor"), dict):
+        inner = factor["factor"]
+        merged = dict(inner)
+        merged.setdefault("is_factor", factor.get("is_factor", True))
+        factor = merged
+
     # 非因子论文直接通过
     if not factor.get("is_factor", True):
         return {"verified": True, "issues": [], "confidence": "high"}
