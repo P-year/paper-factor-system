@@ -243,34 +243,32 @@
             <div id="page-dashboard" class="page">
                 <div class="grid grid-cols-4 gap-5 mb-6">
                     <div class="stat-card">
-                        <div class="stat-value" id="stat-papers">35</div>
+                        <div class="stat-value" id="stat-total-factors">-</div>
                         <div class="stat-label">已挖掘因子</div>
-                        <div class="stat-change text-green-600 mt-1">↑ 12% 本月</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value" id="stat-approved">18</div>
-                        <div class="stat-label">已验证因子</div>
-                        <div class="stat-change text-green-600 mt-1">↑ 8% 本月</div>
+                        <div class="stat-value" id="stat-with-backtest">-</div>
+                        <div class="stat-label">已回测因子</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value" id="stat-backtests">156</div>
+                        <div class="stat-value" id="stat-total-papers">-</div>
+                        <div class="stat-label">论文总数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-backtest-runs">-</div>
                         <div class="stat-label">回测次数</div>
-                        <div class="stat-change text-ink-400 mt-1">—</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="stat-chunks">395</div>
-                        <div class="stat-label">RAG 索引块</div>
-                        <div class="stat-change text-ink-400 mt-1">bge-base-zh</div>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-5">
                     <div class="card">
-                        <h3 class="text-[14px] font-semibold text-ink-900 mb-4">因子类别分布</h3>
+                        <h3 class="text-[14px] font-semibold text-ink-900 mb-4">因子状态分布</h3>
                         <div id="chart-category" class="chart-box"></div>
                     </div>
                     <div class="card">
-                        <h3 class="text-[14px] font-semibold text-ink-900 mb-4">策略净值走势</h3>
-                        <div id="chart-equity" class="chart-box"></div>
+                        <h3 class="text-[14px] font-semibold text-ink-900 mb-4">最近回测报告</h3>
+                        <div id="recent-reports" class="space-y-2">
+                            <p class="text-ink-400 text-sm">加载中...</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -280,40 +278,21 @@
                 <div class="card">
                     <div class="flex items-center justify-between mb-5">
                         <h3 class="text-[14px] font-semibold text-ink-900">论文库</h3>
-                        <button class="btn-primary">+ 上传论文</button>
+                        <div class="flex gap-2">
+                            <button onclick="document.getElementById('pdf-upload').click()" class="btn-primary">+ 上传 PDF</button>
+                            <input type="file" id="pdf-upload" accept=".pdf" style="display:none" onchange="uploadPaper(this)">
+                        </div>
                     </div>
-                    <table class="w-full">
-                        <thead><tr>
-                            <th class="table-header">论文</th>
-                            <th class="table-header">来源</th>
-                            <th class="table-header">提取因子</th>
-                            <th class="table-header">置信度</th>
-                            <th class="table-header">状态</th>
-                        </tr></thead>
-                        <tbody>
-                            <tr class="table-row">
-                                <td class="table-cell"><div class="font-medium text-ink-900">Weak Factors in Asset Pricing</div><div class="text-xs text-ink-400">Giglio, Xiu, Zhang</div></td>
-                                <td class="table-cell"><span class="tag tag-blue">NBER</span></td>
-                                <td class="table-cell text-ink-600">2 个</td>
-                                <td class="table-cell"><span class="tag tag-green">高</span></td>
-                                <td class="table-cell"><span class="tag tag-green">已完成</span></td>
-                            </tr>
-                            <tr class="table-row">
-                                <td class="table-cell"><div class="font-medium text-ink-900">MacroHFT: Memory-Augmented HFT</div><div class="text-xs text-ink-400">Li, Wang et al.</div></td>
-                                <td class="table-cell"><span class="tag tag-blue">arXiv</span></td>
-                                <td class="table-cell text-ink-600">1 个</td>
-                                <td class="table-cell"><span class="tag tag-green">高</span></td>
-                                <td class="table-cell"><span class="tag tag-green">已完成</span></td>
-                            </tr>
-                            <tr class="table-row">
-                                <td class="table-cell"><div class="font-medium text-ink-900">FinBen: Financial Benchmark</div><div class="text-xs text-ink-400">Xie et al.</div></td>
-                                <td class="table-cell"><span class="tag tag-gray">PDF</span></td>
-                                <td class="table-cell text-ink-600">3 个</td>
-                                <td class="table-cell"><span class="tag tag-amber">中</span></td>
-                                <td class="table-cell"><span class="tag tag-amber">分析中</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <!-- Search -->
+                    <div class="flex gap-2 mb-4">
+                        <input type="text" id="paper-search" class="form-input flex-1" placeholder="搜索 arXiv 论文...">
+                        <button onclick="searchArxiv()" class="btn-secondary">arXiv 搜索</button>
+                    </div>
+                    <div id="arxiv-results" class="mb-4"></div>
+                    <!-- Papers list -->
+                    <div id="papers-list">
+                        <p class="text-ink-400 text-sm text-center py-8">加载中...</p>
+                    </div>
                 </div>
             </div>
 
@@ -359,10 +338,7 @@
                             <div>
                                 <label class="form-label">因子</label>
                                 <select id="fb-factor" class="form-select">
-                                    <option value="return_1m">动量 (1M)</option>
-                                    <option value="return_3m">动量 (3M)</option>
-                                    <option value="return_6m">动量 (6M)</option>
-                                    <option value="ROE">ROE</option>
+                                    <option value="">加载中...</option>
                                 </select>
                             </div>
                             <div>
@@ -427,9 +403,7 @@
                             <div>
                                 <label class="form-label">因子</label>
                                 <select id="sb-factor" class="form-select">
-                                    <option value="return_1m">动量 (1M)</option>
-                                    <option value="return_3m">动量 (3M)</option>
-                                    <option value="ROE">ROE</option>
+                                    <option value="">加载中...</option>
                                 </select>
                             </div>
                             <div>
@@ -492,37 +466,8 @@
             <div id="page-reports" class="page">
                 <div class="card">
                     <h3 class="text-[14px] font-semibold text-ink-900 mb-5">回测报告</h3>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="border border-ink-100 rounded-lg p-4 hover:border-brand-200 cursor-pointer transition-colors">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-lg bg-brand-50 flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                </div>
-                                <div>
-                                    <div class="font-medium text-ink-900">动量因子回测报告</div>
-                                    <div class="text-xs text-ink-400">2026-10-18</div>
-                                </div>
-                            </div>
-                            <div class="flex gap-2 mt-3">
-                                <span class="tag tag-green">IC 0.062</span>
-                                <span class="tag tag-blue">ICIR 0.83</span>
-                            </div>
-                        </div>
-                        <div class="border border-ink-100 rounded-lg p-4 hover:border-brand-200 cursor-pointer transition-colors">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                                </div>
-                                <div>
-                                    <div class="font-medium text-ink-900">多因子组合策略</div>
-                                    <div class="text-xs text-ink-400">2026-10-17</div>
-                                </div>
-                            </div>
-                            <div class="flex gap-2 mt-3">
-                                <span class="tag tag-green">年化 15.6%</span>
-                                <span class="tag tag-amber">MDD -8.2%</span>
-                            </div>
-                        </div>
+                    <div id="reports-list" class="grid grid-cols-2 gap-4">
+                        <p class="text-ink-400 text-sm col-span-2 text-center py-8">加载中...</p>
                     </div>
                 </div>
             </div>
@@ -553,7 +498,193 @@ function showPage(page) {
     const [t, s] = titles[page] || ['', ''];
     document.getElementById('page-title').textContent = t;
     document.getElementById('page-subtitle').textContent = s;
-    if (page === 'dashboard') initDashCharts();
+    if (page === 'dashboard') loadDashboard();
+    if (page === 'papers') loadPapers();
+    if (page === 'reports') loadReports();
+}
+
+// ===== Dashboard =====
+async function loadDashboard() {
+    try {
+        const r = await fetch('/dashboard/stats');
+        const d = await r.json();
+        document.getElementById('stat-total-factors').textContent = d.factors?.total || 0;
+        document.getElementById('stat-with-backtest').textContent = d.factors?.with_backtest || 0;
+        document.getElementById('stat-total-papers').textContent = d.papers?.total || 0;
+        document.getElementById('stat-backtest-runs').textContent = d.backtests?.total_runs || 0;
+
+        // Chart: factor status
+        const chartEl = document.getElementById('chart-category');
+        if (typeof echarts !== 'undefined' && chartEl) {
+            const chart = echarts.init(chartEl);
+            const statusData = d.factors?.status || {};
+            chart.setOption({
+                tooltip: { trigger: 'item' },
+                legend: { bottom: 0 },
+                series: [{
+                    type: 'pie', radius: ['40%', '65%'],
+                    label: { show: true, formatter: '{b}: {c}' },
+                    data: Object.entries(statusData).map(([k, v]) => ({ name: k, value: v })),
+                    color: ['#2952e8', '#22c55e', '#f59e0b', '#ef4444'],
+                }]
+            });
+        }
+
+        // Recent reports
+        const recent = d.backtests?.recent || [];
+        const container = document.getElementById('recent-reports');
+        if (recent.length === 0) {
+            container.innerHTML = '<p class="text-ink-400 text-sm">暂无回测报告</p>';
+        } else {
+            container.innerHTML = recent.map(r => `
+                <div class="flex items-center justify-between p-3 border border-ink-100 rounded-lg">
+                    <div>
+                        <div class="text-sm font-medium text-ink-900">${r.title || r.run_id}</div>
+                        <div class="text-xs text-ink-400">${r.created_at || ''}</div>
+                    </div>
+                    <div class="text-xs">
+                        <span class="tag tag-green">IC ${r.mean_ic || 0}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+    } catch (e) {
+        console.warn('dashboard load failed:', e);
+    }
+}
+
+// ===== Papers =====
+async function loadPapers() {
+    try {
+        const r = await fetch('/papers');
+        const d = await r.json();
+        const container = document.getElementById('papers-list');
+        if (!d.papers || d.papers.length === 0) {
+            container.innerHTML = '<p class="text-ink-400 text-sm text-center py-8">暂无论文，上传 PDF 或 arXiv 搜索</p>';
+            return;
+        }
+        container.innerHTML = '<div class="space-y-2">' + d.papers.map(p => `
+            <div class="flex items-center justify-between p-3 border border-ink-100 rounded-lg hover:bg-ink-50 transition-colors">
+                <div class="flex-1">
+                    <div class="text-sm font-medium text-ink-900">${p.title || p.paper_id}</div>
+                    <div class="text-xs text-ink-400 mt-1">
+                        <span class="tag ${p.source === 'pdf_upload' ? 'tag-blue' : 'tag-gray'}">${p.source}</span>
+                        <span class="tag tag-gray ml-1">${p.status}</span>
+                        ${p.factor_count > 0 ? `<span class="tag tag-green ml-1">${p.factor_count} 因子</span>` : ''}
+                    </div>
+                </div>
+                <button onclick="extractPaper('${p.paper_id}')" class="btn-secondary !py-1.5 !px-3 !text-xs">提取因子</button>
+            </div>
+        `).join('') + '</div>';
+    } catch (e) {
+        console.warn('papers load failed:', e);
+    }
+}
+
+async function uploadPaper(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append('file', file);
+    try {
+        const r = await fetch('/papers/upload', { method: 'POST', body: formData });
+        const d = await r.json();
+        alert(d.message || '上传成功');
+        loadPapers();
+    } catch (e) {
+        alert('上传失败: ' + e.message);
+    }
+    input.value = '';
+}
+
+async function searchArxiv() {
+    const q = document.getElementById('paper-search').value.trim();
+    if (!q) return;
+    const el = document.getElementById('arxiv-results');
+    el.innerHTML = '<div class="spinner"></div>';
+    try {
+        const r = await fetch('/papers/search', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ query: q, max_results: 5 })
+        });
+        const d = await r.json();
+        if (!d.results || d.results.length === 0) {
+            el.innerHTML = '<p class="text-ink-400 text-sm">未找到结果</p>';
+            return;
+        }
+        el.innerHTML = d.results.map(p => `
+            <div class="flex items-center justify-between p-2 border border-ink-100 rounded text-sm mb-1">
+                <div class="flex-1">
+                    <div class="text-ink-900">${p.title}</div>
+                    <div class="text-xs text-ink-400">${p.published || ''}</div>
+                </div>
+                <button onclick="importPaper('${p.arxiv_id}', '${(p.title||'').replace(/'/g,"\\'")}')" class="btn-secondary !py-1 !px-2 !text-xs">导入</button>
+            </div>
+        `).join('');
+    } catch (e) {
+        el.innerHTML = `<p class="text-red-500 text-sm">搜索失败: ${e.message}</p>`;
+    }
+}
+
+async function importPaper(arxivId, title) {
+    try {
+        await fetch('/papers/import', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify([{ arxiv_id: arxivId, title: title, source: 'arxiv' }])
+        });
+        alert('已导入');
+        loadPapers();
+    } catch (e) {
+        alert('导入失败');
+    }
+}
+
+async function extractPaper(paperId) {
+    try {
+        const r = await fetch(`/papers/${paperId}/extract`, {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({})
+        });
+        const d = await r.json();
+        alert(d.message || `提取完成: ${d.extracted || 0} 个因子`);
+        loadPapers();
+    } catch (e) {
+        alert('提取失败: ' + e.message);
+    }
+}
+
+// ===== Reports =====
+async function loadReports() {
+    try {
+        const r = await fetch('/reports');
+        const d = await r.json();
+        const container = document.getElementById('reports-list');
+        if (!d.reports || d.reports.length === 0) {
+            container.innerHTML = '<p class="text-ink-400 text-sm col-span-2 text-center py-8">暂无报告</p>';
+            return;
+        }
+        container.innerHTML = d.reports.map(r => `
+            <div class="border border-ink-100 rounded-lg p-4 hover:border-brand-200 cursor-pointer transition-colors"
+                 onclick="window.open('/backtest/report/${r.run_id}', '_blank')">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-brand-50 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    </div>
+                    <div>
+                        <div class="font-medium text-ink-900">${r.title || r.run_id}</div>
+                        <div class="text-xs text-ink-400">${r.created_at || ''}</div>
+                    </div>
+                </div>
+                <div class="flex gap-2 mt-3">
+                    <span class="tag tag-green">IC ${r.mean_ic || 0}</span>
+                    <span class="tag tag-blue">收益 ${((r.annual_return||0)*100).toFixed(1)}%</span>
+                    <span class="tag tag-amber">MDD ${((r.max_drawdown||0)*100).toFixed(1)}%</span>
+                </div>
+            </div>
+        `).join('');
+    } catch (e) {
+        console.warn('reports load failed:', e);
+    }
 }
 
 // ===== Charts =====
@@ -679,12 +810,25 @@ async function runRAG() {
     const el = document.getElementById('rag-results');
     el.innerHTML = '<div class="spinner"></div><p class="text-ink-400 text-sm mt-3">检索中...</p>';
     try {
-        const r = await fetch('/agent/run', {
+        const r = await fetch('/rag/search', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ goal: '检索论文: ' + q })
+            body: JSON.stringify({ query: q, top_k: 5 })
         });
         const d = await r.json();
-        el.innerHTML = `<div class="text-left"><div class="tag tag-green mb-2">检索完成</div><p class="text-sm text-ink-700">${d.final_message || '检索完成'}</p></div>`;
+        if (!d.results || d.results.length === 0) {
+            el.innerHTML = '<p class="text-ink-400 text-sm">未找到相关结果</p>';
+            return;
+        }
+        el.innerHTML = d.results.map((c, i) => `
+            <div class="text-left border border-ink-100 rounded-lg p-3 mb-2 hover:bg-ink-50">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="tag tag-blue">#${i+1}</span>
+                    <span class="text-xs text-ink-400">score: ${c.score}</span>
+                    <span class="text-sm font-medium text-ink-900">${c.paper_title || c.arxiv_id}</span>
+                </div>
+                <p class="text-xs text-ink-600">${(c.text||'').substring(0, 200)}...</p>
+            </div>
+        `).join('') + `<p class="text-xs text-ink-400 mt-2">耗时 ${d.took_ms}ms</p>`;
     } catch (e) {
         el.innerHTML = `<div class="tag tag-red">检索失败: ${e.message}</div>`;
     }
@@ -801,7 +945,65 @@ async function runStrategyBT(btn) {
     btn.textContent = '运行策略回测';
 }
 
+// ===== Factor Loading =====
+async function loadFactors() {
+    try {
+        const r = await fetch('/backtest/factors');
+        const data = await r.json();
+
+        const fbSelect = document.getElementById('fb-factor');
+        const sbSelect = document.getElementById('sb-factor');
+        if (!fbSelect || !sbSelect) return;
+
+        // Clear loading
+        fbSelect.innerHTML = '';
+        sbSelect.innerHTML = '';
+
+        // 内置因子
+        const optGroupBuiltin = document.createElement('optgroup');
+        optGroupBuiltin.label = '内置因子';
+        const optGroupBuiltin2 = document.createElement('optgroup');
+        optGroupBuiltin2.label = '内置因子';
+
+        for (const f of (data.builtin || [])) {
+            const opt = document.createElement('option');
+            opt.value = f.name;
+            opt.textContent = `${f.label} [${f.category}]`;
+            optGroupBuiltin.appendChild(opt);
+
+            const opt2 = opt.cloneNode(true);
+            optGroupBuiltin2.appendChild(opt2);
+        }
+        fbSelect.appendChild(optGroupBuiltin);
+        sbSelect.appendChild(optGroupBuiltin2);
+
+        // 因子库因子
+        if (data.factor_db && data.factor_db.length > 0) {
+            const optGroupDB = document.createElement('optgroup');
+            optGroupDB.label = `因子库 (${data.factor_db.length} 个)`;
+            const optGroupDB2 = document.createElement('optgroup');
+            optGroupDB2.label = `因子库 (${data.factor_db.length} 个)`;
+
+            for (const f of data.factor_db) {
+                const opt = document.createElement('option');
+                opt.value = f.name;
+                opt.textContent = `${f.label}${f.status === 'rejected' ? ' [已拒绝]' : ''}`;
+                optGroupDB.appendChild(opt);
+
+                const opt2 = opt.cloneNode(true);
+                optGroupDB2.appendChild(opt2);
+            }
+            fbSelect.appendChild(optGroupDB);
+            sbSelect.appendChild(optGroupDB2);
+        }
+
+    } catch (e) {
+        console.warn('Failed to load factors:', e);
+    }
+}
+
 // ===== Init =====
+loadFactors();
 window.addEventListener('resize', () => {
     document.querySelectorAll('.chart-box').forEach(el => {
         const c = echarts.getInstanceByDom(el);
