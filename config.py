@@ -116,6 +116,16 @@ MULTIMODAL_PROMPT = """你是一个量化多模态因子研究员。
 
 JSON之外不要输出任何文字。"""
 
+# 公式归一化 Prompt（Phase 1）
+FORMULA_NORMALIZE_PROMPT = """将下列因子计算公式改写为受限 DSL 表达式。
+仅允许函数: pct_change, rolling_mean, rolling_std, rolling_sum, ts_rank, ts_zscore, ts_delta, cs_rank, cs_zscore, winsorize, log, abs, where, clip, delay
+仅允许输入: close, returns, volume, market_cap
+公式原文: {formula}
+因子定义: {definition}
+数据需求: {data_needed}
+输出 JSON: {{"expression": "...", "higher_is_better": true, "inputs": ["close"], "notes": "..."}}
+若无法用现有输入表达，输出 {{"expression": "", "notes": "missing: ..."}}"""
+
 # 因子质量评估Prompt（新增）
 FACTOR_QUALITY_PROMPT = """你是一个量化因子质量评审员。
 

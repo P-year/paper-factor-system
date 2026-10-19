@@ -53,6 +53,16 @@ class FactorRecord:
     backtest_result: Dict = field(default_factory=dict)
     notes: str = ""
 
+    # Phase 0: 公式编译 + 产品闭环
+    formula_expression: str = ""   # 归一化后的 DSL 表达式
+    formula_status: str = ""       # "" | normalized | compiled | failed | proxy
+    formula_error: str = ""
+    compute_source: str = ""       # formula | builtin | proxy | manual
+    higher_is_better: bool = True
+    paper_id: str = ""             # arxiv_id 或 manual:<md5>
+    backtest_run_id: str = ""      # output/backtests/<run_id>
+    backtest_at: str = ""
+
 
 class FactorDatabase:
     """
@@ -198,6 +208,73 @@ class FactorDatabase:
 
         print(f"  ⚠️ 未找到因子: {factor_name}")
         return False
+
+    def update_backtest_result(self, factor_name: str, result: Dict, *,
+                                run_id: str = "", compute_source: str = "") -> bool:
+        """写回回测结果到因子记录。"""
+        for factor in self.factors:
+            if factor.get("factor_name") == factor_name:
+                factor["backtest_result"] = result
+                factor["backtest_run_id"] = run_id
+                factor["backtest_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                factor["updated_at"] = factor["backtest_at"]
+                if compute_source:
+                    factor["compute_source"] = compute_source
+                self.save()
+                return True
+        return False
+
+    def update_formula(self, factor_name: str, *, expression: str = "", status: str = "",
+                        error: str = "", compute_source: str = "") -> bool:
+        """更新因子公式编译状态。"""
+        for factor in self.factors:
+            if factor.get("factor_name") == factor_name:
+                if expression:
+                    factor["formula_expression"] = expression
+                if status:
+                    factor["formula_status"] = status
+                factor["formula_error"] = error
+                if compute_source:
+                    factor["compute_source"] = compute_source
+                factor["updated_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                self.save()
+                return True
+        return False
+
+    def get_by_paper(self, paper_id: str) -> List[Dict]:
+        """按 paper_id 查因子。"""
+        return [f for f in self.factors if f.get("paper_id") == paper_id]
+
+    def get_product_summary(self) -> Dict:
+        """产品仪表盘统计。"""
+        status_counts = {}
+        confidence_counts = {}
+        compute_counts = {}
+        with_backtest = 0
+        total = len(self.factors)
+        ic_values = []
+
+        for f in self.factors:
+            s = f.get("status", "pending")
+            status_counts[s] = status_counts.get(s, 0) + 1
+            c = f.get("confidence", "中")
+            confidence_counts[c] = confidence_counts.get(c, 0) + 1
+            cs = f.get("compute_source", "none") or "none"
+            compute_counts[cs] = compute_counts.get(cs, 0) + 1
+            bt = f.get("backtest_result", {})
+            if bt:
+                with_backtest += 1
+                if "ic" in bt:
+                    ic_values.append(abs(bt["ic"]))
+
+        return {
+            "total": total,
+            "status": status_counts,
+            "confidence": confidence_counts,
+            "by_compute_source": compute_counts,
+            "with_backtest": with_backtest,
+            "avg_abs_ic": round(sum(ic_values) / len(ic_values), 4) if ic_values else 0.0,
+        }
 
     def approve_factor(self, factor_name: str, notes: str = "") -> bool:
         """批准因子（进入待回测状态）"""

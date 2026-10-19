@@ -128,6 +128,54 @@ class BacktestPipeline:
         engine = StrategyEngine(self.data)
         return engine.run(factor, config)
 
+    def run_formula_factor(self, name: str, expression: str, **meta) -> FactorEvalResult:
+        """从 DSL 公式编译因子并回测。"""
+        if self.data is None:
+            self.load_data()
+        calc = FactorCalculator(self.data)
+        panel = calc.compute_from_formula(name, expression, **meta)
+        return self._evaluate_factor(panel)
+
+    def run_factor_record(self, record: Dict) -> FactorEvalResult:
+        """从因子库记录回测。
+
+        解析顺序: formula → builtin → proxy → no_compute_path
+        """
+        name = record.get("factor_name", "")
+        expr = record.get("formula_expression") or record.get("calculation_formula", "")
+
+        if self.data is None:
+            self.load_data()
+        calc = FactorCalculator(self.data)
+
+        # 1. 尝试公式编译
+        if expr:
+            try:
+                panel = calc.compute_from_formula(name, expr)
+                result = self._evaluate_factor(panel)
+                result.compute_source = "formula"
+                return result
+            except Exception:
+                pass
+
+        # 2. 尝试内置因子
+        try:
+            panel = calc.compute(name)
+            if panel.values.values.any():  # 非全零
+                result = self._evaluate_factor(panel)
+                result.compute_source = "builtin"
+                return result
+        except Exception:
+            pass
+
+        # 3. 无可计算路径
+        from backtest.types import FactorEvalResult
+        return FactorEvalResult(
+            factor_name=name,
+            status="no_compute_path",
+            error=f"cannot compile formula: {expr[:100]}",
+        )
+
     def run(self) -> BacktestReport:
         """一键全跑。"""
         self.load_data()

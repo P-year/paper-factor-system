@@ -103,6 +103,11 @@ class FactorCalculator:
             meta=meta,
         )
 
+    def compute_from_formula(self, name: str, expression: str, **meta) -> FactorPanel:
+        """从 DSL 表达式编译并计算 FactorPanel。"""
+        from backtest.formula_compiler import FormulaCompiler
+        return FormulaCompiler().compute(expression, self.data, name=name, **meta)
+
     @classmethod
     def register(cls, name: str, fn: Callable[[MarketData, Dict], FactorPanel], config: Optional[Dict] = None):
         """注册自定义因子计算函数。"""
