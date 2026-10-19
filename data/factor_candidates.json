@@ -1,6 +1,6 @@
 {
   "meta": {
-    "updated_at": "2026-10-20 00:43:16",
+    "updated_at": "2026-10-20 00:44:58",
     "total_count": 35
   },
   "factors": [
@@ -10450,7 +10450,7 @@
       "paper_title": "Entropy-Based Financial Asset Pricing",
       "paper_abstract": "We investigate entropy as a financial risk measure. Entropy explains the equity premium of securities and portfolios in a simpler way and, at the same time, with higher explanatory power than the beta parameter of the capital asset pricing model. For asset pricing we define the continuous entropy as an alternative measure of risk. Our results show that entropy decreases in the function of the number of securities involved in a portfolio in a similar way to the standard deviation, and that efficient portfolios are situated on a hyperbola in the expected return - entropy system. For empirical investigation we use daily returns of 150 randomly selected securities for a period of 27 years. Our regression results show that entropy has a higher explanatory power for the expected return than the capital asset pricing model beta. Furthermore we show the time varying behaviour of the beta along with entropy.",
       "added_at": "2026-07-28 20:04:48",
-      "updated_at": "2026-10-20 00:42:19",
+      "updated_at": "2026-10-20 00:44:58",
       "status": "rejected",
       "modality": "single",
       "tags": [],
@@ -11931,8 +11931,8 @@
         "error": ""
       },
       "notes": "auto: ICIR=0.00, top=-100.0%",
-      "backtest_run_id": "",
-      "backtest_at": "2026-10-20 00:42:19",
+      "backtest_run_id": "backtest_20261020_004458",
+      "backtest_at": "2026-10-20 00:44:58",
       "compute_source": "formula",
       "formula_expression": "returns",
       "formula_status": "compiled",
