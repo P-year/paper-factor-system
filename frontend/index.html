@@ -287,6 +287,13 @@
                         </div>
                     </div>
                 </div>
+                <!-- Top Factors -->
+                <div class="card mt-5">
+                    <h3 class="text-[14px] font-semibold text-ink-900 mb-4">Top 因子（按 |IC| 排序）</h3>
+                    <div id="top-factors">
+                        <p class="text-ink-400 text-sm text-center py-8">加载中...</p>
+                    </div>
+                </div>
             </div>
 
             <!-- ===== PAPERS ===== -->
@@ -590,6 +597,36 @@ async function loadDashboard() {
                 </div>
             `).join('');
         }
+
+        // Top factors by |IC|
+        try {
+            const fr = await fetch('/factors?limit=50');
+            const fd = await fr.json();
+            const withBT = (fd.factors || []).filter(f => f.backtest_result && f.backtest_result.ic !== undefined)
+                .sort((a, b) => Math.abs(b.backtest_result.ic || 0) - Math.abs(a.backtest_result.ic || 0))
+                .slice(0, 10);
+            const topEl = document.getElementById('top-factors');
+            if (withBT.length === 0) {
+                topEl.innerHTML = '<p class="text-ink-400 text-sm text-center py-8">暂无已回测因子</p>';
+            } else {
+                topEl.innerHTML = '<div class="space-y-2">' + withBT.map((f, i) => `
+                    <div class="flex items-center justify-between p-2.5 border border-ink-100 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-brand-50 text-brand-500 flex items-center justify-center text-xs font-bold">${i+1}</span>
+                            <div>
+                                <div class="text-sm font-medium text-ink-900">${f.factor_name}</div>
+                                <div class="text-xs text-ink-400">${f.compute_source || '-'}</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="tag tag-green">IC ${Math.abs(f.backtest_result.ic || 0).toFixed(4)}</span>
+                            <span class="tag tag-blue">ICIR ${Math.abs(f.backtest_result.icir || 0).toFixed(3)}</span>
+                            <span class="tag ${f.status === 'approved' ? 'tag-green' : f.status === 'active' ? 'tag-blue' : 'tag-amber'}">${f.status}</span>
+                        </div>
+                    </div>
+                `).join('') + '</div>';
+            }
+        } catch (e) { /* ignore */ }
     } catch (e) {
         console.warn('dashboard load failed:', e);
     }
