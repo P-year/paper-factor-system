@@ -8,12 +8,37 @@ v3-8：改用 harness/tool_call.verified_backtest() 闭环 wrapper——
       自动 verify + 重试 + 恢复（n_dates 太少时自动拉长日期范围），
       保证每次回测结果都经过 sanity check 才往下传。
 """
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from pipelines.paper_factor.state import PaperFactorState
 from harness.observability import observe_node
 from harness.lineage import tag_backtest_lineage
 from harness.tool_call import verified_backtest
+
+
+def _try_formula_backtest(factor_name: str, formula_expr: str) -> Optional[Dict[str, Any]]:
+    """尝试用 FormulaCompiler 编译公式并回测。失败返回 None。"""
+    try:
+        from backtest.pipeline import BacktestPipeline, PipelineConfig
+        from backtest.formula_normalize import normalize_formula
+
+        # 归一化公式
+        spec = normalize_formula({"calculation_formula": formula_expr}, use_llm=False)
+        expr = spec.expression or formula_expr
+
+        config = PipelineConfig(
+            provider="synthetic", n_stocks=20, seed=42,
+            factor_names=[], save_json=False, save_html=False,
+        )
+        pipeline = BacktestPipeline(config)
+        pipeline.load_data()
+        result = pipeline.run_formula_factor(factor_name, expr)
+
+        if result.status == "ok" and result.data_points > 0:
+            return result.to_dict()
+    except Exception:
+        pass
+    return None
 
 
 @observe_node("backtest_node")
@@ -39,15 +64,26 @@ def backtest_node(state: PaperFactorState) -> Dict[str, Any]:
         if fname in existing_bt and not existing_bt[fname].get("_stub"):
             continue
 
-        # v3-8：使用闭环 wrapper（verify + retry + recovery）
-        r = verified_backtest(
-            factor_name=matching,
-            universe="csi500",
-            start_date="20230101",
-            end_date="20241231",
-            n_stocks=50,
-            max_retries=1,  # 失败重试 1 次
-        )
+        # 优先: 公式编译 (formula-first)
+        r = None
+        formula_expr = q.get("formula_expression") or f.get("formula_expression") or f.get("calculation_formula", "")
+        if formula_expr:
+            r = _try_formula_backtest(fname, formula_expr)
+            if r is not None:
+                r["compute_source"] = "formula"
+
+        # Fallback: proxy factor (原有路径)
+        if r is None:
+            r = verified_backtest(
+                factor_name=matching,
+                universe="csi500",
+                start_date="20230101",
+                end_date="20241231",
+                n_stocks=50,
+                max_retries=1,
+            )
+            r["compute_source"] = "proxy"
+
         r["original_factor_name"] = fname
 
         # v3-6：tag lineage

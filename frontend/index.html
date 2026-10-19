@@ -585,6 +585,7 @@ async function loadPapers() {
                     </div>
                 </div>
                 <button onclick="extractPaper('${p.paper_id}')" class="btn-secondary !py-1.5 !px-3 !text-xs">提取因子</button>
+                <button onclick="runPaperPipeline('${p.paper_id}')" class="btn-primary !py-1.5 !px-3 !text-xs ml-1">一键回测</button>
             </div>
         `).join('') + '</div>';
     } catch (e) {
@@ -661,6 +662,27 @@ async function extractPaper(paperId) {
         loadPapers();
     } catch (e) {
         alert('提取失败: ' + e.message);
+    }
+}
+
+async function runPaperPipeline(paperId) {
+    try {
+        const r = await fetch(`/papers/${paperId}/run`, {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                provider: 'synthetic', n_stocks: 20, seed: 42,
+                writeback: true
+            })
+        });
+        const d = await r.json();
+        if (d.status === 'ok' || d.status === 'partial') {
+            alert(`回测完成: ${d.factors || 0} 个因子, ${d.backtests || 0} 个回测结果`);
+        } else {
+            alert(`回测状态: ${d.status}\n${(d.errors || []).join('\n')}`);
+        }
+        loadPapers();
+    } catch (e) {
+        alert('回测失败: ' + e.message);
     }
 }
 
