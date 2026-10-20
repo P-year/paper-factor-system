@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import warnings
 from abc import ABC, abstractmethod
+from pathlib import Path
 from typing import Dict, List, Optional
 
 import numpy as np
@@ -173,13 +174,86 @@ class DBProvider(DataProvider):
         raise NotImplementedError("DBProvider 尚未实现")
 
 
+class LocalDataProvider(DataProvider):
+    """从本地 parquet 文件读取真实 A 股数据。"""
+
+    name = "local"
+
+    def __init__(self, data_dir: str = "data/market"):
+        self.data_dir = Path(data_dir)
+        self._prices: Optional[pd.DataFrame] = None
+        self._market_cap: Optional[pd.DataFrame] = None
+        self._volume: Optional[pd.DataFrame] = None
+        self._meta: Dict = {}
+
+    def _load(self):
+        if self._prices is not None:
+            return
+        prices_path = self.data_dir / "prices.parquet"
+        if not prices_path.exists():
+            raise FileNotFoundError(
+                f"本地数据不存在: {prices_path}\n"
+                f"请先运行: python -m backtest.download_data"
+            )
+        self._prices = pd.read_parquet(prices_path)
+
+        meta_path = self.data_dir / "meta.json"
+        if meta_path.exists():
+            import json
+            self._meta = json.loads(meta_path.read_text(encoding="utf-8"))
+
+        cap_path = self.data_dir / "market_cap.parquet"
+        if cap_path.exists():
+            cap_df = pd.read_parquet(cap_path)
+            self._market_cap = cap_df
+            # 扩展为与 prices 同形状
+            if isinstance(cap_df, pd.DataFrame):
+                self._market_cap = cap_df.iloc[:, 0]
+                self._market_cap = pd.DataFrame(
+                    [self._market_cap.values] * len(self._prices),
+                    index=self._prices.index,
+                    columns=self._prices.columns,
+                )
+
+        vol_path = self.data_dir / "volume.parquet"
+        if vol_path.exists():
+            self._volume = pd.read_parquet(vol_path)
+
+    def get_universe(self, name: str = "csi500", n: int = 100) -> List[str]:
+        self._load()
+        codes = list(self._prices.columns)
+        return codes[:n]
+
+    def get_prices(self, codes: List[str], start: str = "", end: str = "") -> pd.DataFrame:
+        self._load()
+        df = self._prices
+        if codes:
+            cols = [c for c in codes if c in df.columns]
+            df = df[cols]
+        if start:
+            df = df[df.index >= pd.Timestamp(start)]
+        if end:
+            df = df[df.index <= pd.Timestamp(end)]
+        return df
+
+    def get_market_cap(self, codes: List[str], start: str = "", end: str = "") -> Optional[pd.DataFrame]:
+        self._load()
+        return self._market_cap
+
+    def get_volume(self, codes: List[str], start: str = "", end: str = "") -> Optional[pd.DataFrame]:
+        self._load()
+        return self._volume
+
+
 def get_provider(name: str = "synthetic", **kwargs) -> DataProvider:
     """数据提供者工厂。"""
     if name == "synthetic":
         return SyntheticProvider(**kwargs)
     elif name == "akshare":
         return AKShareProvider()
+    elif name == "local":
+        return LocalDataProvider(data_dir=kwargs.get("data_dir", "data/market"))
     elif name == "db":
         return DBProvider()
     else:
-        raise ValueError(f"unknown provider: {name!r} (expect synthetic|akshare|db)")
+        raise ValueError(f"unknown provider: {name!r} (expect synthetic|akshare|local|db)")
