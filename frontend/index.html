@@ -367,8 +367,9 @@
                             <div>
                                 <label class="form-label">数据源</label>
                                 <select id="fb-provider" class="form-select">
-                                    <option value="synthetic">合成数据</option>
-                                    <option value="akshare">AKShare</option>
+                                    <option value="local">本地真实数据 (53只A股 2021-2025)</option>
+                                    <option value="synthetic">合成数据 (快速测试)</option>
+                                    <option value="akshare">AKShare (实时)</option>
                                 </select>
                             </div>
                             <div class="grid grid-cols-2 gap-3">
@@ -738,7 +739,7 @@ async function runPaperPipeline(paperId) {
         const r = await fetch(`/papers/${paperId}/run`, {
             method: 'POST', headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                provider: 'synthetic', n_stocks: 20, seed: 42,
+                provider: 'local', n_stocks: 53,
                 writeback: true
             })
         });
@@ -810,7 +811,7 @@ async function backtestFactor(name) {
         const r = await fetch(`/factors/${encodeURIComponent(name)}/backtest`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ provider: 'synthetic', n_stocks: 20, seed: 42 })
+            body: JSON.stringify({ provider: 'local', n_stocks: 53 })
         });
         const d = await r.json();
         if (d.backtests && d.backtests.length > 0) {

@@ -30,7 +30,7 @@ from backtest.report import BacktestReport
 @dataclass
 class PipelineConfig:
     """Pipeline 配置。"""
-    provider: str = "synthetic"
+    provider: str = "local"
     universe: str = "csi500"
     start_date: str = "20230101"
     end_date: str = "20241231"
@@ -249,7 +249,7 @@ class BacktestPipeline:
 
 def main():
     parser = argparse.ArgumentParser(description="回测系统")
-    parser.add_argument("--provider", default="synthetic", choices=["synthetic", "akshare"])
+    parser.add_argument("--provider", default="local", choices=["synthetic", "akshare", "local"])
     parser.add_argument("--universe", default="csi500")
     parser.add_argument("--start", default="20230101")
     parser.add_argument("--end", default="20241231")
