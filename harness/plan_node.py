@@ -132,6 +132,21 @@ def make_plan_node(pipeline: PipelineConfig) -> Callable:
     @observe_node("plan_node")
     def plan_node(state: Dict[str, Any]) -> Dict[str, Any]:
         """plan 节点：LLM 决策 + 硬规则覆盖 + 防循环 + max_iter 兜底。"""
+        # 对话式问题快速路径：直接跳到 respond
+        goal = state.get("goal", "")
+        try:
+            from pipelines.paper_factor.nodes.respond import _is_conversational
+            if _is_conversational(goal):
+                return {
+                    "plan": state.get("plan", []) + [{"node": "respond", "args": [], "reason": "conversational mode"}],
+                    "current_step_idx": state.get("current_step_idx", 0) + 1,
+                    "iteration_count": state.get("iteration_count", 0) + 1,
+                    "visited_nodes": state.get("visited_nodes", []) + ["respond"],
+                    "errors": state.get("errors", []),
+                }
+        except Exception:
+            pass
+
         # 每次调用重新查 node_names（避免工厂时序 bug）
         node_names = set(pipeline.nodes.keys())
 
