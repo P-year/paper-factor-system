@@ -195,6 +195,7 @@ async def stream_agent(req: RunRequest):
 
         yield f"event: start\ndata: {{\"thread_id\": \"{thread_id}\", \"goal\": \"{req.goal}\"}}\n\n"
 
+        final_state = {}
         try:
             async for event in _graph.astream(
                 {"goal": req.goal, "iteration_count": 0},
@@ -203,12 +204,30 @@ async def stream_agent(req: RunRequest):
                 for node_name, node_output in event.items():
                     if node_name == "__end__":
                         continue
-                    # 把每个 node 的输出简化后推送
+                    if isinstance(node_output, dict):
+                        final_state.update(node_output)
                     summary = _summarize_node_output(node_name, node_output)
                     yield f"event: node\ndata: {{\"node\": \"{node_name}\", \"summary\": {summary}}}\n\n"
-                    await asyncio.sleep(0.05)  # 让前端有动画时间
+                    await asyncio.sleep(0.05)
 
-            yield f"event: done\ndata: {{\"thread_id\": \"{thread_id}\"}}\n\n"
+            # 提取最终消息
+            final_msg = final_state.get("final_message", "")
+            if not final_msg:
+                msgs = final_state.get("messages", [])
+                if msgs:
+                    last = msgs[-1]
+                    if isinstance(last, dict):
+                        final_msg = last.get("content", "")
+                    elif hasattr(last, "content"):
+                        final_msg = str(last.content)
+
+            import json as _json
+            done_data = _json.dumps({
+                "thread_id": thread_id,
+                "final_message": final_msg,
+                "visited_nodes": final_state.get("visited_nodes", []),
+            }, ensure_ascii=False)
+            yield f"event: done\ndata: {done_data}\n\n"
         except Exception as e:
             yield f"event: error\ndata: {{\"error\": \"{e}\"}}\n\n"
 
