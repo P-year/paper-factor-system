@@ -449,11 +449,19 @@
                 <div class="card mt-5">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-[14px] font-semibold text-ink-900">因子审核</h3>
-                        <button onclick="loadFactorList()" class="btn-secondary !py-1.5 !px-3 !text-xs">刷新</button>
+                        <div class="flex gap-2">
+                            <button onclick="compareSelectedFactors()" class="btn-primary !py-1.5 !px-3 !text-xs">对比选中</button>
+                            <button onclick="loadFactorList()" class="btn-secondary !py-1.5 !px-3 !text-xs">刷新</button>
+                        </div>
                     </div>
                     <div id="factor-review-list">
                         <p class="text-ink-400 text-sm text-center py-8">加载中...</p>
                     </div>
+                </div>
+                <!-- Factor Comparison Chart -->
+                <div class="card mt-5" id="factor-compare-section" style="display:none">
+                    <h3 class="text-[14px] font-semibold text-ink-900 mb-4">因子对比</h3>
+                    <div id="chart-factor-compare" class="chart-box" style="height:300px"></div>
                 </div>
             </div>
 
@@ -792,8 +800,8 @@ async function loadPapers() {
                     </div>
                 </div>
                 <button onclick="showPaperDetail('${p.paper_id}')" class="btn-secondary !py-1.5 !px-3 !text-xs">详情</button>
-                <button onclick="extractPaper('${p.paper_id}')" class="btn-secondary !py-1.5 !px-3 !text-xs ml-1">提取因子</button>
-                <button onclick="runPaperPipeline('${p.paper_id}')" class="btn-primary !py-1.5 !px-3 !text-xs ml-1">一键回测</button>
+                <button id="extract-${p.paper_id}" onclick="extractPaper('${p.paper_id}', this)" class="btn-secondary !py-1.5 !px-3 !text-xs ml-1">提取因子</button>
+                <button id="run-${p.paper_id}" onclick="runPaperPipeline('${p.paper_id}', this)" class="btn-primary !py-1.5 !px-3 !text-xs ml-1">一键回测</button>
             </div>
         `).join('') + '</div>';
     } catch (e) {
@@ -859,7 +867,8 @@ async function importPaper(arxivId, title) {
     }
 }
 
-async function extractPaper(paperId) {
+async function extractPaper(paperId, btn) {
+    if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner" style="width:12px;height:12px"></span> 提取中...'; }
     try {
         const r = await fetch(`/papers/${paperId}/extract`, {
             method: 'POST', headers: {'Content-Type': 'application/json'},
@@ -867,13 +876,15 @@ async function extractPaper(paperId) {
         });
         const d = await r.json();
         toastSuccess(d.message || `提取完成: ${d.extracted || 0} 个因子`);
-        loadPapers();
     } catch (e) {
         toastError('提取失败: ' + e.message);
     }
+    if (btn) { btn.disabled = false; btn.textContent = '提取因子'; }
+    loadPapers();
 }
 
-async function runPaperPipeline(paperId) {
+async function runPaperPipeline(paperId, btn) {
+    if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner" style="width:12px;height:12px"></span> 回测中...'; }
     try {
         const r = await fetch(`/papers/${paperId}/run`, {
             method: 'POST', headers: {'Content-Type': 'application/json'},
@@ -886,12 +897,13 @@ async function runPaperPipeline(paperId) {
         if (d.status === 'ok' || d.status === 'partial') {
             toastSuccess(`回测完成: ${d.factors || 0} 个因子, ${d.backtests || 0} 个回测结果`);
         } else {
-            toastWarning(`回测状态: ${d.status}\n${(d.errors || []).join('\n')}`);
+            toastWarning(`回测状态: ${d.status}`);
         }
-        loadPapers();
     } catch (e) {
         toastError('回测失败: ' + e.message);
     }
+    if (btn) { btn.disabled = false; btn.textContent = '一键回测'; }
+    loadPapers();
 }
 
 // ===== Factor Review =====
@@ -907,7 +919,10 @@ async function loadFactorList() {
         container.innerHTML = d.factors.map(f => `
             <div class="flex items-center justify-between p-3 border border-ink-100 rounded-lg mb-2 hover:bg-ink-50">
                 <div class="flex-1">
-                    <div class="text-sm font-medium text-ink-900 cursor-pointer hover:text-brand-500" onclick="showFactorDetail('${f.factor_name}')">${f.factor_name}</div>
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" class="factor-compare-cb" data-name="${f.factor_name}" style="accent-color:#2952e8">
+                        <div class="text-sm font-medium text-ink-900 cursor-pointer hover:text-brand-500" onclick="showFactorDetail('${f.factor_name}')">${f.factor_name}</div>
+                    </div>
                     <div class="text-xs text-ink-400 mt-1">
                         <span class="tag ${f.status === 'approved' ? 'tag-green' : f.status === 'rejected' ? 'tag-red' : f.status === 'active' ? 'tag-blue' : 'tag-amber'}">${f.status}</span>
                         <span class="tag tag-gray ml-1">${f.confidence || '中'}</span>
@@ -963,6 +978,57 @@ async function backtestFactor(name) {
     } catch (e) {
         toastError('回测失败: ' + e.message);
     }
+}
+
+// ===== Factor Comparison =====
+function compareSelectedFactors() {
+    const checkboxes = document.querySelectorAll('.factor-compare-cb:checked');
+    if (checkboxes.length < 2) {
+        toastWarning('请选择至少 2 个因子对比');
+        return;
+    }
+    const names = Array.from(checkboxes).map(cb => cb.dataset.name);
+    showFactorComparison(names);
+}
+
+async function showFactorComparison(names) {
+    const section = document.getElementById('factor-compare-section');
+    section.style.display = 'block';
+
+    const factors = [];
+    for (const name of names) {
+        try {
+            const r = await fetch(`/factors/${encodeURIComponent(name)}`);
+            factors.push(await r.json());
+        } catch (e) { /* skip */ }
+    }
+
+    const chartEl = document.getElementById('chart-factor-compare');
+    if (typeof echarts === 'undefined' || factors.length === 0) return;
+
+    const chart = echarts.init(chartEl);
+    const metrics = ['ic', 'icir', 'rank_ic', 'sharpe'];
+    const metricLabels = ['IC', 'ICIR', 'Rank IC', 'Sharpe'];
+
+    chart.setOption({
+        tooltip: { trigger: 'axis' },
+        legend: { data: factors.map(f => f.factor_name), bottom: 0 },
+        grid: { left: 50, right: 16, top: 16, bottom: 60 },
+        xAxis: { type: 'category', data: metricLabels, axisLabel: { fontSize: 12 } },
+        yAxis: { type: 'value', splitLine: { lineStyle: { color: '#f0f2f5' } } },
+        series: factors.map((f, i) => {
+            const bt = f.backtest_result || {};
+            const colors = ['#2952e8', '#22c55e', '#f59e0b', '#ef4444', '#8b5cf6'];
+            return {
+                name: f.factor_name,
+                type: 'bar',
+                data: metrics.map(m => (bt[m] || 0).toFixed(4)),
+                itemStyle: { color: colors[i % colors.length] }
+            };
+        })
+    });
+
+    section.scrollIntoView({ behavior: 'smooth' });
 }
 
 // ===== Reports =====
