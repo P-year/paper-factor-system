@@ -123,6 +123,45 @@
 
         /* Toast */
         .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+
+        /* Dark Mode */
+        body.dark {
+            background: #111827;
+            color: #e5e7eb;
+        }
+        body.dark .sidebar { background: #1f2937; border-color: #374151; }
+        body.dark .sidebar-link { color: #9ca3af; }
+        body.dark .sidebar-link:hover { background: #374151; color: #e5e7eb; }
+        body.dark .sidebar-link.active { background: rgba(99,102,241,0.15); color: #a5b4fc; }
+        body.dark .card { background: #1f2937; border-color: #374151; }
+        body.dark .stat-card { background: #1f2937; border-color: #374151; }
+        body.dark .stat-value { color: #f9fafb; }
+        body.dark .form-select, body.dark .form-input {
+            background: #374151; border-color: #4b5563; color: #e5e7eb;
+        }
+        body.dark .btn-secondary { background: #374151; border-color: #4b5563; color: #d1d5db; }
+        body.dark .btn-secondary:hover { background: #4b5563; }
+        body.dark .tag-gray { background: #374151; color: #9ca3af; }
+        body.dark .chat-ai { background: #1f2937; border-color: #374151; color: #e5e7eb; }
+        body.dark .modal { background: #1f2937; }
+        body.dark .modal-stat { background: #374151; }
+        body.dark .modal-stat-value { color: #f9fafb; }
+        body.dark .table-row:hover { background: #374151; }
+        body.dark header { background: #1f2937; border-color: #374151; }
+        body.dark .text-ink-900 { color: #f9fafb; }
+        body.dark .text-ink-400 { color: #9ca3af; }
+        body.dark .text-ink-600 { color: #d1d5db; }
+        body.dark .bg-ink-50 { background: #374151; }
+        body.dark .border-ink-100 { border-color: #374151; }
+
+        .theme-toggle {
+            display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+            border-radius: 8px; cursor: pointer; transition: all 0.2s;
+            border: none; background: transparent; color: #67759b; font-size: 12px; width: 100%;
+        }
+        body.dark .theme-toggle { color: #9ca3af; }
+        .theme-toggle:hover { background: #f6f7f9; }
+        body.dark .theme-toggle:hover { background: #374151; }
         .toast {
             padding: 12px 20px; border-radius: 8px; font-size: 13px; font-weight: 500;
             color: #fff; min-width: 280px; max-width: 420px;
@@ -224,7 +263,11 @@
 
         <!-- Footer -->
         <div class="p-4 border-t border-ink-100">
-            <div class="flex items-center gap-2">
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                <span id="theme-label">暗色模式</span>
+            </button>
+            <div class="flex items-center gap-2 mt-2">
                 <span class="status-dot status-online"></span>
                 <span class="text-xs text-ink-400">API 运行中</span>
             </div>
@@ -670,6 +713,22 @@ async function showFactorDetail(name) {
     } catch (e) {
         toastError('加载失败: ' + e.message);
     }
+}
+
+// ===== Dark Mode =====
+function toggleTheme() {
+    const isDark = document.body.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    document.getElementById('theme-label').textContent = isDark ? '亮色模式' : '暗色模式';
+}
+
+// Restore theme on load
+if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark');
+    document.addEventListener('DOMContentLoaded', () => {
+        const label = document.getElementById('theme-label');
+        if (label) label.textContent = '亮色模式';
+    });
 }
 
 // ===== Navigation =====
@@ -1157,28 +1216,102 @@ async function sendChat() {
     if (!msg) return;
     addChatBubble(msg, true);
     input.value = '';
+
+    // 保存到对话历史
+    saveChatHistory(msg, 'user');
+
     showChatLoading();
     try {
-        const r = await fetch('/agent/run', {
+        // SSE 流式
+        const r = await fetch('/agent/stream', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ goal: msg })
         });
-        const data = await r.json();
+
+        const reader = r.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        let finalMsg = '';
+        let nodesVisited = [];
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+
+            // 解析 SSE 事件
+            const lines = buffer.split('\n');
+            buffer = lines.pop();
+            for (const line of lines) {
+                if (line.startsWith('data: ')) {
+                    try {
+                        const event = JSON.parse(line.slice(6));
+                        if (event.type === 'node') {
+                            nodesVisited.push(event.node);
+                            // 更新加载消息为实时进度
+                            const loading = document.getElementById('chat-loading');
+                            if (loading) {
+                                loading.querySelector('.chat-ai').innerHTML =
+                                    `<span class="spinner" style="width:14px;height:14px"></span> <span class="text-xs text-ink-400 ml-2">执行中: ${event.node}</span>`;
+                            }
+                        } else if (event.type === 'done') {
+                            finalMsg = event.final_message || '';
+                        }
+                    } catch (e) { /* ignore parse errors */ }
+                }
+            }
+        }
+
         hideChatLoading();
-        if (data.error) addChatBubble('⚠ ' + data.error);
-        else if (data.final_message) {
-            addChatBubble(data.final_message);
-            const s = [];
-            if (data.collected_paper_count) s.push(`论文 ${data.collected_paper_count} 篇`);
-            if (data.extracted_factor_count) s.push(`因子 ${data.extracted_factor_count} 个`);
-            if (data.backtest_result_count) s.push(`回测 ${data.backtest_result_count} 次`);
-            if (s.length) addChatBubble('📊 ' + s.join(' · '));
-        } else addChatBubble('任务执行完成。');
+        if (finalMsg) {
+            addChatBubble(finalMsg);
+            saveChatHistory(finalMsg, 'assistant');
+        } else if (nodesVisited.length > 0) {
+            addChatBubble(`任务执行完成。访问节点: ${nodesVisited.join(' → ')}`);
+        } else {
+            addChatBubble('任务执行完成。');
+        }
     } catch (e) {
-        hideChatLoading();
-        addChatBubble('网络错误: ' + e.message);
+        // Fallback 到同步 API
+        try {
+            const r = await fetch('/agent/run', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ goal: msg })
+            });
+            const data = await r.json();
+            hideChatLoading();
+            const fm = data.final_message || '任务执行完成。';
+            addChatBubble(fm);
+            saveChatHistory(fm, 'assistant');
+        } catch (e2) {
+            hideChatLoading();
+            addChatBubble('网络错误: ' + e.message);
+        }
     }
+}
+
+// Chat history
+function saveChatHistory(text, role) {
+    try {
+        const history = JSON.parse(localStorage.getItem('chat_history') || '[]');
+        history.push({ text: text.substring(0, 500), role, time: new Date().toISOString() });
+        if (history.length > 50) history.shift();
+        localStorage.setItem('chat_history', JSON.stringify(history));
+    } catch (e) {}
+}
+
+function loadChatHistory() {
+    try {
+        return JSON.parse(localStorage.getItem('chat_history') || '[]');
+    } catch (e) { return []; }
+}
+
+function clearChatHistory() {
+    localStorage.removeItem('chat_history');
+    document.getElementById('chat-messages').innerHTML = '';
+    addChatBubble('对话已清空。有什么可以帮你的？');
 }
 
 // ===== RAG =====
