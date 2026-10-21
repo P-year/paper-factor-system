@@ -135,6 +135,35 @@
         .toast-warning { background: #f59e0b; }
         @keyframes toastIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateX(40px); } }
+
+        /* Modal */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+            z-index: 5000; justify-content: center; align-items: center;
+        }
+        .modal-overlay.visible { display: flex; }
+        .modal {
+            background: #fff; border-radius: 16px; width: 90%; max-width: 720px;
+            max-height: 85vh; overflow-y: auto; padding: 28px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            animation: modalIn 0.2s ease;
+        }
+        @keyframes modalIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .modal-close {
+            position: absolute; top: 16px; right: 16px; width: 32px; height: 32px;
+            border-radius: 8px; border: none; background: #f6f7f9; cursor: pointer;
+            font-size: 18px; color: #67759b; display: flex; align-items: center; justify-content: center;
+        }
+        .modal-close:hover { background: #eceef2; }
+        .modal-header { margin-bottom: 20px; padding-right: 40px; }
+        .modal-title { font-size: 18px; font-weight: 700; color: #1a1e2e; }
+        .modal-subtitle { font-size: 13px; color: #8693b3; margin-top: 4px; }
+        .modal-section { margin-bottom: 16px; }
+        .modal-section-title { font-size: 12px; font-weight: 600; color: #8693b3; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .modal-stat { background: #f6f7f9; border-radius: 8px; padding: 12px; }
+        .modal-stat-label { font-size: 11px; color: #8693b3; }
+        .modal-stat-value { font-size: 20px; font-weight: 700; color: #1a1e2e; margin-top: 2px; }
     </style>
 </head>
 <body>
@@ -526,6 +555,115 @@ function toastError(msg) { showToast(msg, 'error'); }
 function toastInfo(msg) { showToast(msg, 'info'); }
 function toastWarning(msg) { showToast(msg, 'warning'); }
 
+// ===== Modals =====
+function openModal(id) {
+    document.getElementById(id).classList.add('visible');
+}
+
+function closeModal(id) {
+    document.getElementById(id).classList.remove('visible');
+}
+
+// Close on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) overlay.classList.remove('visible');
+    });
+});
+
+async function showPaperDetail(paperId) {
+    try {
+        const r = await fetch(`/papers/${encodeURIComponent(paperId)}`);
+        const d = await r.json();
+        const paper = d.paper || {};
+        const factors = d.factors || [];
+
+        document.getElementById('paper-modal-title').textContent = paper.title || paperId;
+        document.getElementById('paper-modal-subtitle').textContent = paper.link || '';
+        document.getElementById('paper-modal-info').innerHTML = `
+            <div class="modal-stat">
+                <div class="modal-stat-label">来源</div>
+                <div class="modal-stat-value">${paper.source || '-'}</div>
+            </div>
+            <div class="modal-stat">
+                <div class="modal-stat-label">状态</div>
+                <div class="modal-stat-value">${paper.status || '-'}</div>
+            </div>
+            <div class="modal-stat">
+                <div class="modal-stat-label">因子数</div>
+                <div class="modal-stat-value">${paper.factor_count || 0}</div>
+            </div>
+            <div class="modal-stat">
+                <div class="modal-stat-label">添加时间</div>
+                <div class="modal-stat-value text-sm">${paper.added_at || '-'}</div>
+            </div>
+        `;
+        document.getElementById('paper-modal-summary').textContent = paper.summary || '(无摘要)';
+
+        const factorsDiv = document.getElementById('paper-modal-factors');
+        if (factors.length === 0) {
+            factorsDiv.innerHTML = '<p class="text-ink-400 text-sm">暂无提取的因子</p>';
+        } else {
+            factorsDiv.innerHTML = factors.map(f => `
+                <div class="flex items-center justify-between p-2.5 border border-ink-100 rounded-lg">
+                    <div>
+                        <div class="text-sm font-medium text-ink-900">${f.factor_name}</div>
+                        <div class="text-xs text-ink-400">${(f.definition || '').substring(0, 80)}</div>
+                    </div>
+                    <span class="tag ${f.status === 'approved' ? 'tag-green' : f.status === 'rejected' ? 'tag-red' : 'tag-amber'}">${f.status}</span>
+                </div>
+            `).join('');
+        }
+        openModal('paper-modal');
+    } catch (e) {
+        toastError('加载失败: ' + e.message);
+    }
+}
+
+async function showFactorDetail(name) {
+    try {
+        const r = await fetch(`/factors/${encodeURIComponent(name)}`);
+        const f = await r.json();
+
+        document.getElementById('factor-modal-title').textContent = f.factor_name || name;
+        document.getElementById('factor-modal-subtitle').textContent = `置信度: ${f.confidence || '?'} | 状态: ${f.status}`;
+        document.getElementById('factor-modal-definition').textContent = f.definition || '(无定义)';
+        document.getElementById('factor-modal-formula').textContent = f.formula_expression || f.calculation_formula || '(无公式)';
+
+        const bt = f.backtest_result || {};
+        document.getElementById('factor-modal-stats').innerHTML = `
+            <div class="modal-stat"><div class="modal-stat-label">IC</div><div class="modal-stat-value">${(bt.ic ?? 0).toFixed(4)}</div></div>
+            <div class="modal-stat"><div class="modal-stat-label">ICIR</div><div class="modal-stat-value">${(bt.icir ?? 0).toFixed(4)}</div></div>
+            <div class="modal-stat"><div class="modal-stat-label">Rank IC</div><div class="modal-stat-value">${(bt.rank_ic ?? 0).toFixed(4)}</div></div>
+            <div class="modal-stat"><div class="modal-stat-label">多空收益</div><div class="modal-stat-value">${((bt.top_minus_bottom ?? 0) * 100).toFixed(1)}%</div></div>
+            <div class="modal-stat"><div class="modal-stat-label">Sharpe</div><div class="modal-stat-value">${(bt.sharpe ?? 0).toFixed(3)}</div></div>
+            <div class="modal-stat"><div class="modal-stat-label">数据点</div><div class="modal-stat-value">${bt.data_points || 0}</div></div>
+        `;
+
+        // IC chart
+        const chartEl = document.getElementById('chart-factor-modal');
+        if (typeof echarts !== 'undefined' && bt.ic_series && bt.ic_series.length > 0) {
+            const chart = echarts.init(chartEl);
+            chart.setOption({
+                tooltip: { trigger: 'axis' },
+                grid: { left: 50, right: 16, top: 16, bottom: 30 },
+                xAxis: { type: 'category', data: bt.dates || bt.ic_series.map((_, i) => i), axisLabel: { fontSize: 10 } },
+                yAxis: { type: 'value', splitLine: { lineStyle: { color: '#f0f2f5' } } },
+                series: [{
+                    type: 'bar', barWidth: '60%',
+                    data: bt.ic_series.map(v => ({ value: v, itemStyle: { color: v >= 0 ? '#22c55e' : '#ef4444' } }))
+                }]
+            });
+            document.getElementById('factor-modal-chart-section').style.display = 'block';
+        } else {
+            document.getElementById('factor-modal-chart-section').style.display = 'none';
+        }
+        openModal('factor-modal');
+    } catch (e) {
+        toastError('加载失败: ' + e.message);
+    }
+}
+
 // ===== Navigation =====
 const titles = {
     'chat': ['Agent 问答', '与 AI Agent 对话，挖掘因子与策略'],
@@ -653,7 +791,8 @@ async function loadPapers() {
                         ${p.factor_count > 0 ? `<span class="tag tag-green ml-1">${p.factor_count} 因子</span>` : ''}
                     </div>
                 </div>
-                <button onclick="extractPaper('${p.paper_id}')" class="btn-secondary !py-1.5 !px-3 !text-xs">提取因子</button>
+                <button onclick="showPaperDetail('${p.paper_id}')" class="btn-secondary !py-1.5 !px-3 !text-xs">详情</button>
+                <button onclick="extractPaper('${p.paper_id}')" class="btn-secondary !py-1.5 !px-3 !text-xs ml-1">提取因子</button>
                 <button onclick="runPaperPipeline('${p.paper_id}')" class="btn-primary !py-1.5 !px-3 !text-xs ml-1">一键回测</button>
             </div>
         `).join('') + '</div>';
@@ -768,7 +907,7 @@ async function loadFactorList() {
         container.innerHTML = d.factors.map(f => `
             <div class="flex items-center justify-between p-3 border border-ink-100 rounded-lg mb-2 hover:bg-ink-50">
                 <div class="flex-1">
-                    <div class="text-sm font-medium text-ink-900">${f.factor_name}</div>
+                    <div class="text-sm font-medium text-ink-900 cursor-pointer hover:text-brand-500" onclick="showFactorDetail('${f.factor_name}')">${f.factor_name}</div>
                     <div class="text-xs text-ink-400 mt-1">
                         <span class="tag ${f.status === 'approved' ? 'tag-green' : f.status === 'rejected' ? 'tag-red' : f.status === 'active' ? 'tag-blue' : 'tag-amber'}">${f.status}</span>
                         <span class="tag tag-gray ml-1">${f.confidence || '中'}</span>
@@ -1184,5 +1323,55 @@ window.addEventListener('resize', () => {
     });
 });
 </script>
+<!-- Paper Detail Modal -->
+<div class="modal-overlay" id="paper-modal">
+    <div class="modal" style="position:relative">
+        <button class="modal-close" onclick="closeModal('paper-modal')">&times;</button>
+        <div class="modal-header">
+            <div class="modal-title" id="paper-modal-title">论文详情</div>
+            <div class="modal-subtitle" id="paper-modal-subtitle"></div>
+        </div>
+        <div class="modal-section">
+            <div class="modal-section-title">基本信息</div>
+            <div class="modal-grid" id="paper-modal-info"></div>
+        </div>
+        <div class="modal-section">
+            <div class="modal-section-title">摘要</div>
+            <p class="text-sm text-ink-600 leading-relaxed" id="paper-modal-summary"></p>
+        </div>
+        <div class="modal-section">
+            <div class="modal-section-title">提取的因子</div>
+            <div id="paper-modal-factors" class="space-y-2"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Factor Detail Modal -->
+<div class="modal-overlay" id="factor-modal">
+    <div class="modal" style="position:relative">
+        <button class="modal-close" onclick="closeModal('factor-modal')">&times;</button>
+        <div class="modal-header">
+            <div class="modal-title" id="factor-modal-title">因子详情</div>
+            <div class="modal-subtitle" id="factor-modal-subtitle"></div>
+        </div>
+        <div class="modal-section">
+            <div class="modal-section-title">因子定义</div>
+            <p class="text-sm text-ink-600 leading-relaxed" id="factor-modal-definition"></p>
+        </div>
+        <div class="modal-section">
+            <div class="modal-section-title">计算公式</div>
+            <code class="text-xs bg-ink-50 p-3 rounded block text-ink-700" id="factor-modal-formula"></code>
+        </div>
+        <div class="modal-section">
+            <div class="modal-section-title">回测指标</div>
+            <div class="modal-grid" id="factor-modal-stats"></div>
+        </div>
+        <div class="modal-section" id="factor-modal-chart-section">
+            <div class="modal-section-title">IC 时序</div>
+            <div id="chart-factor-modal" class="chart-box" style="height:220px"></div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

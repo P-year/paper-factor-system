@@ -133,6 +133,24 @@ def chart_specs(report: BacktestReport) -> List[Dict]:
             "x": sr.dates,
             "series": [{"name": "回撤", "data": sr.drawdown}],
         })
+        # 2b. 月度收益热力图
+        if sr.metrics and sr.metrics.monthly_returns:
+            monthly = sr.metrics.monthly_returns
+            # 转为 year × month 矩阵
+            years = sorted(set(k.split("-")[0] for k in monthly.keys()))
+            months = [f"{i:02d}" for i in range(1, 13)]
+            heatmap_data = []
+            for yi, year in enumerate(years):
+                for mi, month in enumerate(months):
+                    val = monthly.get(f"{year}-{month}", 0.0)
+                    heatmap_data.append([mi, yi, round(val * 100, 2)])
+            specs.append({
+                "title": "月度收益热力图 (%)",
+                "type": "heatmap",
+                "x": months,
+                "y": years,
+                "data": heatmap_data,
+            })
 
     for fr in report.factor_results:
         if fr.ic_series and fr.dates:
@@ -274,6 +292,23 @@ def _render_html(report: BacktestReport) -> str:
                         series: [{{name: '回撤', data: data.strategy_result.drawdown}}]
                     }});
                 }}
+                if (data.strategy_result && data.strategy_result.metrics && data.strategy_result.metrics.monthly_returns) {{
+                    var mr = data.strategy_result.metrics.monthly_returns;
+                    var months = Object.keys(mr).sort();
+                    var years = [...new Set(months.map(function(k) {{ return k.split('-')[0]; }}))];
+                    var monthLabels = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+                    var hmData = [];
+                    years.forEach(function(y, yi) {{
+                        monthLabels.forEach(function(m, mi) {{
+                            var val = mr[y + '-' + m] || 0;
+                            hmData.push([mi, yi, (val * 100).toFixed(2)]);
+                        }});
+                    }});
+                    chartData.push({{
+                        title: '月度收益热力图 (%)', type: 'heatmap',
+                        x: monthLabels, y: years, data: hmData
+                    }});
+                }}
                 for (var i = 0; i < (data.factor_results || []).length; i++) {{
                     var fr = data.factor_results[i];
                     if (fr.ic_series && fr.ic_series.length > 0 && fr.dates && fr.dates.length > 0) {{
@@ -319,11 +354,22 @@ def _render_html(report: BacktestReport) -> str:
 
                 chart.setOption({{
                     title: {{text: spec.title, left: 'center', textStyle: {{fontSize: 14}}}},
-                    tooltip: {{trigger: 'axis'}},
-                    xAxis: {{type: 'category', data: spec.x, axisLabel: {{rotate: 45, fontSize: 10}}}},
-                    yAxis: {{type: 'value'}},
-                    series: seriesOpt,
-                    grid: {{left: 60, right: 20, top: 50, bottom: 80}}
+                    tooltip: {{trigger: spec.type === 'heatmap' ? 'item' : 'axis'}},
+                    xAxis: spec.type === 'heatmap'
+                        ? {{type: 'category', data: spec.x, splitArea: {{show: true}}}}
+                        : {{type: 'category', data: spec.x, axisLabel: {{rotate: 45, fontSize: 10}}}},
+                    yAxis: spec.type === 'heatmap'
+                        ? {{type: 'category', data: spec.y, splitArea: {{show: true}}}}
+                        : {{type: 'value'}},
+                    visualMap: spec.type === 'heatmap' ? {{
+                        min: -10, max: 10, calculable: true,
+                        orient: 'horizontal', left: 'center', bottom: 0,
+                        inRange: {{color: ['#ef4444', '#fbbf24', '#22c55e']}}
+                    }} : undefined,
+                    series: spec.type === 'heatmap'
+                        ? [{{type: 'heatmap', data: spec.data, label: {{show: true}}, emphasis: {{itemStyle: {{shadowBlur: 10}}}}}}]
+                        : seriesOpt,
+                    grid: {{left: 60, right: 20, top: 50, bottom: spec.type === 'heatmap' ? 80 : 80}}
                 }});
             }});
         }}
